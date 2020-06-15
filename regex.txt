@@ -1,0 +1,4 @@
+
+msg\.edit\(([^,]*),([^,]*),([^,]*),([^,]*),([^,)]*)\);
+bot.editMessageText($4, {message_id:$2})
+

@@ -1,8 +1,7 @@
 const TelegramBot = require('node-telegram-bot-api');
 const openjio = require('./handlers/openjio');
 const commands = require('./config').commands;
-
-require('dotenv').config();
+const config = require('./config');
 
 const token = process.env.BOT_TOKEN;
 let bot;
@@ -15,7 +14,17 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 bot.on('message', (msg) => {
-    switch (msg.text) {
+    let command;
+    if(msg.text!= null && msg.text.includes('@')){
+        let tokens = msg.text.split('@');
+        if (tokens[1] !== config.bot_name){
+            return;
+        }
+        command = tokens[0];
+    } else{
+        command = msg.text;
+    }
+    switch (command) {
         case '/openjio':
             openjio.init(msg, bot);
             break;
@@ -64,3 +73,4 @@ bot.on('callback_query', (query)=>{
             break;
     }
 })
+console.log("bot running");
