@@ -25,7 +25,7 @@ module.exports.init = async function (msg, bot) {
 
         // notify the chat
         let text = createOverviewMessage(compiledOrders, userOrders, deliveryFee);
-        bot.sendMessage(msg.chat.id, text, null);
+        bot.sendMessage(msg.chat.id, text, {});
 
         // destroy jio
         queries.destroyJio({
@@ -37,7 +37,7 @@ module.exports.init = async function (msg, bot) {
     } catch (err) {
         console.log(err);
         text = 'There is no jio open yet! Click on /openjio to get started!'
-        bot.sendMessage(msg.chat.id, text, null);
+        bot.sendMessage(msg.chat.id, text, {});
     }
 }
 

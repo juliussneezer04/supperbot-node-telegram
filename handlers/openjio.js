@@ -1,4 +1,4 @@
-// var util = require('util');
+var util = require('util');
 var cloneextend = require('cloneextend');
 
 var queries = require('../db/queries');
@@ -22,7 +22,7 @@ module.exports.init = function (msg, bot) {
     }
     ik.addRow({text: 'Cancel', callback_data: JSON.stringify({t: CANCEL_COMMAND_ID})});
     let r = bot.sendMessage(msg.from.id, 'What will you like for supper?', ik.build());
-    "";
+
 }
 
 
@@ -83,8 +83,8 @@ var notifyOpenjioSuccess = async function (query, bot) {
     if (data['duration'] !== -1) { // if time is not unlimited
         text += util.format(CREATION_SUCCESS_TIME_TEMPLATE, data['duration']);
     }
-    msg.send(data['chat_id'], text, null);
-    bot.sendMessage(data['chat_id'], text, null);
+    msg.send(data['chat_id'], text, {});
+    bot.sendMessage(data['chat_id'], text, {});
     // send success message to user
     let text2 = 'Jio created!';
     await bot.editMessageText(text2, {chat_id: query.message.chat.id, message_id: query.message.message_id})
