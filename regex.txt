@@ -1,4 +1,14 @@
+init\(req\, res\, next\)\;
+init\(msg\, bot\);
+
+init \= async function \(req\, res\, next\)
+init = async function \(msg\, bot\)
+
+req\.message
+msg
+
+msg\.send\(
+bot\.sendMessage(
 
 msg\.edit\(([^,]*),([^,]*),([^,]*),([^,]*),([^,)]*)\);
 bot.editMessageText($4, {message_id:$2})
-

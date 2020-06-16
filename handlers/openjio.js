@@ -82,10 +82,10 @@ var notifyOpenjioSuccess = function (query, bot){
     bot.sendMessage(data['chat_id'], text, null);
 	// send success message to user
     let text2 = 'Jio created!';
-	bot.editMessageText( text2, {message_id: query.message.message_id})
+	bot.editMessageText( text2, {chat_id: query.message.chat.id,message_id: query.message.message_id})
 }
 
 var notifyOpenjioFailure = function (err, query, bot) {
 	console.log(err);
-    bot.editMessageText( CREATION_FAILURE_TEMPLATE, {message_id: query.message.message_id})
+    bot.editMessageText( CREATION_FAILURE_TEMPLATE, {chat_id: query.message.chat.id,message_id: query.message.message_id})
 }

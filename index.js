@@ -1,5 +1,6 @@
 const TelegramBot = require('node-telegram-bot-api');
 const openjio = require('./handlers/openjio');
+const closejio = require('./handlers/closejio');
 const commands = require('./config').commands;
 const config = require('./config');
 
@@ -15,33 +16,33 @@ if (process.env.NODE_ENV === 'production') {
 
 bot.on('message', (msg) => {
     let command;
-    if(msg.text!= null && msg.text.includes('@')){
+    if (msg.text != null && msg.text.includes('@')) {
         let tokens = msg.text.split('@');
-        if (tokens[1] !== config.bot_name){
+        if (tokens[1] !== config.bot_name) {
             return;
         }
         command = tokens[0];
-    } else{
+    } else {
         command = msg.text;
     }
     switch (command) {
         case '/openjio':
             openjio.init(msg, bot);
             break;
-        // case '/closejio':
-        //     closejio.init(req, res, next);
-        //     break;
+        case '/closejio':
+            closejio.init(msg, bot);
+            break;
         // case '/additem':
-        //     additem.init(req, res, next);
+        //     additem.init(msg, bot);
         //     break;
         // case '/removeitem':
-        //     removeitem.init(req, res, next);
+        //     removeitem.init(msg, bot);
         //     break;
         // case '/vieworder':
-        //     vieworder.init(req, res, next);
+        //     vieworder.init(msg, bot);
         //     break;
         // case '/viewmyorders':
-        //     viewmyorders.init(req, res, next);
+        //     viewmyorders.init(msg, bot);
         // case '/about':
         //     break;
         default:
@@ -51,26 +52,32 @@ bot.on('message', (msg) => {
     // bot.sendMessage(chatId, 'Received your message');
 });
 
-bot.on('callback_query', (query)=>{
+bot.on('callback_query', (query) => {
 
     let data = JSON.parse(query.data);
-    switch (data.t) {
-    //     case 'cancel':
-    //         cancelCallback(req, res, next);
-    //         break;
-        case commands.indexOf('openjio'):
+    switch (commands[data.t]) {
+        case 'cancel':
+            cancelCallback(query, bot);
+            break;
+        case 'openjio':
             openjio.callback(query, bot);
             break;
-    //     case 'additem':
-    //         additem.callback(req, res, next);
-    //         break;
-    //     case 'removeitem':
-    //         removeitem.callback(req, res, next);
-    //         break;
-    //     case 'addmod':
-    //         additem.callback_mod(req, res, next);
+        //     case 'additem':
+        //         additem.callback(query, bot);
+        //         break;
+        //     case 'removeitem':
+        //         removeitem.callback(query, bot);
+        //         break;
+        //     case 'addmod':
+        //         additem.callback_mod(query, bot);
         default:
             break;
     }
 })
+
+function cancelCallback(query, bot) {
+    text = 'Your request has been cancelled!';
+    bot.editMessageText( text, {chat_id: query.message.chat.id,message_id: query.message.message_id})
+}
+
 console.log("bot running");
