@@ -26,7 +26,7 @@ module.exports.init = function (msg, bot) {
 }
 
 
-module.exports.callback = function (query, bot) {
+module.exports.callback = async function (query, bot) {
     let data = JSON.parse(query.data);
     if (data.duration) {
         return commit(query, bot);
@@ -43,7 +43,12 @@ module.exports.callback = function (query, bot) {
         ik.addRow({text: d[0], callback_data: JSON.stringify(embed(data, {duration: d[1]}))});
     }
     ik.addRow({text: 'Cancel', callback_data: JSON.stringify({t: CANCEL_COMMAND_ID})});
-    bot.sendMessage(query.from.id, 'How long will you like the jio to be open for?', ik.build());
+    const text = 'How long will you like the jio to be open for?';
+    await bot.editMessageText(text, {chat_id: query.message.chat.id, message_id: query.message.message_id})
+    await bot.editMessageReplyMarkup(ik.build().reply_markup, {
+        chat_id: query.message.chat.id,
+        message_id: query.message.message_id
+    });
 }
 
 var embed = function (data, x) {
@@ -63,29 +68,32 @@ var commit = async function (query, bot) {
 
         await queries.openJio(params);
 
-        notifyOpenjioSuccess(query, bot);
+        await notifyOpenjioSuccess(query, bot);
 
     } catch (err) {
-        notifyOpenjioFailure(err, query, bot);
+        await notifyOpenjioFailure(err, query, bot);
     }
 }
 
-var notifyOpenjioSuccess = function (query, bot){
+var notifyOpenjioSuccess = async function (query, bot) {
     let data = JSON.parse(query.data);
-	// send success message to group
+    // send success message to group
     let text = util.format(CREATION_SUCCESS_TEMPLATE, query.from.first_name,
         menus[data['m']]);
-	if (data['duration'] !== -1) { // if time is not unlimited
-		text += util.format(CREATION_SUCCESS_TIME_TEMPLATE, data['duration']);
-	}
-	msg.send(data['chat_id'], text, null);
+    if (data['duration'] !== -1) { // if time is not unlimited
+        text += util.format(CREATION_SUCCESS_TIME_TEMPLATE, data['duration']);
+    }
+    msg.send(data['chat_id'], text, null);
     bot.sendMessage(data['chat_id'], text, null);
-	// send success message to user
+    // send success message to user
     let text2 = 'Jio created!';
-	bot.editMessageText( text2, {chat_id: query.message.chat.id,message_id: query.message.message_id})
+    await bot.editMessageText(text2, {chat_id: query.message.chat.id, message_id: query.message.message_id})
 }
 
-var notifyOpenjioFailure = function (err, query, bot) {
-	console.log(err);
-    bot.editMessageText( CREATION_FAILURE_TEMPLATE, {chat_id: query.message.chat.id,message_id: query.message.message_id})
+var notifyOpenjioFailure = async function (err, query, bot) {
+    console.log(err);
+    await bot.editMessageText(CREATION_FAILURE_TEMPLATE, {
+        chat_id: query.message.chat.id,
+        message_id: query.message.message_id
+    })
 }
