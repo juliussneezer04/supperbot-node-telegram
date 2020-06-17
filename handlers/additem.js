@@ -1,6 +1,6 @@
 var queries = require('../db/queries');
 var commands = require('../config').commands;
-var msg = require('../response/message');
+//var msg = require('../response/message');
 const {InlineKeyboard} = require('node-telegram-keyboard-wrapper');
 
 const COMMAND_ID = commands.indexOf('additem');
@@ -75,7 +75,7 @@ async function sendMenu(msg, menu, bot) {
         pushItems(menu, kbdata, children, null, msg.chat.id);
         const ik = new InlineKeyboard();
         for (const row of kbdata) {
-            ik.addRow({text: kbdata[0], callback_data: JSON.stringify(kbdata[1])});
+            ik.addRow({text: row[0], callback_data: JSON.stringify(row[1])});
         }
         const text = 'What item will you like to add?';
         let r = bot.sendMessage(msg.from.id, text, ik.build());
@@ -120,7 +120,7 @@ var sendModifierSelector = async function (query, bot, order_id) {
         });
 
         if (modifiers.length == 0) {
-            return notifyAdditemSuccess(req, itemName);
+            return notifyAdditemSuccess(query, bot, itemName);
         }
 
         const text = `Customise your ${itemName}:\n`;
@@ -128,7 +128,7 @@ var sendModifierSelector = async function (query, bot, order_id) {
         pushMods(data.m, kbdata, modifiers, level, order_id, data.p);
         const ik = new InlineKeyboard();
         for (const row of kbdata) {
-            ik.addRow({text: kbdata[0], callback_data: JSON.stringify(kbdata[1])});
+            ik.addRow({text: row[0], callback_data: JSON.stringify(row[1])});
         }
         await bot.editMessageText(text, {chat_id: query.message.chat.id, message_id: query.message.message_id})
         await bot.editMessageReplyMarkup(ik.build().reply_markup, {
@@ -170,7 +170,13 @@ var sendChildren = async function (query, bot) {
 
         kbdata = [];
         pushItems(data.m, kbdata, children, parent, data.c);
-        msg.edit(query.message.chat.id, query.message.message_id, null, text, inline.keyboard(inline.button, kbdata));
+        const ik = new InlineKeyboard();
+        for (const row of kbdata) {
+            ik.addRow({text: row[0], callback_data: JSON.stringify(row[1])});
+        }
+        bot.editMessageReplyMarkup(ik.build().reply_markup, {message_id: query.message.message_id,
+                                                                    chat_id: query.message.chat.id});
+        //msg.edit(query.message.chat.id, query.message.message_id, null, text, inline.keyboard(inline.button, kbdata));
     } catch (err) {
         console.log(err);
     }

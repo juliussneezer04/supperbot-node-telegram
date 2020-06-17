@@ -1,5 +1,6 @@
 const TelegramBot = require('node-telegram-bot-api');
 const openjio = require('./handlers/openjio');
+const additem = require('./handlers/additem');
 const closejio = require('./handlers/closejio');
 const commands = require('./config').commands;
 const config = require('./config');
@@ -32,9 +33,9 @@ bot.on('message', (msg) => {
         case '/closejio':
             closejio.init(msg, bot);
             break;
-        // case '/additem':
-        //     additem.init(msg, bot);
-        //     break;
+        case '/additem':
+            additem.init(msg, bot);
+            break;
         // case '/removeitem':
         //     removeitem.init(msg, bot);
         //     break;
@@ -62,14 +63,14 @@ bot.on('callback_query', (query) => {
         case 'openjio':
             openjio.callback(query, bot);
             break;
-        //     case 'additem':
-        //         additem.callback(query, bot);
-        //         break;
+            case 'additem':
+                additem.callback(query, bot);
+                break;
         //     case 'removeitem':
         //         removeitem.callback(query, bot);
         //         break;
-        //     case 'addmod':
-        //         additem.callback_mod(query, bot);
+            case 'addmod':
+                additem.callback_mod(query, bot);
         default:
             break;
     }

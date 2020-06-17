@@ -84,7 +84,6 @@ var notifyOpenjioSuccess = async function (query, bot) {
     if (data['duration'] !== -1) { // if time is not unlimited
         text += util.format(CREATION_SUCCESS_TIME_TEMPLATE, data['duration']);
     }
-    msg.send(data['chat_id'], text, {});
     bot.sendMessage(data['chat_id'], text, {});
     // send success message to user
     let text2 = 'Jio created!';

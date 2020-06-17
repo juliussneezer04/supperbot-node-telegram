@@ -16,7 +16,7 @@ pool.on('error', function (err, client) {
 
 //export the query method for passing queries to the pool 
 module.exports.query = function (text, values, callback) {
-	console.log(text);
+	//console.log(text);
 	let r = pool.query(text, values, callback);
 	return r; //error after this line
 };
