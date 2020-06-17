@@ -21,7 +21,8 @@ module.exports.init = function (msg, bot) {
         ik.addRow({text: menus[i], callback_data: JSON.stringify(data)})
     }
     ik.addRow({text: 'Cancel', callback_data: JSON.stringify({t: CANCEL_COMMAND_ID})});
-    let r = bot.sendMessage(msg.from.id, 'What will you like for supper?', ik.build());
+    const text = 'What will you like for supper?';
+    let r = bot.sendMessage(msg.from.id, text, ik.build());
 
 }
 
@@ -57,7 +58,7 @@ var embed = function (data, x) {
 
 var commit = async function (query, bot) {
     try {
-        let data = JSON.parse(query.data);
+        const data = JSON.parse(query.data);
         let params = {
             chat_id: data['chat_id'],
             creator_id: query.from.id,

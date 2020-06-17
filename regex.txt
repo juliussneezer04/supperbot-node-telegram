@@ -1,14 +1,17 @@
 init\(req\, res\, next\)\;
 init\(msg\, bot\);
 
-init \= async function \(req\, res\, next\)
-init = async function \(msg\, bot\)
+init = (.*) \(req\, res\, next\) \{
+init = $1 \(msg\, bot\) \{
 
 req\.message
 msg
 
-msg\.send\(
-bot\.sendMessage(
+msg\.send\((.*), null\);
+bot\.sendMessage($1, {}\);
 
 msg\.edit\(([^,]*),([^,]*),([^,]*),([^,]*),([^,)]*)\);
-bot.editMessageText($4, {message_id:$2})
+bot.editMessageText($4, {chat_id: $1, message_id:$2})
+
+\n(\s*)text =
+\n$1const text =
