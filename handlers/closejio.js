@@ -1,7 +1,7 @@
 const queries = require('../db/queries');
 const sprintf = require("sprintf-js").sprintf;
 
-module.exports.init = async function (msg, bot) {
+module.exports.init = async function (msg, bot) {//TODO: only allow group admin or jio starter to close
     try {
         let menu = await queries.getMenu({
             chat_id: msg.chat.id,

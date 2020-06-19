@@ -1,11 +1,14 @@
-init\(req\, res\, next\)\;
-init\(msg\, bot\);
-
-init = (.*) \(req\, res\, next\) \{
-init = $1 \(msg\, bot\) \{
+\(req\, res\, next\) \{
+\(msg\, bot\) \{
 
 req\.message
 msg
+
+\(req\, res\, next\) \{     //same match as first regex
+\(query\, bot\) \{
+
+req\.callback
+query
 
 msg\.send\((.*), null\);
 bot\.sendMessage($1, {}\);

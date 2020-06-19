@@ -4,16 +4,18 @@ const additem = require('./handlers/additem');
 const closejio = require('./handlers/closejio');
 const commands = require('./config').commands;
 const config = require('./config');
+const message = require('./messenger');
+const token = config.token;
 
-const token = process.env.BOT_TOKEN;
 let bot;
-
 if (process.env.NODE_ENV === 'production') {
     bot = new TelegramBot(token);
     bot.setWebHook(process.env.HEROKU_URL + bot.token);
 } else {
     bot = new TelegramBot(token, {polling: true});
 }
+
+message.init(bot);
 
 bot.on('message', (msg) => {
     if(msg.reply_to_message){
@@ -32,17 +34,17 @@ bot.on('message', (msg) => {
     }
     switch (command) {
         case '/openjio':
-            openjio.init(msg, bot);
+            openjio.init(msg);
             break;
-        case '/closejio':
-            closejio.init(msg, bot);
-            break;
-        case '/additem':
-            additem.init(msg, bot);
-            break;
-        // case '/removeitem':
-        //     removeitem.init(msg, bot);
+        // case '/closejio':
+        //     closejio.init(msg, bot);
         //     break;
+        case '/additem':
+            additem.init(msg);
+            break;
+        case '/removeitem':
+            removeitem.init(msg, bot);
+            break;
         // case '/vieworder':
         //     vieworder.init(msg, bot);
         //     break;
@@ -70,9 +72,9 @@ bot.on('callback_query', (query) => {
             case 'additem':
                 additem.callback(query, bot);
                 break;
-        //     case 'removeitem':
-        //         removeitem.callback(query, bot);
-        //         break;
+            case 'removeitem':
+                removeitem.callback(query, bot);
+                break;
             case 'addmod':
                 additem.callback_mod(query, bot);
         default:

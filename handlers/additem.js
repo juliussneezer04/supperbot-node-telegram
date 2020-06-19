@@ -1,26 +1,27 @@
-var queries = require('../db/queries');
-var commands = require('../config').commands;
-//var msg = require('../response/message');
+const queries = require('../db/queries');
+const commands = require('../config').commands;
+const messenger = require('../messenger');
 const {InlineKeyboard} = require('node-telegram-keyboard-wrapper');
 
 const COMMAND_ID = commands.indexOf('additem');
 const MOD_COMMAND_ID = commands.indexOf('addmod');
 
 //implement new menu data structure here
-module.exports.init = async function (msg, bot) {
+module.exports.init = async function (msg) {
     try {
-        var menu = await queries.getMenu({
+        const menu = await queries.getMenu({
             chat_id: msg.chat.id,
         });
 
-        await sendMenu(msg, menu, bot);
+        await sendMenu(msg, menu);
     } catch (err) {
         console.log(err);
-        bot.sendMessage(msg.chat.id, 'There is no jio open! Click /openjio to open one', {});
+        // messenger.send(msg.chat.id, 'There is no jio open! Click /openjio to open one', {});
+        await messenger.send(msg.chat.id, 'There is no jio open! Click /openjio to open one', {});
     }
 }
 
-module.exports.callback = async function (query, bot) {
+module.exports.callback = async function (query) {
     try {
         const data = JSON.parse(query.data);
         const is_terminal = await queries.isTerminal({
@@ -29,16 +30,16 @@ module.exports.callback = async function (query, bot) {
         });
 
         if (is_terminal) {
-            await commit(query, bot);
+            await commit(query);
         } else {
-            await sendChildren(query, bot);
+            await sendChildren(query);
         }
     } catch (err) {
         console.log(err);
     }
 }
 
-module.exports.reply = async function (msg, bot) {
+module.exports.reply = async function (msg) {
     try {
         await queries.addRemark({
             remarks: msg.text,
@@ -50,7 +51,7 @@ module.exports.reply = async function (msg, bot) {
     }
 }
 
-module.exports.callback_mod = async function (query, bot) {
+module.exports.callback_mod = async function (query) {
     try {
         const data = JSON.parse(query.data);
         await queries.addModifier({
@@ -59,13 +60,13 @@ module.exports.callback_mod = async function (query, bot) {
             mod_id: data.i,
         });
 
-        sendModifierSelector(query, bot, data.o);
+        await sendModifierSelector(query, data.o);
     } catch (err) {
         console.log(err);
     }
 }
 
-async function sendMenu(msg, menu, bot) {
+async function sendMenu(msg, menu) {
     try {
         let children = await queries.getChildren({
             menu: menu,
@@ -79,15 +80,15 @@ async function sendMenu(msg, menu, bot) {
             ik.addRow({text: row[0], callback_data: JSON.stringify(row[1])});
         }
         const text = 'What item will you like to add?';
-        let r = bot.sendMessage(msg.from.id, text, ik.build());
-
+        // let r = bot.sendMessage(msg.from.id, text, ik.build());
+        await messenger.send(msg.from.id, text, ik.build(), msg.chat.id);
     } catch (err) {
         console.log(err);
-        bot.sendMessage(msg.from.id, 'Failed to get items!', {});
+        await messenger.send(msg.from.id, 'Failed to get items!', {});
     }
 }
 
-var commit = async function (query, bot) {
+const commit = async function (query) {
     try {
         const data = JSON.parse(query.data);
         let order_id = await queries.addItem({
@@ -98,13 +99,13 @@ var commit = async function (query, bot) {
             message_id: query.message.message_id,
         });
 
-        await sendModifierSelector(query, bot, order_id);
+        await sendModifierSelector(query, order_id);
     } catch (err) {
-        notifyAdditemFailure(err, query, bot);
+        await notifyAdditemFailure(err, query);
     }
 }
 
-var sendModifierSelector = async function (query, bot, order_id) {
+const sendModifierSelector = async function (query, order_id) {
     try {
         const data = JSON.parse(query.data);
         let itemName = await queries.getItemName({
@@ -120,39 +121,50 @@ var sendModifierSelector = async function (query, bot, order_id) {
             level: level,
         });
 
-        if (modifiers.length == 0) {
-            return notifyAdditemSuccess(query, bot, itemName);
+        if (modifiers.length === 0) {
+            return notifyAdditemSuccess(query, itemName);
         }
 
         const text = `Customise your ${itemName}:\n`;
-        kbdata = [];
+        let kbdata = [];
         pushMods(data.m, kbdata, modifiers, level, order_id, data.p);
         const ik = new InlineKeyboard();
         for (const row of kbdata) {
             ik.addRow({text: row[0], callback_data: JSON.stringify(row[1])});
         }
-        await bot.editMessageText(text, {chat_id: query.message.chat.id, message_id: query.message.message_id})
-        await bot.editMessageReplyMarkup(ik.build().reply_markup, {
-            chat_id: query.message.chat.id,
-            message_id: query.message.message_id
-        });
+        await messenger.edit(
+            query.message.chat.id,
+            query.message.message_id,
+            null,
+            text,
+            ik.build().reply_markup);
     } catch (err) {
         console.log(err); //send error message?
     }
 }
 
-var notifyAdditemSuccess = function (query, bot, itemName) {
+const notifyAdditemSuccess = async function (query, itemName) {
     const text = itemName + ' added! Reply to this message to add remarks';
-    bot.editMessageText( text, {chat_id: query.message.chat.id, message_id: query.message.message_id})
+    await messenger.edit(
+        query.message.chat.id,
+        query.message.message_id,
+        null,
+        text,
+        {});
 }
 
-var notifyAdditemFailure = function (err, query, bot) {
+const notifyAdditemFailure = async function (err, query) {
     console.log(err);
     const text = 'Failed to add item';
-    bot.editMessageText(text, {chat_id: query.message.chat.id, message_id: query.message.message_id})
+    await messenger.edit(
+        query.message.chat.id,
+        query.message.message_id,
+        null,
+        text,
+        {});
 }
 
-var sendChildren = async function (query, bot) {
+const sendChildren = async function (query) {
     const text = 'What item will you like to add?';
     try {
         const data = JSON.parse(query.data);
@@ -162,29 +174,32 @@ var sendChildren = async function (query, bot) {
         });
 
         let parent = null;
-        if (data.p != 0) {
+        if (data.p !== 0) {
             parent = await queries.getParent({
                 menu: data.m,
                 item_id: data.p,
             });
         }
 
-        kbdata = [];
+        let kbdata = [];
         pushItems(data.m, kbdata, children, parent, data.c);
         const ik = new InlineKeyboard();
         for (const row of kbdata) {
             ik.addRow({text: row[0], callback_data: JSON.stringify(row[1])});
         }
-        bot.editMessageReplyMarkup(ik.build().reply_markup, {message_id: query.message.message_id,
-                                                                    chat_id: query.message.chat.id});
-        //msg.edit(query.message.chat.id, query.message.message_id, null, text, inline.keyboard(inline.button, kbdata));
+        await messenger.edit(
+            query.message.chat.id,
+            query.message.message_id,
+            null,
+            text,
+            ik.build().reply_markup);
     } catch (err) {
         console.log(err);
     }
 }
 
-var pushItems = function (menu, kbdata, children, parent, chat_id) {
-    for (i = 0; i < children.length; i++) {
+const pushItems = function (menu, kbdata, children, parent, chat_id) {
+    for (let i = 0; i < children.length; i++) {
         kbdata.push([children[i].name, {t: COMMAND_ID, m: menu, p: children[i].id, c: chat_id}]);
     }
     if (parent != null) {
@@ -193,8 +208,8 @@ var pushItems = function (menu, kbdata, children, parent, chat_id) {
     kbdata.push(['Cancel', {t: 0}]);
 }
 
-var pushMods = function (menu, kbdata, mods, level, order_id, item_id) {
-    for (i = 0; i < mods.length; i++) {
+const pushMods = function (menu, kbdata, mods, level, order_id, item_id) {
+    for (let i = 0; i < mods.length; i++) {
         let mod = mods[i];
         kbdata.push([mod.name, {t: MOD_COMMAND_ID, o: order_id, m: menu, l: level, i: mod.mod_id, p: item_id}]);
     }
