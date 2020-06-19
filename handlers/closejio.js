@@ -33,11 +33,11 @@ module.exports.init = async function (msg, bot) {//TODO: only allow group admin 
         }); //should we await here?
 
         // notify users
-        notifyUserOrders(msg, userOrders, deliveryFee);
+        notifyUserOrders(msg, userOrders, deliveryFee, bot);
     } catch (err) {
         console.log(err);
         text = 'There is no jio open yet! Click on /openjio to get started!'
-        bot.sendMessage(msg.chat.id, text, {});
+        await bot.sendMessage(msg.chat.id, text, {});
     }
 }
 
@@ -78,7 +78,7 @@ var createOverviewMessage = function (compiledOrders, userOrders, deliveryFee) {
     return result;
 }
 
-var notifyUserOrders = function (msg, orders, deliveryFee) {
+var notifyUserOrders = function (msg, orders, deliveryFee, bot) {
     if (!orders) return;
     let totalPrice = 0;
     let users = {};
@@ -98,11 +98,11 @@ var notifyUserOrders = function (msg, orders, deliveryFee) {
 
     // notify each and every user
     for (const [user_id, info] of Object.entries(users)) {
-        notifyUser(user_id, info.items, info.total, deliveryFee * info.total / totalPrice);
+        notifyUser(user_id, info.items, info.total, deliveryFee * info.total / totalPrice, bot);
     }
 }
 
-var notifyUser = function (user_id, orders, total, delivery) {
+var notifyUser = function (user_id, orders, total, delivery, bot) {
     let text = sprintf('Your share will be $%.2f (+%.2f delivery) for:\n', total / 100.0, delivery / 100.0);
     // add all of the user's items
     for (let i = 0; i < orders.length; i++) {
@@ -111,6 +111,6 @@ var notifyUser = function (user_id, orders, total, delivery) {
         let modifiers = order[3] == null ? '' : sprintf(' (%s)', order[3]);
         text += sprintf('%s%s%s x %d\n', order[0], modifiers, remarks, order[1]);
     }
-    bot.sendMessage(user_id, text, null);
+    bot.sendMessage(user_id, text, {});
 }
 

@@ -1,7 +1,12 @@
 const db = require('./db');
 var menus = require('../config').menus;
 
-
+module.exports.findJio = async function (chat_id) {
+	let statement = `select * from jiodata.jios where chat_id = $1`;
+	let args = [chat_id];
+	let res = await db.query(statement, args);
+	return res.rowCount;
+}
 module.exports.openJio = async function(params, callback){
 	let statement = `
 		insert into

@@ -17,14 +17,19 @@ const CREATION_FAILURE_TEMPLATE = 'Jio already exists in the chat!'
 module.exports.init = async function (msg) {
     //can receive the open jio command in a group, but the bot messages the user directly to ask for restaurant/duration
     //TODO: check for existing jio here
-    const ik = new InlineKeyboard();
-    for (let i = 0; i < menus.length; i++) {
-        let data = {t: OPEN_JIO_COMMAND_ID, chat_id: msg.chat.id, m: i}
-        ik.addRow({text: menus[i], callback_data: JSON.stringify(data)})
+    const jioExist = await queries.findJio(msg.chat.id) !== 0;
+    if (jioExist) {
+        await messenger.send(msg.chat.id, CREATION_FAILURE_TEMPLATE);
+    } else {
+        const ik = new InlineKeyboard();
+        for (let i = 0; i < menus.length; i++) {
+            let data = {t: OPEN_JIO_COMMAND_ID, chat_id: msg.chat.id, m: i}
+            ik.addRow({text: menus[i], callback_data: JSON.stringify(data)})
+        }
+        ik.addRow({text: 'Cancel', callback_data: JSON.stringify({t: CANCEL_COMMAND_ID})});
+        const text = 'What will you like for supper?';
+        await messenger.send(msg.from.id, text, ik.build());
     }
-    ik.addRow({text: 'Cancel', callback_data: JSON.stringify({t: CANCEL_COMMAND_ID})});
-    const text = 'What will you like for supper?';
-    await messenger.send(msg.from.id, text, ik.build());
 }
 
 

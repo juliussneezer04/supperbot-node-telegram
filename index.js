@@ -36,9 +36,9 @@ bot.on('message', (msg) => {
         case '/openjio':
             openjio.init(msg);
             break;
-        // case '/closejio':
-        //     closejio.init(msg, bot);
-        //     break;
+        case '/closejio':
+            closejio.init(msg, bot);
+            break;
         case '/additem':
             additem.init(msg);
             break;
