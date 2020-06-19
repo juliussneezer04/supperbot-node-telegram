@@ -16,6 +16,10 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 bot.on('message', (msg) => {
+    if(msg.reply_to_message){
+        additem.reply(msg, bot);
+        return;
+    }
     let command;
     if (msg.text != null && msg.text.includes('@')) {
         let tokens = msg.text.split('@');
@@ -47,7 +51,7 @@ bot.on('message', (msg) => {
         // case '/about':
         //     break;
         default:
-            break;
+            break;//TODO: invalid command message
     }
     // send a message to the chat acknowledging receipt of their message
     // bot.sendMessage(chatId, 'Received your message');

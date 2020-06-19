@@ -38,12 +38,13 @@ module.exports.callback = async function (query, bot) {
     }
 }
 
-module.exports.reply = async function (req, res, next) {
+module.exports.reply = async function (msg, bot) {
     try {
         await queries.addRemark({
-            remarks: req.message.text,
-            message_id: req.message.reply_to_message.message_id,
+            remarks: msg.text,
+            message_id: msg.reply_to_message.message_id,
         });
+        //TODO: send success message
     } catch (err) {
         console.log(err);
     }
