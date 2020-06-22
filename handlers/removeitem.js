@@ -1,12 +1,11 @@
-var queries = require('../db/queries');
-var inline = require('../response/inlinekeyboard');
-var commands = require('../config').commands;
-var msg = require('../response/message');
+const queries = require('../db/queries');
+const commands = require('../config').commands;
+const messenger = require('../messenger');
+const {InlineKeyboard} = require("node-telegram-keyboard-wrapper");
 
 const COMMAND_ID = commands.indexOf('removeitem');
 
-
-module.exports.init = async function (msg, bot) {
+module.exports.init = async function (msg) {
     try {
         // retrieve menu number
         let menu = await queries.getMenu({
@@ -26,14 +25,13 @@ module.exports.init = async function (msg, bot) {
         } else {
             sendList(msg, menu, items);
         }
-
     } catch (err) {
         console.log(err);
-        bot.sendMessage(msg.from.id, 'Failed to get user orders!', {});
+        await messenger.send(msg.from.id, 'Failed to get user orders!', {}, msg.chat.id);
     }
 }
 
-module.exports.callback = async function (query, bot) {
+module.exports.callback = async function (query) {
     try {
         // try removing item
         await queries.removeItem({
@@ -41,36 +39,36 @@ module.exports.callback = async function (query, bot) {
             order_id: query.data.p,
         });
 
-        notifyRemoveitemSuccess(req);
+        notifyRemoveitemSuccess(query);
     } catch (err) {
-        notifyRemoveitemFailure(err, req);
+        notifyRemoveitemFailure(err, query);
     }
 }
 
-
-var sendList = function (msg, menu, items, bot) {
-    text = 'What item will you like to remove?';
-    kbdata = [];
-    for (i = 0; i < items.length; i++) {
-        item = items[i];
-        kbdata.push([item.name, {t: COMMAND_ID, p: item.id}]);
+const sendList = function (msg, menu, items) {
+    const text = 'What item will you like to remove?';
+    const ik = new InlineKeyboard();
+    for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        ik.addRow({text: item.name, callback_data: JSON.stringify({t: COMMAND_ID, p: item.id})});
     }
-    kbdata.push(['Cancel', {t: 0}]);
-    msg.send(msg.from.id, text, reply_markup = inline.keyboard(inline.button, kbdata), msg.chat.id);
-}
+    ik.addRow({text: 'Cancel', callback_data: JSON.stringify({t: 0})})
+    messenger.send(msg.from.id, text, ik.build(), msg.chat.id);
+};
 
-var notifyNoItemsToRemove = function (msg, bot) {
-    text = 'You have no items to remove!';
-    msg.send(msg.from.id, text, null, msg.chat.id);
-}
+const notifyNoItemsToRemove = function (msg) {
+    const text = 'You have no items to remove!';
+    messenger.send(msg.from.id, text, null, msg.chat.id);
+};
 
-var notifyRemoveitemSuccess = function (query, bot) {
-    text = 'Removed item!';
-    msg.edit(query.message.chat.id, query.message.message_id, null, text, null);
-}
+const notifyRemoveitemSuccess = function (query) {
+    const text = 'Removed item!';
+    messenger.edit(query.message.chat.id, query.message.message_id, null, text, null);
+};
 
-var notifyRemoveitemFailure = function (err, query, bot) {
+const notifyRemoveitemFailure = function (err, query) {
     console.log(err);
-    text = 'Failed to remove item';
-    msg.edit(query.message.chat.id, query.message.message_id, null, text, null);
-}
+    const text = 'Failed to remove item';
+    messenger.edit(query.message.chat.id, query.message.message_id, null, text, null);
+};
+

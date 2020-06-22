@@ -1,54 +1,56 @@
 const queries = require('../db/queries');
 const sprintf = require("sprintf-js").sprintf;
+const messenger = require('../messenger');
 
-module.exports.init = async function (msg, bot) {//TODO: only allow group admin or jio starter to close
+module.exports.init = async function (msg) {
+    //TODO: only allow group admin or jio starter to close
     try {
-        let menu = await queries.getMenu({
+        if(!await queries.checkHasJio(msg.chat.id)){
+            return;
+        }
+        const menu = await queries.getMenu({
             chat_id: msg.chat.id,
         });
 
-        let deliveryFee = await queries.getFee({
+        const deliveryFee = await queries.getFee({
             menu: menu,
         });
 
         // get all jio orders
-        let compiledOrders = await queries.getOrderOverview({
+        const compiledOrders = await queries.getOrderOverview({
             menu: menu,
             chat_id: msg.chat.id,
         });
 
         // get individual user orders
-        let userOrders = await queries.getChatOrders({
+        const userOrders = await queries.getChatOrders({
             menu: menu,
             chat_id: msg.chat.id,
         });
 
         // notify the chat
-        let text = createOverviewMessage(compiledOrders, userOrders, deliveryFee);
-        bot.sendMessage(msg.chat.id, text, {});
+        const text = createOverviewMessage(compiledOrders, userOrders, deliveryFee);
+        await messenger.send(msg.chat.id, text, {});
 
         // destroy jio
-        queries.destroyJio({
+        await queries.destroyJio({
             chat_id: msg.chat.id,
         }); //should we await here?
 
         // notify users
-        notifyUserOrders(msg, userOrders, deliveryFee, bot);
+        notifyUserOrders(msg, userOrders, deliveryFee);
     } catch (err) {
         console.log(err);
-        text = 'There is no jio open yet! Click on /openjio to get started!'
-        await bot.sendMessage(msg.chat.id, text, {});
     }
 }
 
-var createOverviewMessage = function (compiledOrders, userOrders, deliveryFee) {
-    let i;
+const createOverviewMessage = function (compiledOrders, userOrders, deliveryFee) {
     let result = 'Jio closed!\nThe compiled list of ordered items is: \n';
     let total = 0;
     let users = {};
 
     // compile jio orders
-    for (i = 0; i < compiledOrders.length; i++) {
+    for (let i = 0; i < compiledOrders.length; i++) {
         let order = compiledOrders[i];
         let remarks = order.remarks == null ? '' : sprintf(' (%s)', order.remarks);
         let modifiers = order.mods == null ? '' : sprintf(' (%s)', order.mods);
@@ -58,7 +60,7 @@ var createOverviewMessage = function (compiledOrders, userOrders, deliveryFee) {
     }
 
     // compile individual prices
-    for (i = 0; i < userOrders.length; i++) {
+    for (let i = 0; i < userOrders.length; i++) {
         let order = userOrders[i];
         if (!users.hasOwnProperty(order.user_id)) {
             users[order.user_id] = [order.user, 0];
@@ -68,7 +70,7 @@ var createOverviewMessage = function (compiledOrders, userOrders, deliveryFee) {
 
     // Insert all user prices
     result += '\nEach person please pay:\n';
-    for (const [user_id, info] of Object.entries(users)) {
+    for (const [, info] of Object.entries(users)) {
         let userDelivery = deliveryFee * info[1] / total;
         result += sprintf('%s - $%.2f(+%.2f)\n', info[0], info[1] / 100.0, userDelivery / 100.0);
     }
@@ -78,7 +80,7 @@ var createOverviewMessage = function (compiledOrders, userOrders, deliveryFee) {
     return result;
 }
 
-var notifyUserOrders = function (msg, orders, deliveryFee, bot) {
+const notifyUserOrders = function (msg, orders, deliveryFee) {
     if (!orders) return;
     let totalPrice = 0;
     let users = {};
@@ -95,14 +97,14 @@ var notifyUserOrders = function (msg, orders, deliveryFee, bot) {
         users[order.user_id].total += order.price;
         users[order.user_id].items.push([order.item, order.count, order.remarks, order.mods]);
     }
-
-    // notify each and every user
+    "";
+    // notify each user
     for (const [user_id, info] of Object.entries(users)) {
-        notifyUser(user_id, info.items, info.total, deliveryFee * info.total / totalPrice, bot);
+        notifyUser(user_id, info.items, info.total, deliveryFee * info.total / totalPrice);
     }
 }
 
-var notifyUser = function (user_id, orders, total, delivery, bot) {
+const notifyUser = function (user_id, orders, total, delivery) {
     let text = sprintf('Your share will be $%.2f (+%.2f delivery) for:\n', total / 100.0, delivery / 100.0);
     // add all of the user's items
     for (let i = 0; i < orders.length; i++) {
@@ -111,6 +113,6 @@ var notifyUser = function (user_id, orders, total, delivery, bot) {
         let modifiers = order[3] == null ? '' : sprintf(' (%s)', order[3]);
         text += sprintf('%s%s%s x %d\n', order[0], modifiers, remarks, order[1]);
     }
-    bot.sendMessage(user_id, text, {});
+    messenger.send(user_id, text, {});
 }
 

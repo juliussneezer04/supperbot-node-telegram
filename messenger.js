@@ -6,13 +6,13 @@ module.exports.init = function (b) {
     bot = b;
 }
 
-const sendStartMe = function (chat_id) {
+const sendStartMe = async function (chat_id, startme_chat) {
     //no await, because if it does not work we do not send any more messages
     // send 'Start chat!' inline message
     try {
-        bot.sendMessage(
-            chat_id,
-            'Hi there, please start a chat with me first!',
+        await bot.sendMessage(
+            startme_chat,
+            'Hi there, please start a chat with me first!',//TODO: address user by first_name
             new InlineKeyboard().addRow({
                 text: 'Start chat!',
                 url: 'https://telegram.me/' + bot_name,
@@ -22,13 +22,17 @@ const sendStartMe = function (chat_id) {
     }
 }
 
-module.exports.send = async function (chat_id, text, reply_markup, startme_chat) {
+module.exports.send = async function (chat_id, text, reply_markup = {}, startme_chat) {
     try {
-        await bot.sendMessage(chat_id, text, reply_markup);
-    } catch (e) { //TODO: better catching
-        if (startme_chat != null) {
-            sendStartMe(startme_chat);
+        if(reply_markup == null){//hack, because default param value doesn't seem to be working
+            reply_markup = {};
         }
+        await bot.sendMessage(chat_id, text, reply_markup);
+    } catch (e) {
+        //check for startme error
+        //blocked: ETELEGRAM: 403 Forbidden: bot was blocked by the user
+        sendStartMe(chat_id, startme_chat);
+        console.log(e);
     }
 }
 

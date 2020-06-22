@@ -1,8 +1,15 @@
 <component name="ProjectDictionaryState">
   <dictionary name="nicktohzyu">
     <words>
+      <w>additem</w>
+      <w>addmod</w>
+      <w>cloneextend</w>
       <w>closejio</w>
+      <w>jiodata</w>
+      <w>jios</w>
+      <w>kbdata</w>
       <w>openjio</w>
+      <w>removeitem</w>
       <w>sprintf</w>
     </words>
   </dictionary>

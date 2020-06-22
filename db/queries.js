@@ -1,62 +1,74 @@
 const db = require('./db');
-var menus = require('../config').menus;
+const menus = require('../config').menus; //TODO: make this a database entry
+const messenger = require('../messenger');
 
-module.exports.findJio = async function (chat_id) {
-	let statement = `select * from jiodata.jios where chat_id = $1`;
-	let args = [chat_id];
-	let res = await db.query(statement, args);
-	return res.rowCount;
+const hasJio = async function (chat_id) {
+    const statement = `select * from jiodata.jios where chat_id = $1`;
+    const args = [chat_id];
+    const res = await db.query(statement, args);
+    return res.rowCount > 0;
 }
-module.exports.openJio = async function(params, callback){
-	let statement = `
+module.exports.checkHasJio = async function (chat_id) {
+    const hasJioValue = await hasJio(chat_id)
+    if(!hasJioValue){
+        const text = 'There is no jio open yet! Click on /openjio to get started!'
+        messenger.send(chat_id, text, {});
+    }
+    return hasJioValue;
+}
+
+module.exports.hasJio = hasJio;
+
+module.exports.openJio = async function (params, callback) {
+    const statement = `
 		insert into
 			jiodata.jios	(chat_id, creator_id, creator_name, menu, duration)
 			values			($1, $2, $3, $4, $5);`;
-	let args = [params.chat_id, params.creator_id, params.creator_name, params.menu, params.duration];
-	
-	await db.query(statement, args, callback);
+    const args = [params.chat_id, params.creator_id, params.creator_name, params.menu, params.duration];
+
+    await db.query(statement, args, callback);
 }
 
-module.exports.addItem = async function(params, callback){
-	statement = `
+module.exports.addItem = async function (params, callback) {
+    const statement = `
 		insert into
 			jiodata.orders 	(chat_id, user_id, user_name, item_id, message_id)
 			values 			($1, $2, $3, $4, $5)
 			returning		order_id;`;
-	args = [params.chat_id, params.user_id, params.user_name, params.item_id, params.message_id];
-	
-	let result = await db.query(statement, args, callback);
-	return result.rows[0].order_id;
+    const args = [params.chat_id, params.user_id, params.user_name, params.item_id, params.message_id];
+
+    const result = await db.query(statement, args, callback);
+    return result.rows[0].order_id;
 }
 
-module.exports.addModifier = async function(params, callback){
-	menuname = 'menudata.' + menus[params.menu].split(' ').join('_');
-	modmenuname = menuname + '_mod';
-	statement = `
+module.exports.addModifier = async function (params, callback) {
+    const menuname = 'menudata.' + menus[params.menu].split(' ').join('_');
+    const modmenuname = menuname + '_mod';
+    const statement = `
 		insert into
 			jiodata.modifiers 	(order_id, name, price, level)
 		select	$1 as order_id, name, price, level
 				from	${modmenuname}
 				where mod_id = $2;`;
-	args = [params.order_id, params.mod_id];
+    const args = [params.order_id, params.mod_id];
 
-	await db.query(statement, args, callback);
+    await db.query(statement, args, callback);
 }
 
-module.exports.addRemark = async function(params, callback){
-	statement = `
+module.exports.addRemark = async function (params, callback) {
+    const statement = `
 		update 	jiodata.orders
 		set		remarks = $1
 		where	message_id = $2;`;
-	args = [params.remarks, params.message_id];
-	
-	await db.query(statement, args, callback);
+    const args = [params.remarks, params.message_id];
+
+    await db.query(statement, args, callback);
 }
 
-module.exports.getModifierOptions = async function(params, callback){
-	menuname = 'menudata.' + menus[params.menu].split(' ').join('_');
-	modmenuname = menuname + '_mod';
-	statement = `
+module.exports.getModifierOptions = async function (params, callback) {
+    const menuname = 'menudata.' + menus[params.menu].split(' ').join('_');
+    const modmenuname = menuname + '_mod';
+    const statement = `
 		select t1.mod_id, t1.name, t1.price
 		from ${modmenuname} t1
 		where
@@ -66,111 +78,112 @@ module.exports.getModifierOptions = async function(params, callback){
 				where	item_id = $1) and
 			t1.level = $2;`;
 
-	args = [params.item_id, params.level];
-	let res = await db.query(statement, args, callback);
-	return res.rows;
+    const args = [params.item_id, params.level];
+    const res = await db.query(statement, args, callback);
+    return res.rows;
 }
 
-module.exports.getMenu = async function(params, callback){
-	statement = `
+module.exports.getMenu = async function (params, callback) {
+    //TODO: cache in memory to speed up
+    const statement = `
 		select	menu 
 			from	jiodata.jios
 			where	chat_id = $1;`;
-	args = [params.chat_id];
+    const args = [params.chat_id];
 
-	let res = await db.query(statement, args, callback);
-	return res.rows[0].menu;
+    const res = await db.query(statement, args, callback);
+    return res.rows[0].menu;
 }
 
-module.exports.getFee = async function(params, callback){
-	menuname = menus[params.menu].split(' ').join('_');
-	statement = `
+module.exports.getFee = async function (params, callback) {
+    const menuname = menus[params.menu].split(' ').join('_');
+    const statement = `
 		select	price 
 			from	menudata.${menuname}
 			where	item_id = 0;`;
 
-	let ans = await db.query(statement, [], callback);
-	return ans.rows[0].price;
+    const ans = await db.query(statement, [], callback);
+    return ans.rows[0].price;
 }
 
 
-module.exports.isTerminal = async function(params, callback) {
-	menuname = menus[params.menu].split(' ').join('_');
+module.exports.isTerminal = async function (params, callback) {
+    const menuname = menus[params.menu].split(' ').join('_');
 
-	statement = `
+    const statement = `
 		select not exists (
 			select 1 from menudata.${menuname}
 			where parent_id = $1
 		) as exists;`;
-	args = [params.item_id];
+    const args = [params.item_id];
 
-	let ans = await db.query(statement, args, callback);
-	return ans.rows[0].exists;
+    const ans = await db.query(statement, args, callback);
+    return ans.rows[0].exists;
 }
 
 
-module.exports.getChildren = async function(params, callback){
-	menuname = menus[params.menu].split(' ').join('_');
+module.exports.getChildren = async function (params, callback) {
+    const menuname = menus[params.menu].split(' ').join('_');
 
-	statement = `
+    const statement = `
 		select 	item_id as id, item_name as name
 		from 	menudata.${menuname}
 		where 	parent_id = $1 and item_id != 0;`;
-	args = [params.item_id];
+    const args = [params.item_id];
 
-	let children = await db.query(statement, args, callback);
-	return children.rows;
+    const children = await db.query(statement, args, callback);
+    return children.rows;
 }
 
 
-module.exports.getParent = async function(params, callback){
-	menuname = menus[params.menu].split(' ').join('_');
+module.exports.getParent = async function (params, callback) {
+    const menuname = menus[params.menu].split(' ').join('_');
 
-	statement = `
+    const statement = `
 		select 	parent_id as parent
 		from 	menudata.${menuname}
 		where 	item_id = $1 and item_id != 0;`;
-	args = [params.item_id];
+    const args = [params.item_id];
 
-	let children = await db.query(statement, args, callback);
-	return children.rows[0].parent;
+    const children = await db.query(statement, args, callback);
+    return children.rows[0].parent;
 }
 
 
-module.exports.getItemName = async function(params, callback){
-	menuname = menus[params.menu].split(' ').join('_');
+module.exports.getItemName = async function (params, callback) {
+    const menuname = menus[params.menu].split(' ').join('_');
 
-	statement = `
+    const statement = `
 		select	item_name as name
 		from	menudata.${menuname}
 		where	item_id = $1;`;
-	args = [params.item_id];
+    const args = [params.item_id];
 
-	let res = await db.query(statement, args, callback);
-	return res.rows[0].name;
+    const res = await db.query(statement, args, callback);
+    return res.rows[0].name;
 }
 
-module.exports.getUserOrders = async function(params, callback){
-	menuname = menus[params.menu];
-	menutable = 'menudata.' + menuname.split(' ').join('_');
+module.exports.getUserOrders = async function (params, callback) {
+    const menuname = menus[params.menu];
+    const menutable = 'menudata.' + menuname.split(' ').join('_');
 
-	statement = `
+    const statement = `
 		select 	order_id as id, t2.item_name as name 
 		from 	jiodata.orders t1
 		inner join ${menutable} t2
 		on 		(t1.item_id = t2.item_id)
 		where 	user_id = $1 and chat_id = $2;`;
-	args = [params.user_id, params.chat_id];
+    const args = [params.user_id, params.chat_id];
 
-	let res = await db.query(statement, args, callback);
-	return res.rows;
+    const res = await db.query(statement, args, callback);
+    return res.rows;
 }
 
-module.exports.getUserOrderCounts = async function(params, callback){
-	menuname = menus[params.menu];
-	menutable = 'menudata.' + menuname.split(' ').join('_');
+module.exports.getUserOrderCounts = async function (params, callback) {
+    const menuname = menus[params.menu];
+    const menutable = 'menudata.' + menuname.split(' ').join('_');
 
-	statement = `
+    const statement = `
 		select 	t1.item_name as item, t2.count, t2.remarks, ((t1.price + t2.sum) * t2.count)::int as price, t2.mods
 		from 	${menutable} t1
 		join (
@@ -187,15 +200,15 @@ module.exports.getUserOrderCounts = async function(params, callback){
 		) t2
 		on 		t1.item_id = t2.item_id
 		order by t1.item_name;`;
-	args = [params.user_id, params.chat_id];
+    const args = [params.user_id, params.chat_id];
 
-	let res = await db.query(statement, args, callback);
-	return res.rows;
+    const res = await db.query(statement, args, callback);
+    return res.rows;
 }
 
-module.exports.getChatOrders = async function(params, callback){
-	menutable = 'menudata.' + menus[params.menu].split(' ').join('_');
-	statement = `
+module.exports.getChatOrders = async function (params, callback) {
+    const menutable = 'menudata.' + menus[params.menu].split(' ').join('_');
+    const statement = `
 		select 	t1.item_name as item, t2.remarks, t2.count, ((t1.price + t2.sum) * t2.count)::int as price, t2.mods, t3.user_name as user, t3.user_id
 		from 	${menutable} t1 
 		join (
@@ -218,17 +231,17 @@ module.exports.getChatOrders = async function(params, callback){
 		on 		t2.user_id = t3.user_id
 		order by t3.user_name;`;
 
-	args = [params.chat_id];
+    const args = [params.chat_id];
 
-	let res = await db.query(statement, args, callback);
-	return res.rows;
+    const res = await db.query(statement, args, callback);
+    return res.rows;
 }
 
-module.exports.getOrderOverview = async function(params, callback) {
-	menuname = menus[params.menu];
-	menutable = 'menudata.' + menuname.split(' ').join('_');
+module.exports.getOrderOverview = async function (params, callback) {
+    const menuname = menus[params.menu];
+    const menutable = 'menudata.' + menuname.split(' ').join('_');
 
-	statement = `
+    const statement = `
 		select 	t1.item_name as item, t2.remarks, t2.count, ((t1.price + t2.sum) * t2.count)::int as price, t2.mods
 		from 	${menutable} t1
 		join (
@@ -246,26 +259,26 @@ module.exports.getOrderOverview = async function(params, callback) {
 		on 		t1.item_id = t2.item_id
 		order by t1.item_name;`;
 
-	args = [params.chat_id];
+    const args = [params.chat_id];
 
-	let res = await db.query(statement, args, callback);
-	return res.rows;
+    const res = await db.query(statement, args, callback);
+    return res.rows;
 }
 
-module.exports.destroyJio = async function(params, callback) {
-	statement = `
+module.exports.destroyJio = async function (params, callback) {
+    const statement = `
 		delete from jiodata.jios
 		where 	chat_id=$1;`;
-	args = [params.chat_id];
+    const args = [params.chat_id];
 
-	await db.query(statement, args, callback);
+    await db.query(statement, args, callback);
 }
 
-module.exports.removeItem = async function(params, callback) {
-	statement = `
+module.exports.removeItem = async function (params, callback) {
+    const statement = `
 		delete from jiodata.orders
 		where	order_id = $1 and user_id = $2;`;
-	args = [params.order_id, params.user_id];
+    const args = [params.order_id, params.user_id];
 
-	await db.query(statement, args, callback);
+    await db.query(statement, args, callback);
 }

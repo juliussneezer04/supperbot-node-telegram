@@ -8,6 +8,7 @@ const MOD_COMMAND_ID = commands.indexOf('addmod');
 
 //implement new menu data structure here
 module.exports.init = async function (msg) {
+    //TODO: make this into a inline button below the successful openjio message
     try {
         const menu = await queries.getMenu({
             chat_id: msg.chat.id,
@@ -16,7 +17,6 @@ module.exports.init = async function (msg) {
         await sendMenu(msg, menu);
     } catch (err) {
         console.log(err);
-        // messenger.send(msg.chat.id, 'There is no jio open! Click /openjio to open one', {});
         await messenger.send(msg.chat.id, 'There is no jio open! Click /openjio to open one', {});
     }
 }
@@ -45,6 +45,7 @@ module.exports.reply = async function (msg) {
             remarks: msg.text,
             message_id: msg.reply_to_message.message_id,
         });
+        messenger.send(msg.chat.id, 'Remark added successfully!');
         //TODO: send success message
     } catch (err) {
         console.log(err);
@@ -84,7 +85,7 @@ async function sendMenu(msg, menu) {
         await messenger.send(msg.from.id, text, ik.build(), msg.chat.id);
     } catch (err) {
         console.log(err);
-        await messenger.send(msg.from.id, 'Failed to get items!', {});
+        await messenger.send(msg.from.id, 'Failed to get items!', {}, msg.chat.id);
     }
 }
 

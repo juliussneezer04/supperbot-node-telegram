@@ -4,7 +4,7 @@ const config = require('../config').db_config;
 const pool = new pg.Pool(config);
 // console.log("Postgres pool created");
 
-pool.on('error', function (err, client) {
+pool.on('error', function (err, client) {//TODO: is client param redundant?
 	// if an error is encountered by a client while it sits idle in the pool 
 	// the pool itself will emit an error event with both the error and 
 	// the client which emitted the original error 

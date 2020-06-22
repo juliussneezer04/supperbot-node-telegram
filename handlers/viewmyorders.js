@@ -1,38 +1,38 @@
-var queries = require('../db/queries');
-var util = require('util');
-var msg = require('../response/message');
-var sprintf = require("sprintf-js").sprintf;
+const queries = require('../db/queries');
+const messenger = require('../messenger');
+const sprintf = require("sprintf-js").sprintf;
 
-module.exports.init = async function (req, res, next) {
+module.exports.init = async function (msg) {
 	try {
+		if(!await queries.checkHasJio(msg.chat.id)){
+			return;
+		}
 		// retrieve menu number
 		let menu = await queries.getMenu({
-			chat_id: req.message.chat.id,
+			chat_id: msg.chat.id,
 		});
 
 		// get the user's orders, counts, and price
 		let items = await queries.getUserOrderCounts({
 			menu: menu,
-			user_id: req.message.from.id,
-			chat_id: req.message.chat.id,
+			user_id: msg.from.id,
+			chat_id: msg.chat.id,
 		});
 
 		// notify
-		text = createUserOrderMessage(items);
-		msg.send(req.message.from.id, text, null, req.message.from.id);
+		const text = createUserOrderMessage(items);
+		messenger.send(msg.from.id, text,null, msg.from.id);
 
 	} catch (err) {
 		console.log(err);
-		text = 'There is no jio open yet! Click on /openjio to get started!'
-		msg.send(req.message.chat.id, text, null);
 	}
 }
 
-var createUserOrderMessage = function (items) {
-	result = 'Your items so far are: \n';
-	total = 0;
-	for (var i=0; i<items.length; i++) {
-		item = items[i];
+const createUserOrderMessage = function (items) {
+	let result = 'Your items so far are: \n';
+	let total = 0;
+	for (let i=0; i<items.length; i++) {
+		const item = items[i];
 		total += item.price;
 		let remarks = item.remarks == null ? '' : sprintf(' (%s)', item.remarks);
 		let modifiers = item.mods == null ? '' : sprintf(' (%s)', item.mods);

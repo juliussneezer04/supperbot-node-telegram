@@ -16,5 +16,6 @@ bot\.sendMessage($1, {}\);
 msg\.edit\(([^,]*),([^,]*),([^,]*),([^,]*),([^,)]*)\);
 bot.editMessageText($4, {chat_id: $1, message_id:$2})
 
-\n(\s*)text =
-\n$1const text =
+\n(\s*)([\w*]+) =([^=])
+\n(\s*)let ([\w*]+) =([^=])     //dangerous
+\n$1const $2 =($3)
