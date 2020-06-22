@@ -65,6 +65,13 @@ module.exports.addRemark = async function (params, callback) {
     await db.query(statement, args, callback);
 }
 
+module.exports.hasOrder = async function (message_id) {
+	const statement = `select * from jiodata.orders where message_id = $1;`;
+	const args = [message_id];
+	const res = await db.query(statement, args);
+	return res.rowCount > 0;
+}
+
 module.exports.getModifierOptions = async function (params, callback) {
     const menuname = 'menudata.' + menus[params.menu].split(' ').join('_');
     const modmenuname = menuname + '_mod';

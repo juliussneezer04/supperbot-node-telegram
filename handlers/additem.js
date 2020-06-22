@@ -41,11 +41,13 @@ module.exports.callback = async function (query) {
 
 module.exports.reply = async function (msg) {
     try {
-        await queries.addRemark({
-            remarks: msg.text,
-            message_id: msg.reply_to_message.message_id,
-        });
-        messenger.send(msg.chat.id, 'Remark added successfully!');
+        if (await queries.hasOrder(msg.reply_to_message.message_id)){
+            await queries.addRemark({
+                remarks: msg.text,
+                message_id: msg.reply_to_message.message_id,
+            });
+            messenger.send(msg.chat.id, 'Remark added successfully!');
+        }
         //TODO: send success message
     } catch (err) {
         console.log(err);
