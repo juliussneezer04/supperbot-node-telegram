@@ -34,30 +34,7 @@ module.exports.init = async function (msg) {
 
 
 module.exports.callback = async function (query) {
-    let data = JSON.parse(query.data);
-    if (data.duration) {
-        return commit(query);
-    }
-    const ik = new InlineKeyboard();
-    const duration_options = [
-        ['15 min', 15],
-        ['30 min', 30],
-        ['60 min', 60],
-        ['90 min', 90],
-        ['unlimited', -1]
-    ];
-    for (const d of duration_options) {
-        ik.addRow({text: d[0], callback_data: JSON.stringify(embed(data, {duration: d[1]}))});
-    }
-    ik.addRow({text: 'Cancel', callback_data: JSON.stringify({t: CANCEL_COMMAND_ID})});
-    const text = 'How long will you like the jio to be open for?';
-    messenger.edit(
-        query.message.chat.id,
-        query.message.message_id,
-        null,
-        text,
-        ik.build().reply_markup
-        );
+    return commit(query);
 }
 
 const embed = function (data, x) {
@@ -67,17 +44,20 @@ const embed = function (data, x) {
 const commit = async function (query) {
     try {
         const data = JSON.parse(query.data);
+        if (!data.duration) {
+            data.duration = -1;
+        }
         let params = {
             chat_id: data['chat_id'],
             creator_id: query.from.id,
             creator_name: query.from.first_name,
-            duration: data['duration'],
+            duration: data['duration'],//TODO: update database, duration no longer used
             menu: data['m'],
         }
 
         await queries.openJio(params);
 
-        await notifyOpenjioSuccess(query);
+        notifyOpenjioSuccess(query);
 
     } catch (e) {
         console.log(e);
@@ -90,13 +70,10 @@ const notifyOpenjioSuccess = async function (query) {
     // send success message to group
     let text = util.format(CREATION_SUCCESS_TEMPLATE, query.from.first_name,
         menus[data['m']]);
-    if (data['duration'] !== -1) { // if time is not unlimited
-        text += util.format(CREATION_SUCCESS_TIME_TEMPLATE, data['duration']);
-    }
     await messenger.send(data['chat_id'], text, {});
     // send success message to user
-    let text2 = 'Jio created!';
-    await messenger.edit(
+    let text2 = 'Jio created successfully!';
+    messenger.edit(
         query.message.chat.id,
         query.message.message_id,
         null,
@@ -105,7 +82,7 @@ const notifyOpenjioSuccess = async function (query) {
 }
 
 const notifyOpenjioFailure = async function (err, query) {
-    await messenger.edit(
+    messenger.edit(
         query.message.chat.id,
         query.message.message_id,
         null,

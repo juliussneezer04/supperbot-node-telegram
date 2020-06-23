@@ -45,7 +45,11 @@ module.exports.init = async function (msg) {
 }
 
 const createOverviewMessage = function (compiledOrders, userOrders, deliveryFee) {
-    let result = 'Jio closed!\nThe compiled list of ordered items is: \n';
+    let result = 'Jio closed!\n'
+    if(compiledOrders.length === 0){
+        return result + 'There are no items in this jio.';
+    }
+    result += 'The compiled list of ordered items is: \n';
     let total = 0;
     let users = {};
 
@@ -80,27 +84,29 @@ const createOverviewMessage = function (compiledOrders, userOrders, deliveryFee)
     return result;
 }
 
-const notifyUserOrders = function (msg, orders, deliveryFee) {
-    if (!orders) return;
-    let totalPrice = 0;
-    let users = {};
+const notifyUserOrders = function (msg, userOrders, deliveryFee) {
+    try{
+        let totalPrice = 0;
+        let users = {};
 
-    // group all user orders
-    for (let i = 0; i < orders.length; i++) {
-        let order = orders[i];
-        // init user if not present
-        if (!users.hasOwnProperty(order.user_id)) {
-            users[order.user_id] = {total: 0, items: []};
+        // group all user orders
+        for (let i = 0; i < userOrders.length; i++) {
+            let order = userOrders[i];
+            // init user if not present
+            if (!users.hasOwnProperty(order.user_id)) {
+                users[order.user_id] = {total: 0, items: []};
+            }
+            // append items
+            totalPrice += order.price;
+            users[order.user_id].total += order.price;
+            users[order.user_id].items.push([order.item, order.count, order.remarks, order.mods]);
         }
-        // append items
-        totalPrice += order.price;
-        users[order.user_id].total += order.price;
-        users[order.user_id].items.push([order.item, order.count, order.remarks, order.mods]);
-    }
-    "";
-    // notify each user
-    for (const [user_id, info] of Object.entries(users)) {
-        notifyUser(user_id, info.items, info.total, deliveryFee * info.total / totalPrice);
+        // notify each user
+        for (const [user_id, info] of Object.entries(users)) {
+            notifyUser(user_id, info.items, info.total, deliveryFee * info.total / totalPrice);
+        }
+    } catch (e){
+        console.log(e);
     }
 }
 
