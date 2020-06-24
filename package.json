@@ -20,6 +20,7 @@
     "node-telegram-keyboard-wrapper": "^2.0.1",
     "pg": "^8.2.1",
     "sprintf-js": "^1.1.2",
-    "util": "^0.12.3"
+    "util": "^0.12.3",
+    "yaml": "^1.10.0"
   }
 }

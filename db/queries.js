@@ -102,7 +102,7 @@ module.exports.getMenu = async function (params, callback) {
     return res.rows[0].menu;
 }
 
-module.exports.getFee = async function (params, callback) {
+module.exports.getFee = async function (params, callback) { //delivery fee?
     const menuname = menus[params.menu].split(' ').join('_');
     const statement = `
 		select	price 
