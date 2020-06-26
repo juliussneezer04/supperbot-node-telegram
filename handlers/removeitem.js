@@ -36,7 +36,7 @@ module.exports.callback = async function (query) {
         // try removing item
         await queries.removeItem({
             user_id: query.from.id,
-            order_id: query.data.p,
+            order_id: JSON.parse(query.data).p,
         });
 
         notifyRemoveitemSuccess(query);
