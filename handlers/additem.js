@@ -10,11 +10,14 @@ const MOD_COMMAND_ID = commands.indexOf('addmod');
 module.exports.init = async function (msg) {
     //TODO: make this into a inline button below the successful openjio message
     try {
-        const menu = await queries.getMenu({
-            chat_id: msg.chat.id,
-        });
-
-        await sendMenu(msg, menu);
+        if (msg.chat.id === msg.from.id) {
+            messenger.send(msg.chat.id, 'Please send your commands in the group!');
+        } else {
+            const menu = await queries.getMenu({
+                chat_id: msg.chat.id,
+            });
+            await sendMenu(msg, menu);
+        }
     } catch (err) {
         console.log(err);
         await messenger.send(msg.chat.id, 'There is no jio open! Click /openjio to open one', {});

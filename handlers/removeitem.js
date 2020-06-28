@@ -8,22 +8,26 @@ const COMMAND_ID = commands.indexOf('removeitem');
 module.exports.init = async function (msg) {
     try {
         // retrieve menu number
-        let menu = await queries.getMenu({
-            chat_id: msg.chat.id,
-        });
-
-        // get user orders
-        let items = await queries.getUserOrders({
-            menu: menu,
-            user_id: msg.from.id,
-            chat_id: msg.chat.id,
-        });
-
-        // send inline keyboard of user's orders or notify that there are no items
-        if (items.length === 0) {
-            notifyNoItemsToRemove(msg);
+        if (msg.chat.id === msg.from.id) {
+            messenger.send(msg.chat.id, 'Please send your commands in the group!');
         } else {
-            sendList(msg, menu, items);
+            let menu = await queries.getMenu({
+                chat_id: msg.chat.id,
+            });
+
+            // get user orders
+            let items = await queries.getUserOrders({
+                menu: menu,
+                user_id: msg.from.id,
+                chat_id: msg.chat.id,
+            });
+
+            // send inline keyboard of user's orders or notify that there are no items
+            if (items.length === 0) {
+                notifyNoItemsToRemove(msg);
+            } else {
+                sendList(msg, menu, items);
+            }
         }
     } catch (err) {
         console.log(err);

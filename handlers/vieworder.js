@@ -5,7 +5,9 @@ const sprintf = require("sprintf-js").sprintf;
 module.exports.init = async function (msg) {
     //TODO: send initial message "getting your orders" then update when ready
     try {
-        if(!await queries.checkHasJio(msg.chat.id)){
+        if (msg.chat.id === msg.from.id) {
+            messenger.send(msg.chat.id, 'Please send your commands in the group!');
+        } else if (!await queries.checkHasJio(msg.chat.id)){
             return;
         }
         // retrieve menu number

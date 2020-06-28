@@ -16,16 +16,17 @@ const CREATION_FAILURE_TEMPLATE = 'Sorry, there was an unknown error in opening 
 
 module.exports.init = async function (msg) {
     //can receive the open jio command in a group, but the bot messages the user directly to ask for restaurant/duration
-    //TODO: check for existing jio here
     if (await queries.hasJio(msg.chat.id)) {
         messenger.send(msg.chat.id, 'There is already a jio open in this chat!');
+    } else if (msg.chat.id === msg.from.id) {
+        messenger.send(msg.chat.id, 'Please send your commands in the group!');
     } else {
         const ik = new InlineKeyboard();
         for (let i = 0; i < menus.length; i++) {
             let data = {t: OPEN_JIO_COMMAND_ID, chat_id: msg.chat.id, m: i}
             ik.addRow({text: menus[i], callback_data: JSON.stringify(data)})
         }
-        messenger.send(msg.chat.id, sprintf('alright %s, I\'ll message you directly for more details', msg.from.first_name));
+        messenger.send(msg.chat.id, sprintf('Alright %s, I\'ll message you directly for more details', msg.from.first_name));
         ik.addRow({text: 'Cancel', callback_data: JSON.stringify({t: CANCEL_COMMAND_ID})});
         const text = 'What will you like for supper?';
         messenger.send(msg.from.id, text, ik.build(), msg.chat.id);

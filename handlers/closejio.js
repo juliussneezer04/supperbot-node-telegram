@@ -5,7 +5,9 @@ const messenger = require('../messenger');
 module.exports.init = async function (msg) {
     //TODO: only allow group admin or jio starter to close
     try {
-        if(!await queries.checkHasJio(msg.chat.id)){
+        if (msg.chat.id === msg.from.id) {
+            messenger.send(msg.chat.id, 'Please send your commands in the group!');
+        } else if (!await queries.checkHasJio(msg.chat.id)){
             return;
         }
         const menu = await queries.getMenu({
