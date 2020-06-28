@@ -1,0 +1,305 @@
+Al_Amaans:
+  - Thai Kitchen:
+      - Mee / Beehoon / Kwayteow / Maggie:
+          - Tomyam:
+              - T30 Tomyam (Beef Mee)
+              - T30 Tomyam (Beef Beehoon)
+              - T30 Tomyam (Beef Kwayteow)
+              - T30 Tomyam (Beef Maggie)
+              - T30 Tomyam (Chicken Mee)
+              - T30 Tomyam (Chicken Beehoon)
+              - T30 Tomyam (Chicken Kwayteow)
+              - T30 Tomyam (Chicken Maggie)
+              - T30 Tomyam (Seafood Mee)
+              - T30 Tomyam (Seafood Beehoon)
+              - T30 Tomyam (Seafood Kwayteow)
+              - T30 Tomyam (Seafood Maggie)
+          - Bandung Soup:
+              - T31 Bandung Soup (Mee)
+              - T31 Bandung Soup (Beehoon)
+              - T31 Bandung Soup (Kwayteow)
+              - T31 Bandung Soup (Maggie)
+          - Hong Kong:
+              - T32 Hong Kong (Mee)
+              - T32 Hong Kong (Beehoon)
+              - T32 Hong Kong (Kwayteow)
+              - T32 Hong Kong (Maggie)
+          - Hailam:
+              - T33 Hailam (Mee)
+              - T33 Hailam (Beehoon)
+              - T33 Hailam (Kwayteow)
+              - T33 Hailam (Maggie)
+          - Thai Style Fried w/ Chicken Prawn and Cuttlefish:
+              - T34 Thai Style Fried (Mee)
+              - T34 Thai Style Fried (Beehoon)
+              - T34 Thai Style Fried (Kwayteow)
+              - T34 Thai Style Fried (Maggie)
+          - Sambal Style Fried w/ Chicken:
+              - T35 Sambal Style Fried (Mee)
+              - T35 Sambal Style Fried (Beehoon)
+              - T35 Sambal Style Fried (Kwayteow)
+              - T35 Sambal Style Fried (Maggie)
+          - Chinese Style Fried:
+              - T36 Chinese Style Fried (Mee)
+              - T36 Chinese Style Fried (Beehoon)
+              - T36 Chinese Style Fried (Kwayteow)
+              - T36 Chinese Style Fried (Maggie)
+          - Fried w/ Beef:
+              - T37 Fried w/ Beef (Mee)
+              - T37 Fried w/ Beef (Beehoon)
+              - T37 Fried w/ Beef (Kwayteow)
+              - T37 Fried w/ Beef (Maggie)
+          - Fried w/ Seafood:
+              - T38 Fried w/ Seafood (Mee)
+              - T38 Fried w/ Seafood (Beehoon)
+              - T38 Fried w/ Seafood (Kwayteow)
+              - T38 Fried w/ Seafood (Maggie)
+          - Pataya:
+              - T39 Pataya (Beef Mee)
+              - T39 Pataya (Beef Beehoon)
+              - T39 Pataya (Beef Kwayteow)
+              - T39 Pataya (Beef Maggie)
+              - T39 Pataya (Chicken Mee)
+              - T39 Pataya (Chicken Beehoon)
+              - T39 Pataya (Chicken Kwayteow)
+              - T39 Pataya (Chicken Maggie)
+              - T39 Pataya (Seafood Mee)
+              - T39 Pataya (Seafood Beehoon)
+              - T39 Pataya (Seafood Kwayteow)
+              - T39 Pataya (Seafood Maggie)
+          - Fried with Cockles:
+              - T40 Fried with Cockles (Mee)
+              - T40 Fried with Cockles (Beehoon)
+              - T40 Fried with Cockles (Kwayteow)
+              - T40 Fried with Cockles (Maggie)
+      - Steam Rice w/ Chicken / Beef / Sliced Fish / Cuttlefish / Prawn:
+          - Steam Rice w/ Chicken:
+              - T41 Steam Rice w/ Chicken (Hot & Spicy)
+              - T42 Steam Rice w/ Chicken (Black Oyster Sauce)
+              - T43 Steam Rice w/ Chicken (Sweet & Sour)
+              - T44 Steam Rice w/ Chicken (Black Pepper)
+              - T45 Steam Rice w/ Chicken (Ginger Brown Sauce)
+              - T46 Steam Rice w/ Chicken (Mui Fan)
+          - Steam Rice w/ Beef:
+              - T41 Steam Rice w/ Beef (Hot & Spicy)
+              - T42 Steam Rice w/ Beef (Black Oyster Sauce)
+              - T43 Steam Rice w/ Beef (Sweet & Sour)
+              - T44 Steam Rice w/ Beef (Black Pepper)
+              - T45 Steam Rice w/ Beef (Ginger Brown Sauce)
+              - T46 Steam Rice w/ Beef (Mui Fan)
+          - Steam Rice w/ Sliced Fish:
+              - T41 Steam Rice w/ Sliced Fish (Hot & Spicy)
+              - T42 Steam Rice w/ Sliced Fish (Black Oyster Sauce)
+              - T43 Steam Rice w/ Sliced Fish (Sweet & Sour)
+              - T44 Steam Rice w/ Sliced Fish (Black Pepper)
+              - T45 Steam Rice w/ Sliced Fish (Ginger Brown Sauce)
+              - T46 Steam Rice w/ Sliced Fish (Mui Fan)
+          - Steam Rice w/ Cuttlefish:
+              - T41 Steam Rice w/ Cuttlefish (Hot & Spicy)
+              - T42 Steam Rice w/ Cuttlefish (Black Oyster Sauce)
+              - T43 Steam Rice w/ Cuttlefish (Sweet & Sour)
+              - T44 Steam Rice w/ Cuttlefish (Black Pepper)
+              - T45 Steam Rice w/ Cuttlefish (Ginger Brown Sauce)
+              - T46 Steam Rice w/ Cuttlefish (Mui Fan)
+          - Steam Rice w/ Prawn:
+              - T41 Steam Rice w/ Prawn (Hot & Spicy)
+              - T42 Steam Rice w/ Prawn (Black Oyster Sauce)
+              - T43 Steam Rice w/ Prawn (Sweet & Sour)
+              - T44 Steam Rice w/ Prawn (Black Pepper)
+              - T45 Steam Rice w/ Prawn (Ginger Brown Sauce)
+              - T46 Steam Rice w/ Prawn (Mui Fan)
+      - Fried Rice:
+          - T47 FR Chinese Style w/ Chicken
+          - T48 FR Thai Style w/ Chicken Prawn Cuttlefish
+          - T49 FR Ikan Bilis & Egg
+          - T50 FR Tomato & Chicken
+          - T51 FR Fried Chicken w/ Chilli Sauce
+          - T52 FR Salted Fish
+          - T53 FR Kampong Style (Regular)
+          - T53 FR Kampong Style (Large)
+          - T54 FR Cockles
+          - T55 FR Pataya (Chicken)
+          - T55 FR Pataya (Beef)
+          - T55 FR Pataya (Seafood)
+          - T56 FR Chinese Style w/ Red Chilli Beef
+          - T56 FR Thai Style w/ Red Chilli Beef
+          - T57 FR Chinese Style Hot & Spicy (Chicken)
+          - T57 FR Chinese Style Hot & Spicy (Seafood)
+          - T58 FR Thai Style Hot & Spicy (Chicken)
+          - T58 FR Thai Style Hot & Spicy (Seafood)
+          - T59 FR Chinese Style w/ Black Oyster Sauce (Beef)
+          - T59 FR Chinese Style w/ Black Oyster Sauce (Chicken)
+          - T60 FR Button Mushroom & Egg
+          - T61 FR Sambal Mushroom & Chicken
+          - T62 FR 3 Tastes (Sweet Sour Spicy) w/ Chicken & Seafood
+          - T63 FR Sambal w/ Fried Sambal Chicken
+          - T64 FR Black Pepper (Chicken)
+          - T64 FR Black Pepper (Beef)
+          - T65 FR Pineapple w/ Chicken & Seafood
+          - T66 FR Chinese Style w/ Sweet & Sour (Chicken)
+          - T66 FR Chinese Style w/ Sweet & Sour (Sliced Fish)
+          - T67 FR Chinese Style w/ Ginger Brown Sauce (Chicken)
+          - T67 FR Chinese Style w/ Ginger Brown Sauce (Beef)
+          - T68 FR Thai Style w/ Crispy Ginger Yellow Chicken & Egg
+          - T69 FR Bush (Yellow FR w/ Egg Hot & Spicy Chicken)
+          - T70 FR Obama (Yellow FR w/ Egg Hot & Spicy Beef)
+          - T71 FR Thai Style w/ Chicken Egg Sambal
+          - T71 FR Chinese Style w/ Chicken Egg Sambal
+          - T72 FR Al Amaan (Special)
+  - Indian Kitchen:
+      - Breads & Naans:
+          - N13 Plain Naan
+          - N14 Butter Naan
+          - N15 Garlic Naan
+          - N16 Kashmiri Naan
+          - N17 Cheese Naan
+          - N18 Kheema Naan
+          - N19 Aloo Pratha
+          - N20 Poodina Pratha
+          - N21 Garlic & Onion Kulcha
+          - N22 Tandoori Roti
+          - N23 Paneer Kulcha
+      - Chicken:
+          - N24 Chicken Korma
+          - N25 Chicken Spinach
+          - N26 Chicken Masala
+          - N27 Chicken Vartha
+          - N28 Chicken Jalfrazzi
+          - N29 Chicken Muglai
+          - N30 Butter Chicken
+          - N31 Chicken Tikka Masala
+          - N32 Kadai Chicken
+      - Rice:
+          - N33 Chicken Briyani
+          - N34 Mutton Briyani
+          - N35 Prawn Briyani
+          - N36 Vegetable Briyani
+          - N37 Kashmiri Pulao
+          - N38 Jeera Rice (Basmati)
+          - N39 Pain White Rice (Basmati)
+      - Mutton:
+          - N40 Mutton Masala
+          - N41 Mutton Do Piaza
+          - N42 Mutton Spinach
+          - N43 Kadai Mutton
+          - N44 Mutton Kheema
+          - N45 Mutton Korma
+          - N46 Mutton Rogan Josh
+          - N47 Mutton Vindaloo
+      - Seafood:
+          - N48 Kadai Fish
+          - N49 Fish Vindaloo
+          - N50 Madras Fish Curry
+          - N51 Fish Masala
+          - N52 Kadai Prawn
+          - N53 Prawn Vindaloo
+          - N54 Prawn Masala
+          - N55 Prawn Curry
+          - N56 Prawn Do Piaza
+          - N57 Chilli Prawn
+          - N58 Fish Head Curry
+      - Vegetables:
+          - N59 Paneer Butter Masala
+          - N60 Palak Paneer
+          - N61 Kadai Paneer
+          - N62 Shai Paneer
+          - N63 Mattar Paneer
+          - N64 Aloo Mattar Makani
+          - N65 Mix Vegetable Curry
+          - N66 Vegetable Makani
+          - N67 Channa Masala
+          - N68 Dal Makani
+          - N69 Yellow Dal
+          - N70 Dal Palak
+          - N71 Bhindi Masala
+          - N72 Brinjal Masala
+          - N73 Mixed Raita
+          - N74 Plain Yoghurt
+          - N75 Navrattan Korma
+          - N76 Malai Kofta
+          - N77 Paneer Tikka Masala
+          - N78 Green Indian Salad
+          - N79 Gobi Manchurian
+          - N80 Chilli Panner
+          - N81 Aloo Gobi
+  - Western Kitchen:
+      - Finger Food:
+          - W01 Mushroom Soup (Cream)
+          - W02 French Fries
+          - W03 Mashed Potato
+          - W04 Coleslaw
+          - W05 Chicken Nuggets (7pcs)
+          - W06 Chicken Wing Set (2pcs)
+          - W07 Chicken Wing Set (3pcs)
+          - W08 Cheese Fries (Regular)
+          - W09 Garlic Bread
+          - W10 Hot Wings (min 2pcs)
+          - W11 Spring Chicken
+          - W08 Cheese Fries (Large)
+      - Pasta:
+          - W12 Chicken Pasta
+          - W13 Beef Bologonaise
+          - W14 Seafood Marinara
+          - W15 Mushroom & Chicken Pasta
+          - W16 Mushroom Olio (Regular)
+          - W16 Mushroom Olio (Large)
+          - W17 Seafood Olio
+          - W18 Sausage Carbonara (Regular)
+      - Salad:
+          - W19 Garden Salad
+          - W20 Green Pleasure Salad
+          - W21 Chicken Salad
+          - W22 Prawn Salad
+      - Kebab:
+          - W23 Kebab (Original)
+          - W24 Kebab (w/ Cheese)
+      - Roti John:
+          - W25 Roti John
+          - W26 Roti John (Cheese)
+          - W27 Roti John (Mushroom)
+          - W28 Roti John (Black Pepper)
+          - W29 Roti John (Mushroom & Cheese)
+          - W30 Roti John (Combo)
+      - Burger:
+          - W31 Fried Fish Burger
+          - W32 Grilled Chicken Burger
+          - W33 Grilled Beef Burger
+          - W34 Grilled Lamb Burger
+      - Fish:
+          - W35 Fish & Chips
+          - W36 Grilled Fish
+          - W37 Garlic Fish
+      - Lamb:
+          - W38 BBQ Lamb
+          - W39 Black Pepper Lamb
+          - W40 Mushroom Lamb
+          - W41 Medina Lamb
+      - Steak:
+          - W42 Mushroom Steak
+          - W43 Black Pepper Steak
+          - W44 Sirloin Steak
+          - W45 Al Amaan Sirloin Steak
+          - W46 Al Amaan All Time Specials Mix Grill
+      - Chicken:
+          - W47 Grilled Mushroom Chicken
+          - W48 Grilled Black Pepper Chicken
+          - W49 Grilled Chicken Chop
+          - W50 Chicken Cutlet
+  - Drinks:
+      - D64 Iced Teh Cino
+      - Iced Bandung
+      - D57 Iced Milo
+      - D70 Iced Limau
+      - Iced Neslo
+      - Iced Milo Cino
+      - Modifiers:
+          - Ice:
+              - no ice
+              - regular
+              - extra
+          - Sugar:
+              - 25%
+              - 50%
+              - 100%
+  - Desserts:
+      - Red Bean Ice Kachang
