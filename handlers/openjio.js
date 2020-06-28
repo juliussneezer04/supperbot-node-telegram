@@ -9,7 +9,7 @@ const messenger = require('../messenger');
 
 const OPEN_JIO_COMMAND_ID = commands.indexOf('openjio');
 const CANCEL_COMMAND_ID = commands.indexOf('cancel');
-const CREATION_SUCCESS_TEMPLATE = '%s created a jio for %s'
+const CREATION_SUCCESS_TEMPLATE = '%s created a jio for %s. Click on /additem to add your orders to the jio.'
 const CREATION_SUCCESS_TIME_TEMPLATE = ', with duration %s minutes.';
 const CREATION_FAILURE_TEMPLATE = 'Sorry, there was an unknown error in opening the jio'
 
