@@ -2,7 +2,7 @@ const queries = require('../db/queries');
 const commands = require('../config').commands;
 const messenger = require('../messenger');
 const {InlineKeyboard} = require('node-telegram-keyboard-wrapper');
-
+const sprintf = require("sprintf-js").sprintf;
 const COMMAND_ID = commands.indexOf('additem');
 const MOD_COMMAND_ID = commands.indexOf('addmod');
 
@@ -206,7 +206,11 @@ const sendChildren = async function (query) {
 
 const pushItems = function (menu, kbdata, children, parent, chat_id) {
     for (let i = 0; i < children.length; i++) {
-        kbdata.push([children[i].name, {t: COMMAND_ID, m: menu, p: children[i].id, c: chat_id}]);
+        if (children[i].price === null) {
+            kbdata.push([children[i].name, {t: COMMAND_ID, m: menu, p: children[i].id, c: chat_id}]);
+        } else {
+            kbdata.push([sprintf("%s ($%.2f)",children[i].name, children[i].price / 100.0), {t: COMMAND_ID, m: menu, p: children[i].id, c: chat_id}]);
+        }
     }
     if (parent != null) {
         kbdata.push(['Back', {t: COMMAND_ID, m: menu, p: parent, c: chat_id}]);
@@ -217,6 +221,6 @@ const pushItems = function (menu, kbdata, children, parent, chat_id) {
 const pushMods = function (menu, kbdata, mods, level, order_id, item_id) {
     for (let i = 0; i < mods.length; i++) {
         let mod = mods[i];
-        kbdata.push([mod.name, {t: MOD_COMMAND_ID, o: order_id, m: menu, l: level, i: mod.mod_id, p: item_id}]);
+        kbdata.push([sprintf("%s ($%.2f)", mod.name, mod.price / 100.0), {t: MOD_COMMAND_ID, o: order_id, m: menu, l: level, i: mod.mod_id, p: item_id}]);
     }
 }

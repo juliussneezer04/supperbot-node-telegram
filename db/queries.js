@@ -133,7 +133,7 @@ module.exports.getChildren = async function (params, callback) {
     const menuname = menus[params.menu].split(' ').join('_');
 
     const statement = `
-		select 	item_id as id, item_name as name
+		select 	item_id as id, item_name as name, price
 		from 	menudata.${menuname}
 		where 	parent_id = $1 and item_id != 0;`;
     const args = [params.item_id];
