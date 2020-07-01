@@ -1,296 +1,579 @@
-Al_Amaans:
-  - Thai Kitchen:
-      - Mee / Beehoon / Kwayteow / Maggie:
-          - Tomyam:
-              - T30 Tomyam (Beef Mee)
-              - T30 Tomyam (Beef Beehoon)
-              - T30 Tomyam (Beef Kwayteow)
-              - T30 Tomyam (Beef Maggie)
-              - T30 Tomyam (Chicken Mee)
-              - T30 Tomyam (Chicken Beehoon)
-              - T30 Tomyam (Chicken Kwayteow)
-              - T30 Tomyam (Chicken Maggie)
-              - T30 Tomyam (Seafood Mee)
-              - T30 Tomyam (Seafood Beehoon)
-              - T30 Tomyam (Seafood Kwayteow)
-              - T30 Tomyam (Seafood Maggie)
-          - Bandung Soup:
-              - T31 Bandung Soup (Mee)
-              - T31 Bandung Soup (Beehoon)
-              - T31 Bandung Soup (Kwayteow)
-              - T31 Bandung Soup (Maggie)
-          - Hong Kong:
-              - T32 Hong Kong (Mee)
-              - T32 Hong Kong (Beehoon)
-              - T32 Hong Kong (Kwayteow)
-              - T32 Hong Kong (Maggie)
-          - Hailam:
-              - T33 Hailam (Mee)
-              - T33 Hailam (Beehoon)
-              - T33 Hailam (Kwayteow)
-              - T33 Hailam (Maggie)
-          - Thai Style Fried w/ Chicken Prawn and Cuttlefish:
-              - T34 Thai Style Fried (Mee)
-              - T34 Thai Style Fried (Beehoon)
-              - T34 Thai Style Fried (Kwayteow)
-              - T34 Thai Style Fried (Maggie)
-          - Sambal Style Fried w/ Chicken:
-              - T35 Sambal Style Fried (Mee)
-              - T35 Sambal Style Fried (Beehoon)
-              - T35 Sambal Style Fried (Kwayteow)
-              - T35 Sambal Style Fried (Maggie)
-          - Chinese Style Fried:
-              - T36 Chinese Style Fried (Mee)
-              - T36 Chinese Style Fried (Beehoon)
-              - T36 Chinese Style Fried (Kwayteow)
-              - T36 Chinese Style Fried (Maggie)
-          - Fried w/ Beef:
-              - T37 Fried w/ Beef (Mee)
-              - T37 Fried w/ Beef (Beehoon)
-              - T37 Fried w/ Beef (Kwayteow)
-              - T37 Fried w/ Beef (Maggie)
-          - Fried w/ Seafood:
-              - T38 Fried w/ Seafood (Mee)
-              - T38 Fried w/ Seafood (Beehoon)
-              - T38 Fried w/ Seafood (Kwayteow)
-              - T38 Fried w/ Seafood (Maggie)
-          - Pataya:
-              - T39 Pataya (Beef Mee)
-              - T39 Pataya (Beef Beehoon)
-              - T39 Pataya (Beef Kwayteow)
-              - T39 Pataya (Beef Maggie)
-              - T39 Pataya (Chicken Mee)
-              - T39 Pataya (Chicken Beehoon)
-              - T39 Pataya (Chicken Kwayteow)
-              - T39 Pataya (Chicken Maggie)
-              - T39 Pataya (Seafood Mee)
-              - T39 Pataya (Seafood Beehoon)
-              - T39 Pataya (Seafood Kwayteow)
-              - T39 Pataya (Seafood Maggie)
-          - Fried with Cockles:
-              - T40 Fried with Cockles (Mee)
-              - T40 Fried with Cockles (Beehoon)
-              - T40 Fried with Cockles (Kwayteow)
-              - T40 Fried with Cockles (Maggie)
-      - Steam Rice w/ Chicken / Beef / Sliced Fish / Cuttlefish / Prawn:
-          - Steam Rice w/ Chicken:
-              - T41 Steam Rice w/ Chicken (Hot & Spicy)
-              - T42 Steam Rice w/ Chicken (Black Oyster Sauce)
-              - T43 Steam Rice w/ Chicken (Sweet & Sour)
-              - T44 Steam Rice w/ Chicken (Black Pepper)
-              - T45 Steam Rice w/ Chicken (Ginger Brown Sauce)
-              - T46 Steam Rice w/ Chicken (Mui Fan)
-          - Steam Rice w/ Beef:
-              - T41 Steam Rice w/ Beef (Hot & Spicy)
-              - T42 Steam Rice w/ Beef (Black Oyster Sauce)
-              - T43 Steam Rice w/ Beef (Sweet & Sour)
-              - T44 Steam Rice w/ Beef (Black Pepper)
-              - T45 Steam Rice w/ Beef (Ginger Brown Sauce)
-              - T46 Steam Rice w/ Beef (Mui Fan)
-          - Steam Rice w/ Sliced Fish:
-              - T41 Steam Rice w/ Sliced Fish (Hot & Spicy)
-              - T42 Steam Rice w/ Sliced Fish (Black Oyster Sauce)
-              - T43 Steam Rice w/ Sliced Fish (Sweet & Sour)
-              - T44 Steam Rice w/ Sliced Fish (Black Pepper)
-              - T45 Steam Rice w/ Sliced Fish (Ginger Brown Sauce)
-              - T46 Steam Rice w/ Sliced Fish (Mui Fan)
-          - Steam Rice w/ Cuttlefish:
-              - T41 Steam Rice w/ Cuttlefish (Hot & Spicy)
-              - T42 Steam Rice w/ Cuttlefish (Black Oyster Sauce)
-              - T43 Steam Rice w/ Cuttlefish (Sweet & Sour)
-              - T44 Steam Rice w/ Cuttlefish (Black Pepper)
-              - T45 Steam Rice w/ Cuttlefish (Ginger Brown Sauce)
-              - T46 Steam Rice w/ Cuttlefish (Mui Fan)
-          - Steam Rice w/ Prawn:
-              - T41 Steam Rice w/ Prawn (Hot & Spicy)
-              - T42 Steam Rice w/ Prawn (Black Oyster Sauce)
-              - T43 Steam Rice w/ Prawn (Sweet & Sour)
-              - T44 Steam Rice w/ Prawn (Black Pepper)
-              - T45 Steam Rice w/ Prawn (Ginger Brown Sauce)
-              - T46 Steam Rice w/ Prawn (Mui Fan)
-      - Fried Rice:
-          - T47 FR Chinese Style w/ Chicken
-          - T48 FR Thai Style w/ Chicken Prawn Cuttlefish
-          - T49 FR Ikan Bilis & Egg
-          - T50 FR Tomato & Chicken
-          - T51 FR Fried Chicken w/ Chilli Sauce
-          - T52 FR Salted Fish
-          - T53 FR Kampong Style (Regular)
-          - T53 FR Kampong Style (Large)
-          - T54 FR Cockles
-          - T55 FR Pataya (Chicken)
-          - T55 FR Pataya (Beef)
-          - T55 FR Pataya (Seafood)
-          - T56 FR Chinese Style w/ Red Chilli Beef
-          - T56 FR Thai Style w/ Red Chilli Beef
-          - T57 FR Chinese Style Hot & Spicy (Chicken)
-          - T57 FR Chinese Style Hot & Spicy (Seafood)
-          - T58 FR Thai Style Hot & Spicy (Chicken)
-          - T58 FR Thai Style Hot & Spicy (Seafood)
-          - T59 FR Chinese Style w/ Black Oyster Sauce (Beef)
-          - T59 FR Chinese Style w/ Black Oyster Sauce (Chicken)
-          - T60 FR Button Mushroom & Egg
-          - T61 FR Sambal Mushroom & Chicken
-          - T62 FR 3 Tastes (Sweet Sour Spicy) w/ Chicken & Seafood
-          - T63 FR Sambal w/ Fried Sambal Chicken
-          - T64 FR Black Pepper (Chicken)
-          - T64 FR Black Pepper (Beef)
-          - T65 FR Pineapple w/ Chicken & Seafood
-          - T66 FR Chinese Style w/ Sweet & Sour (Chicken)
-          - T66 FR Chinese Style w/ Sweet & Sour (Sliced Fish)
-          - T67 FR Chinese Style w/ Ginger Brown Sauce (Chicken)
-          - T67 FR Chinese Style w/ Ginger Brown Sauce (Beef)
-          - T68 FR Thai Style w/ Crispy Ginger Yellow Chicken & Egg
-          - T69 FR Bush (Yellow FR w/ Egg Hot & Spicy Chicken)
-          - T70 FR Obama (Yellow FR w/ Egg Hot & Spicy Beef)
-          - T71 FR Thai Style w/ Chicken Egg Sambal
-          - T71 FR Chinese Style w/ Chicken Egg Sambal
-          - T72 FR Al Amaan (Special)
-  - Indian Kitchen:
-      - Breads & Naans:
-          - N13 Plain Naan
-          - N14 Butter Naan
-          - N15 Garlic Naan
-          - N16 Kashmiri Naan
-          - N17 Cheese Naan
-          - N18 Kheema Naan
-          - N19 Aloo Pratha
-          - N20 Poodina Pratha
-          - N21 Garlic & Onion Kulcha
-          - N22 Tandoori Roti
-          - N23 Paneer Kulcha
-      - Chicken:
-          - N24 Chicken Korma
-          - N25 Chicken Spinach
-          - N26 Chicken Masala
-          - N27 Chicken Vartha
-          - N28 Chicken Jalfrazzi
-          - N29 Chicken Muglai
-          - N30 Butter Chicken
-          - N31 Chicken Tikka Masala
-          - N32 Kadai Chicken
-      - Rice:
-          - N33 Chicken Briyani
-          - N34 Mutton Briyani
-          - N35 Prawn Briyani
-          - N36 Vegetable Briyani
-          - N37 Kashmiri Pulao
-          - N38 Jeera Rice (Basmati)
-          - N39 Pain White Rice (Basmati)
-      - Mutton:
-          - N40 Mutton Masala
-          - N41 Mutton Do Piaza
-          - N42 Mutton Spinach
-          - N43 Kadai Mutton
-          - N44 Mutton Kheema
-          - N45 Mutton Korma
-          - N46 Mutton Rogan Josh
-          - N47 Mutton Vindaloo
-      - Seafood:
-          - N48 Kadai Fish
-          - N49 Fish Vindaloo
-          - N50 Madras Fish Curry
-          - N51 Fish Masala
-          - N52 Kadai Prawn
-          - N53 Prawn Vindaloo
-          - N54 Prawn Masala
-          - N55 Prawn Curry
-          - N56 Prawn Do Piaza
-          - N57 Chilli Prawn
-          - N58 Fish Head Curry
-      - Vegetables:
-          - N59 Paneer Butter Masala
-          - N60 Palak Paneer
-          - N61 Kadai Paneer
-          - N62 Shai Paneer
-          - N63 Mattar Paneer
-          - N64 Aloo Mattar Makani
-          - N65 Mix Vegetable Curry
-          - N66 Vegetable Makani
-          - N67 Channa Masala
-          - N68 Dal Makani
-          - N69 Yellow Dal
-          - N70 Dal Palak
-          - N71 Bhindi Masala
-          - N72 Brinjal Masala
-          - N73 Mixed Raita
-          - N74 Plain Yoghurt
-          - N75 Navrattan Korma
-          - N76 Malai Kofta
-          - N77 Paneer Tikka Masala
-          - N78 Green Indian Salad
-          - N79 Gobi Manchurian
-          - N80 Chilli Panner
-          - N81 Aloo Gobi
-  - Western Kitchen:
-      - Finger Food:
-          - W01 Mushroom Soup (Cream)
-          - W02 French Fries
-          - W03 Mashed Potato
-          - W04 Coleslaw
-          - W05 Chicken Nuggets (7pcs)
-          - W06 Chicken Wing Set (2pcs)
-          - W07 Chicken Wing Set (3pcs)
-          - W08 Cheese Fries (Regular)
-          - W09 Garlic Bread
-          - W10 Hot Wings (min 2pcs)
-          - W11 Spring Chicken
-          - W08 Cheese Fries (Large)
-      - Pasta:
-          - W12 Chicken Pasta
-          - W13 Beef Bologonaise
-          - W14 Seafood Marinara
-          - W15 Mushroom & Chicken Pasta
-          - W16 Mushroom Olio (Regular)
-          - W16 Mushroom Olio (Large)
-          - W17 Seafood Olio
-          - W18 Sausage Carbonara (Regular)
-      - Salad:
-          - W19 Garden Salad
-          - W20 Green Pleasure Salad
-          - W21 Chicken Salad
-          - W22 Prawn Salad
-      - Kebab:
-          - W23 Kebab (Original)
-          - W24 Kebab (w/ Cheese)
-      - Roti John:
-          - W25 Roti John
-          - W26 Roti John (Cheese)
-          - W27 Roti John (Mushroom)
-          - W28 Roti John (Black Pepper)
-          - W29 Roti John (Mushroom & Cheese)
-          - W30 Roti John (Combo)
-      - Burger:
-          - W31 Fried Fish Burger
-          - W32 Grilled Chicken Burger
-          - W33 Grilled Beef Burger
-          - W34 Grilled Lamb Burger
-      - Fish:
-          - W35 Fish & Chips
-          - W36 Grilled Fish
-          - W37 Garlic Fish
-      - Lamb:
-          - W38 BBQ Lamb
-          - W39 Black Pepper Lamb
-          - W40 Mushroom Lamb
-          - W41 Medina Lamb
-      - Steak:
-          - W42 Mushroom Steak
-          - W43 Black Pepper Steak
-          - W44 Sirloin Steak
-          - W45 Al Amaan Sirloin Steak
-          - W46 Al Amaan All Time Specials Mix Grill
-      - Chicken:
-          - W47 Grilled Mushroom Chicken
-          - W48 Grilled Black Pepper Chicken
-          - W49 Grilled Chicken Chop
-          - W50 Chicken Cutlet
-  - Drinks:
-      - D64 Iced Teh Cino
-      - Iced Bandung
-      - D57 Iced Milo
-      - D70 Iced Limau
-      - Iced Neslo
-      - Iced Milo Cino
-  - Desserts:
-      - Red Bean Ice Kachang
+Delivery: 300
+Menu:
+  Thai Kitchen:
+    Mee / Beehoon / Kwayteow / Maggie:
+      Tomyam:
+        T30 Tomyam (Beef Mee):
+          price: 650
+        T30 Tomyam (Beef Beehoon):
+          price: 650
+        T30 Tomyam (Beef Kwayteow):
+          price: 650
+        T30 Tomyam (Beef Maggie):
+          price: 650
+        T30 Tomyam (Chicken Mee):
+          price: 650
+        T30 Tomyam (Chicken Beehoon):
+          price: 650
+        T30 Tomyam (Chicken Kwayteow):
+          price: 650
+        T30 Tomyam (Chicken Maggie):
+          price: 650
+        T30 Tomyam (Seafood Mee):
+          price: 650
+        T30 Tomyam (Seafood Beehoon):
+          price: 650
+        T30 Tomyam (Seafood Kwayteow):
+          price: 650
+        T30 Tomyam (Seafood Maggie):
+          price: 650
+      Bandung Soup:
+        T31 Bandung Soup (Mee):
+          price: 450
+        T31 Bandung Soup (Beehoon):
+          price: 450
+        T31 Bandung Soup (Kwayteow):
+          price: 450
+        T31 Bandung Soup (Maggie):
+          price: 450
+      Hong Kong:
+        T32 Hong Kong (Mee):
+          price: 450
+        T32 Hong Kong (Beehoon):
+          price: 450
+        T32 Hong Kong (Kwayteow):
+          price: 450
+        T32 Hong Kong (Maggie):
+          price: 450
+      Hailam:
+        T33 Hailam (Mee):
+          price: 450
+        T33 Hailam (Beehoon):
+          price: 450
+        T33 Hailam (Kwayteow):
+          price: 450
+        T33 Hailam (Maggie):
+          price: 450
+      Thai Style Fried w/ Chicken Prawn and Cuttlefish:
+        T34 Thai Style Fried (Mee):
+          price: 480
+        T34 Thai Style Fried (Beehoon):
+          price: 480
+        T34 Thai Style Fried (Kwayteow):
+          price: 480
+        T34 Thai Style Fried (Maggie):
+          price: 480
+      Sambal Style Fried w/ Chicken:
+        T35 Sambal Style Fried (Mee):
+          price: 450
+        T35 Sambal Style Fried (Beehoon):
+          price: 450
+        T35 Sambal Style Fried (Kwayteow):
+          price: 450
+        T35 Sambal Style Fried (Maggie):
+          price: 450
+      Chinese Style Fried:
+        T36 Chinese Style Fried (Mee):
+          price: 450
+        T36 Chinese Style Fried (Beehoon):
+          price: 450
+        T36 Chinese Style Fried (Kwayteow):
+          price: 450
+        T36 Chinese Style Fried (Maggie):
+          price: 450
+      Fried w/ Beef:
+        T37 Fried w/ Beef (Mee):
+          price: 450
+        T37 Fried w/ Beef (Beehoon):
+          price: 450
+        T37 Fried w/ Beef (Kwayteow):
+          price: 450
+        T37 Fried w/ Beef (Maggie):
+          price: 450
+      Fried w/ Seafood:
+        T38 Fried w/ Seafood (Mee):
+          price: 450
+        T38 Fried w/ Seafood (Beehoon):
+          price: 450
+        T38 Fried w/ Seafood (Kwayteow):
+          price: 450
+        T38 Fried w/ Seafood (Maggie):
+          price: 450
+      Pataya:
+        T39 Pataya (Beef Mee):
+          price: 550
+        T39 Pataya (Beef Beehoon):
+          price: 550
+        T39 Pataya (Beef Kwayteow):
+          price: 550
+        T39 Pataya (Beef Maggie):
+          price: 550
+        T39 Pataya (Chicken Mee):
+          price: 550
+        T39 Pataya (Chicken Beehoon):
+          price: 550
+        T39 Pataya (Chicken Kwayteow):
+          price: 550
+        T39 Pataya (Chicken Maggie):
+          price: 550
+        T39 Pataya (Seafood Mee):
+          price: 550
+        T39 Pataya (Seafood Beehoon):
+          price: 550
+        T39 Pataya (Seafood Kwayteow):
+          price: 550
+        T39 Pataya (Seafood Maggie):
+          price: 550
+      Fried with Cockles:
+        T40 Fried with Cockles (Mee):
+          price: 450
+        T40 Fried with Cockles (Beehoon):
+          price: 450
+        T40 Fried with Cockles (Kwayteow):
+          price: 450
+        T40 Fried with Cockles (Maggie):
+          price: 450
+    Steam Rice w/ Chicken / Beef / Sliced Fish / Cuttlefish / Prawn:
+      Steam Rice w/ Chicken:
+        T41 Steam Rice w/ Chicken (Hot & Spicy):
+          price: 480
+        T42 Steam Rice w/ Chicken (Black Oyster Sauce):
+          price: 480
+        T43 Steam Rice w/ Chicken (Sweet & Sour):
+          price: 480
+        T44 Steam Rice w/ Chicken (Black Pepper):
+          price: 480
+        T45 Steam Rice w/ Chicken (Ginger Brown Sauce):
+          price: 480
+        T46 Steam Rice w/ Chicken (Mui Fan):
+          price: 450
+      Steam Rice w/ Beef:
+        T41 Steam Rice w/ Beef (Hot & Spicy):
+          price: 480
+        T42 Steam Rice w/ Beef (Black Oyster Sauce):
+          price: 480
+        T43 Steam Rice w/ Beef (Sweet & Sour):
+          price: 480
+        T44 Steam Rice w/ Beef (Black Pepper):
+          price: 480
+        T45 Steam Rice w/ Beef (Ginger Brown Sauce):
+          price: 480
+        T46 Steam Rice w/ Beef (Mui Fan):
+          price: 450
+      Steam Rice w/ Sliced Fish:
+        T41 Steam Rice w/ Sliced Fish (Hot & Spicy):
+          price: 480
+        T42 Steam Rice w/ Sliced Fish (Black Oyster Sauce):
+          price: 480
+        T43 Steam Rice w/ Sliced Fish (Sweet & Sour):
+          price: 480
+        T44 Steam Rice w/ Sliced Fish (Black Pepper):
+          price: 480
+        T45 Steam Rice w/ Sliced Fish (Ginger Brown Sauce):
+          price: 480
+        T46 Steam Rice w/ Sliced Fish (Mui Fan):
+          price: 450
+      Steam Rice w/ Cuttlefish:
+        T41 Steam Rice w/ Cuttlefish (Hot & Spicy):
+          price: 480
+        T42 Steam Rice w/ Cuttlefish (Black Oyster Sauce):
+          price: 480
+        T43 Steam Rice w/ Cuttlefish (Sweet & Sour):
+          price: 480
+        T44 Steam Rice w/ Cuttlefish (Black Pepper):
+          price: 480
+        T45 Steam Rice w/ Cuttlefish (Ginger Brown Sauce):
+          price: 480
+        T46 Steam Rice w/ Cuttlefish (Mui Fan):
+          price: 450
+      Steam Rice w/ Prawn:
+        T41 Steam Rice w/ Prawn (Hot & Spicy):
+          price: 480
+        T42 Steam Rice w/ Prawn (Black Oyster Sauce):
+          price: 480
+        T43 Steam Rice w/ Prawn (Sweet & Sour):
+          price: 480
+        T44 Steam Rice w/ Prawn (Black Pepper):
+          price: 480
+        T45 Steam Rice w/ Prawn (Ginger Brown Sauce):
+          price: 480
+        T46 Steam Rice w/ Prawn (Mui Fan):
+          price: 450
+    Fried Rice:
+      T47 FR Chinese Style w/ Chicken:
+        price: 400
+      T48 FR Thai Style w/ Chicken Prawn Cuttlefish:
+        price: 480
+      T49 FR Ikan Bilis & Egg:
+        price: 450
+      T50 FR Tomato & Chicken:
+        price: 450
+      T51 FR Fried Chicken w/ Chilli Sauce:
+        price: 450
+      T52 FR Salted Fish:
+        price: 400
+      T53 FR Kampong Style (Regular):
+        price: 480
+      T53 FR Kampong Style (Large):
+        price: 600
+      T54 FR Cockles:
+        price: 450
+      T55 FR Pataya (Chicken):
+        price: 550
+      T55 FR Pataya (Beef):
+        price: 550
+      T55 FR Pataya (Seafood):
+        price: 550
+      T56 FR Chinese Style w/ Red Chilli Beef:
+        price: 550
+      T56 FR Thai Style w/ Red Chilli Beef:
+        price: 550
+      T57 FR Chinese Style Hot & Spicy (Chicken):
+        price: 550
+      T57 FR Chinese Style Hot & Spicy (Seafood):
+        price: 550
+      T58 FR Thai Style Hot & Spicy (Chicken):
+        price: 550
+      T58 FR Thai Style Hot & Spicy (Seafood):
+        price: 550
+      T59 FR Chinese Style w/ Black Oyster Sauce (Beef):
+        price: 550
+      T59 FR Chinese Style w/ Black Oyster Sauce (Chicken):
+        price: 550
+      T60 FR Button Mushroom & Egg:
+        price: 450
+      T61 FR Sambal Mushroom & Chicken:
+        price: 550
+      T62 FR 3 Tastes (Sweet Sour Spicy) w/ Chicken & Seafood:
+        price: 600
+      T63 FR Sambal w/ Fried Sambal Chicken:
+        price: 550
+      T64 FR Black Pepper (Chicken):
+        price: 550
+      T64 FR Black Pepper (Beef):
+        price: 550
+      T65 FR Pineapple w/ Chicken & Seafood:
+        price: 500
+      T66 FR Chinese Style w/ Sweet & Sour (Chicken):
+        price: 550
+      T66 FR Chinese Style w/ Sweet & Sour (Sliced Fish):
+        price: 550
+      T67 FR Chinese Style w/ Ginger Brown Sauce (Chicken):
+        price: 550
+      T67 FR Chinese Style w/ Ginger Brown Sauce (Beef):
+        price: 550
+      T68 FR Thai Style w/ Crispy Ginger Yellow Chicken & Egg:
+        price: 600
+      T69 FR Bush (Yellow FR w/ Egg Hot & Spicy Chicken):
+        price: 600
+      T70 FR Obama (Yellow FR w/ Egg Hot & Spicy Beef):
+        price: 600
+      T71 FR Thai Style w/ Chicken Egg Sambal:
+        price: 550
+      T71 FR Chinese Style w/ Chicken Egg Sambal:
+        price: 550
+      T72 FR Al Amaan (Special):
+        price: 700
+  Indian Kitchen:
+    Breads & Naans:
+      N13 Plain Naan:
+        price: 150
+      N14 Butter Naan:
+        price: 170
+      N15 Garlic Naan:
+        price: 250
+      N16 Kashmiri Naan:
+        price: 400
+      N17 Cheese Naan:
+        price: 300
+      N18 Kheema Naan:
+        price: 400
+      N19 Aloo Pratha:
+        price: 250
+      N20 Poodina Pratha:
+        price: 200
+      N21 Garlic & Onion Kulcha:
+        price: 350
+      N22 Tandoori Roti:
+        price: 150
+      N23 Paneer Kulcha:
+        price: 300
+    Chicken:
+      N24 Chicken Korma:
+        price: 700
+      N25 Chicken Spinach:
+        price: 700
+      N26 Chicken Masala:
+        price: 700
+      N27 Chicken Vartha:
+        price: 700
+      N28 Chicken Jalfrazzi:
+        price: 800
+      N29 Chicken Muglai:
+        price: 700
+      N30 Butter Chicken:
+        price: 700
+      N31 Chicken Tikka Masala:
+        price: 700
+      N32 Kadai Chicken:
+        price: 800
+    Rice:
+      N33 Chicken Briyani:
+        price: 600
+      N34 Mutton Briyani:
+        price: 600
+      N35 Prawn Briyani:
+        price: 700
+      N36 Vegetable Briyani:
+        price: 500
+      N37 Kashmiri Pulao:
+        price: 400
+      N38 Jeera Rice (Basmati):
+        price: 350
+      N39 Pain White Rice (Basmati):
+        price: 150
+    Mutton:
+      N40 Mutton Masala:
+        price: 700
+      N41 Mutton Do Piaza:
+        price: 800
+      N42 Mutton Spinach:
+        price: 800
+      N43 Kadai Mutton:
+        price: 800
+      N44 Mutton Kheema:
+        price: 500
+      N45 Mutton Korma:
+        price: 700
+      N46 Mutton Rogan Josh:
+        price: 700
+      N47 Mutton Vindaloo:
+        price: 800
+    Seafood:
+      N48 Kadai Fish:
+        price: 800
+      N49 Fish Vindaloo:
+        price: 800
+      N50 Madras Fish Curry:
+        price: 700
+      N51 Fish Masala:
+        price: 700
+      N52 Kadai Prawn:
+        price: 800
+      N53 Prawn Vindaloo:
+        price: 800
+      N54 Prawn Masala:
+        price: 700
+      N55 Prawn Curry:
+        price: 700
+      N56 Prawn Do Piaza:
+        price: 800
+      N57 Chilli Prawn:
+        price: 800
+      N58 Fish Head Curry:
+        price: 1500
+    Vegetables:
+      N59 Paneer Butter Masala:
+        price: 700
+      N60 Palak Paneer:
+        price: 700
+      N61 Kadai Paneer:
+        price: 800
+      N62 Shai Paneer:
+        price: 700
+      N63 Mattar Paneer:
+        price: 700
+      N64 Aloo Mattar Makani:
+        price: 500
+      N65 Mix Vegetable Curry:
+        price: 500
+      N66 Vegetable Makani:
+        price: 500
+      N67 Channa Masala:
+        price: 500
+      N68 Dal Makani:
+        price: 500
+      N69 Yellow Dal:
+        price: 300
+      N70 Dal Palak:
+        price: 500
+      N71 Bhindi Masala:
+        price: 500
+      N72 Brinjal Masala:
+        price: 500
+      N73 Mixed Raita:
+        price: 400
+      N74 Plain Yoghurt:
+        price: 300
+      N75 Navrattan Korma:
+        price: 600
+      N76 Malai Kofta:
+        price: 500
+      N77 Paneer Tikka Masala:
+        price: 800
+      N78 Green Indian Salad:
+        price: 300
+      N79 Gobi Manchurian:
+        price: 600
+      N80 Chilli Panner:
+        price: 800
+      N81 Aloo Gobi:
+        price: 500
+  Western Kitchen:
+    Finger Food:
+      W01 Mushroom Soup (Cream):
+        price: 300
+      W02 French Fries:
+        price: 300
+      W03 Mashed Potato:
+        price: 200
+      W04 Coleslaw:
+        price: 150
+      W05 Chicken Nuggets (7pcs):
+        price: 400
+      W06 Chicken Wing Set (2pcs):
+        price: 350
+      W07 Chicken Wing Set (3pcs):
+        price: 450
+      W08 Cheese Fries (Regular):
+        price: 400
+      W09 Garlic Bread:
+        price: 200
+      W10 Hot Wings (min 2pcs):
+        price: 150
+      W11 Spring Chicken:
+        price: 900
+      W08 Cheese Fries (Large):
+        price: 600
+    Pasta:
+      W12 Chicken Pasta:
+        price: 600
+      W13 Beef Bologonaise:
+        price: 650
+      W14 Seafood Marinara:
+        price: 650
+      W15 Mushroom & Chicken Pasta:
+        price: 650
+      W16 Mushroom Olio (Regular):
+        price: 500
+      W16 Mushroom Olio (Large):
+        price: 800
+      W17 Seafood Olio:
+        price: 600
+      W18 Sausage Carbonara (Regular):
+        price: 650
+    Salad:
+      W19 Garden Salad:
+        price: 400
+      W20 Green Pleasure Salad:
+        price: 400
+      W21 Chicken Salad:
+        price: 600
+      W22 Prawn Salad:
+        price: 600
+    Kebab:
+      W23 Kebab (Original):
+        price: 400
+      W24 Kebab (w/ Cheese):
+        price: 450
+    Roti John:
+      W25 Roti John:
+        price: 400
+      W26 Roti John (Cheese):
+        price: 450
+      W27 Roti John (Mushroom):
+        price: 450
+      W28 Roti John (Black Pepper):
+        price: 450
+      W29 Roti John (Mushroom & Cheese):
+        price: 480
+      W30 Roti John (Combo):
+        price: 500
+    Burger:
+      W31 Fried Fish Burger:
+        price: 600
+      W32 Grilled Chicken Burger:
+        price: 600
+      W33 Grilled Beef Burger:
+        price: 600
+      W34 Grilled Lamb Burger:
+        price: 600
+    Fish:
+      W35 Fish & Chips:
+        price: 700
+      W36 Grilled Fish:
+        price: 700
+      W37 Garlic Fish:
+        price: 700
+    Lamb:
+      W38 BBQ Lamb:
+        price: 800
+      W39 Black Pepper Lamb:
+        price: 800
+      W40 Mushroom Lamb:
+        price: 800
+      W41 Medina Lamb:
+        price: 900
+    Steak:
+      W42 Mushroom Steak:
+        price: 800
+      W43 Black Pepper Steak:
+        price: 800
+      W44 Sirloin Steak:
+        price: 800
+      W45 Al Amaan Sirloin Steak:
+        price: 900
+      W46 Al Amaan All Time Specials Mix Grill:
+        price: 1200
+    Chicken:
+      W47 Grilled Mushroom Chicken:
+        price: 800
+      W48 Grilled Black Pepper Chicken:
+        price: 800
+      W49 Grilled Chicken Chop:
+        price: 800
+      W50 Chicken Cutlet:
+        price: 800
+  Drinks:
+    D64 Iced Teh Cino:
+      price: 200
+      modifiers:
+        - ice
+        - sugar level
+    Iced Bandung:
+      price: 150
+      modifiers:
+        - ice
+        - sugar level
+    D57 Iced Milo:
+      price: 150
+      modifiers:
+        - ice
+        - sugar level
+    D70 Iced Limau:
+      price: 130
+      modifiers:
+        - ice
+        - sugar level
+    Iced Neslo:
+      price: 180
+      modifiers:
+        - ice
+        - sugar level
+    Iced Milo Cino:
+      price: 250
+      modifiers:
+        - ice
+        - sugar level
+  Desserts:
+    Red Bean Ice Kachang:
+      price: 300
+
+Modifiers:
+  ice:
+    no ice: 20
+    regular: 0
+  sugar level:
+    25%: 0
+    50%: 0
+    100%: 0
