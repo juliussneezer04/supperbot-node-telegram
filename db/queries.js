@@ -8,16 +8,16 @@ const hasJio = async function (chat_id) {
     const res = await db.query(statement, args);
     return res.rowCount > 0;
 }
+module.exports.hasJio = hasJio;
+
 module.exports.checkHasJio = async function (chat_id) {
     const hasJioValue = await hasJio(chat_id)
-    if(!hasJioValue){
+    if (!hasJioValue) {
         const text = 'There is no jio open yet! Click on /openjio to get started!'
         messenger.send(chat_id, text, {});
     }
     return hasJioValue;
 }
-
-module.exports.hasJio = hasJio;
 
 module.exports.openJio = async function (params, callback) {
     const statement = `
@@ -66,10 +66,10 @@ module.exports.addRemark = async function (params, callback) {
 }
 
 module.exports.hasOrder = async function (message_id) {
-	const statement = `select * from jiodata.orders where message_id = $1;`;
-	const args = [message_id];
-	const res = await db.query(statement, args);
-	return res.rowCount > 0;
+    const statement = `select * from jiodata.orders where message_id = $1;`;
+    const args = [message_id];
+    const res = await db.query(statement, args);
+    return res.rowCount > 0;
 }
 
 module.exports.getModifierOptions = async function (params, callback) {
@@ -113,7 +113,6 @@ module.exports.getFee = async function (params, callback) { //delivery fee?
     return ans.rows[0].price;
 }
 
-
 module.exports.isTerminal = async function (params, callback) {
     const menuname = menus[params.menu].split(' ').join('_');
 
@@ -128,7 +127,6 @@ module.exports.isTerminal = async function (params, callback) {
     return ans.rows[0].exists;
 }
 
-
 module.exports.getChildren = async function (params, callback) {
     const menuname = menus[params.menu].split(' ').join('_');
 
@@ -142,7 +140,6 @@ module.exports.getChildren = async function (params, callback) {
     return children.rows;
 }
 
-
 module.exports.getParent = async function (params, callback) {
     const menuname = menus[params.menu].split(' ').join('_');
 
@@ -155,7 +152,6 @@ module.exports.getParent = async function (params, callback) {
     const children = await db.query(statement, args, callback);
     return children.rows[0].parent;
 }
-
 
 module.exports.getItemName = async function (params, callback) {
     const menuname = menus[params.menu].split(' ').join('_');
@@ -288,4 +284,18 @@ module.exports.removeItem = async function (params, callback) {
     const args = [params.order_id, params.user_id];
 
     await db.query(statement, args, callback);
+}
+
+module.exports.storeData = async function (key, data) {
+    //because callback has 64 byte limit
+    //keyed by messageID
+    const strData = JSON.stringify(data);
+    //TODO: store in db
+    //TODO: remove data that is more than 24 hrs old (need not be done here in the code)
+}
+
+module.exports.getData = async function (key, data) {
+    // const strData =
+    //TODO: get data string from db
+    // return JSON.parse(strData)
 }
