@@ -12,14 +12,14 @@ module.exports.init = async function (msg) {
     try {
         if (msg.chat.id === msg.from.id) {
             messenger.send(msg.chat.id, 'Please send your commands in the relevant group chat!');
-        } else if (!await queries.checkHasJio(msg.chat.id)){
+        } else if (!await queries.checkHasJio(msg.chat.id)) {
             return;
-        } else {
-            const menu = await queries.getMenu({
-                chat_id: msg.chat.id,
-            });
-            await sendMenu(msg, menu);
         }
+        const menu = await queries.getMenu({
+            chat_id: msg.chat.id,
+        });
+        await sendMenu(msg, menu);
+
     } catch (err) {
         console.log(err);
     }
@@ -45,7 +45,7 @@ module.exports.callback = async function (query) {
 
 module.exports.reply = async function (msg) {
     try {
-        if (await queries.hasOrder(msg.reply_to_message.message_id)){
+        if (await queries.hasOrder(msg.reply_to_message.message_id)) {
             await queries.addRemark({
                 remarks: msg.text,
                 message_id: msg.reply_to_message.message_id,
@@ -105,7 +105,8 @@ const commit = async function (query) {
             item_id: data.p,
             message_id: query.message.message_id,
         });
-
+        //TODO: wait for modifier before committing to DB?
+        //TODO: add call to update live order here? (after modifiers and remarks)
         await sendModifierSelector(query, order_id);
     } catch (err) {
         await notifyAdditemFailure(err, query);
@@ -129,7 +130,7 @@ const sendModifierSelector = async function (query, order_id) {
         });
 
         if (modifiers.length === 0) {
-            return notifyAdditemSuccess(query, itemName);
+            return notifyAdditemSuccess(query, itemName, order_id);
         }
 
         const text = `Customise your ${itemName}:\n`;
@@ -150,7 +151,7 @@ const sendModifierSelector = async function (query, order_id) {
     }
 }
 
-const notifyAdditemSuccess = async function (query, itemName) {
+const notifyAdditemSuccess = async function (query, itemName, order_id) {
     const text = itemName + ' added! Reply to this message to add remarks';
     await messenger.edit(
         query.message.chat.id,
@@ -158,6 +159,8 @@ const notifyAdditemSuccess = async function (query, itemName) {
         null,
         text,
         {});
+    // TODO: update live message, use order_id to get chat_id
+    //   queries.updateOrder(order_id, vieworder.getOrder())
 }
 
 const notifyAdditemFailure = async function (err, query) {
@@ -210,7 +213,12 @@ const pushItems = function (menu, kbdata, children, parent, chat_id) {
         if (children[i].price === null) {
             kbdata.push([children[i].name, {t: COMMAND_ID, m: menu, p: children[i].id, c: chat_id}]);
         } else {
-            kbdata.push([sprintf("%s ($%.2f)",children[i].name, children[i].price / 100.0), {t: COMMAND_ID, m: menu, p: children[i].id, c: chat_id}]);
+            kbdata.push([sprintf("%s ($%.2f)", children[i].name, children[i].price / 100.0), {
+                t: COMMAND_ID,
+                m: menu,
+                p: children[i].id,
+                c: chat_id
+            }]);
         }
     }
     if (parent != null) {
@@ -222,6 +230,13 @@ const pushItems = function (menu, kbdata, children, parent, chat_id) {
 const pushMods = function (menu, kbdata, mods, level, order_id, item_id) {
     for (let i = 0; i < mods.length; i++) {
         let mod = mods[i];
-        kbdata.push([sprintf("%s ($%.2f)", mod.name, mod.price / 100.0), {t: MOD_COMMAND_ID, o: order_id, m: menu, l: level, i: mod.mod_id, p: item_id}]);
+        kbdata.push([sprintf("%s ($%.2f)", mod.name, mod.price / 100.0), {
+            t: MOD_COMMAND_ID,
+            o: order_id,
+            m: menu,
+            l: level,
+            i: mod.mod_id,
+            p: item_id
+        }]);
     }
 }

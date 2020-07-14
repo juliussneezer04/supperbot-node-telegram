@@ -43,3 +43,5 @@ const createOrderMessage = function (orders) {
     }
     return result;
 }
+
+module.exports.getOrder = createOrderMessage;
