@@ -11,7 +11,7 @@ module.exports.init = async function (msg) {
     //TODO: make this into a inline button below the successful openjio message
     try {
         if (msg.chat.id === msg.from.id) {
-            messenger.send(msg.chat.id, 'Please send your commands in the group!');
+            messenger.send(msg.chat.id, 'Please send your commands in the relevant group chat!');
         } else if (!await queries.checkHasJio(msg.chat.id)){
             return;
         } else {
