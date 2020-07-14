@@ -301,15 +301,28 @@ module.exports.getData = async function (key, data) {
 }
 
 module.exports.repeatCount = async function(str){
-    // TODO
-    //helper for birthday easter egg
-    //takes in string
-    //returns int, representing the number of times this string has been seen
-    //add db entry keyed by str, along with count (default 1) and date
-    //if str is already in db:
-    //  if date < 24 hrs old, reset count to 1
-    //  otherwise update count
-    //return count
+    //TODO
+    // helper for birthday easter egg
+    // takes in string
+    // returns int, representing the number of times this string has been seen
+    // add db entry keyed by str, along with count (default 1) and date
+    // if str is already in db:
+    //   if date < 24 hrs old, reset count to 1
+    //   otherwise update count
+    // return count
 }
 
 //TODO: add "message id" column to jios table, stores which message to update for live order
+
+module.exports.updateOrder = async function(order_id, order){
+    // TODO:
+    //   use order_id to get chat_id, then get the relevant message to update
+
+    // await messenger.edit(
+    //     chat_id,
+    //     message_id,
+    //     null,
+    //     order,
+    //     {});
+
+}
