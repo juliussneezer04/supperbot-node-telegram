@@ -21,16 +21,18 @@ module.exports.init = async function (msg) {
     } else if (msg.chat.id === msg.from.id) {
         messenger.send(msg.chat.id, 'You should open a jio in a group instead!');
     } else {
+        //send options to user through direct message
         const ik = new InlineKeyboard();
         for (let i = 0; i < menus.length; i++) {
             let data = {t: OPEN_JIO_COMMAND_ID, chat_id: msg.chat.id, m: i}
             ik.addRow({text: menus[i], callback_data: JSON.stringify(data)})
         }
-        messenger.send(msg.chat.id, sprintf('Alright %s, I\'ll message you directly for more details', msg.from.first_name));
-        //TODO: store this message id, update it when openjio success or cancelled
         ik.addRow({text: 'Cancel', callback_data: JSON.stringify({t: CANCEL_COMMAND_ID})});
         const text = 'What will you like for supper?';
         messenger.send(msg.from.id, text, ik.build(), msg.chat.id);
+        //update group to ask user to check their direct messages
+        messenger.send(msg.chat.id, sprintf('Alright %s, I\'ll message you directly for more details', msg.from.first_name));
+        //TODO: store this message id, update it when openjio success or cancelled
     }
 }
 
@@ -72,8 +74,15 @@ const notifyOpenjioSuccess = async function (query) {
     // send success message to group
     let text = util.format(CREATION_SUCCESS_TEMPLATE, query.from.first_name,
         menus[data['m']]);
-    await messenger.send(data['chat_id'], text, {});
-    // send success message to user
+    const ik = new InlineKeyboard();
+    ik.addRow({text: 'add item', callback_data: '{"cmd": "additem"}'});
+    ik.addRow({text: 'remove item', callback_data: '{"cmd": "removeitem"}'});
+    ik.addRow({text: 'view my orders', callback_data: '{"cmd": "viewmyorders"}'});
+    ik.addRow({text: 'close jio', callback_data: '{"cmd": "closejio"}'});
+    await messenger.send(data['chat_id'], text, ik.build());
+    //TODO: store message ID for live menu update
+
+    // edit the direct message to user
     let text2 = 'Jio created successfully!';
     messenger.edit(
         query.message.chat.id,

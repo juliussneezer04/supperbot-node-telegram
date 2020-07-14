@@ -68,24 +68,44 @@ bot.on('message', (msg) => {
 bot.on('callback_query', (query) => {
 
     let data = JSON.parse(query.data);
-    switch (commands[data.t]) {
-        case 'cancel':
-            cancelCallback(query);
-            break;
-        case 'openjio':
-            openjio.callback(query);
-            break;
-        case 'additem':
-            additem.callback(query);
-            break;
-        case 'removeitem':
-            removeitem.callback(query);
-            break;
-        case 'addmod':
-            additem.callback_mod(query);
-            break;
-        default:
-            break;
+    if (data.hasOwnProperty("cmd")) {
+        query.chat = query.message.chat; //TODO: clean this hack
+        switch(data.cmd) {
+            case 'additem':
+                additem.init(query)
+                break;
+            case 'removeitem':
+                removeitem.init(query);
+                break;
+            case 'viewmyorders':
+                viewmyorders.init(query);
+                break;
+            case 'closejio':
+                closejio.init(query);
+                break;
+            default:
+                break;
+        }
+    } else if (data.hasOwnProperty("t")) {
+        switch (commands[data.t]) {
+            case 'cancel':
+                cancelCallback(query);
+                break;
+            case 'openjio':
+                openjio.callback(query);
+                break;
+            case 'additem':
+                additem.callback(query);
+                break;
+            case 'removeitem':
+                removeitem.callback(query);
+                break;
+            case 'addmod':
+                additem.callback_mod(query);
+                break;
+            default:
+                break;
+        }
     }
 })
 
