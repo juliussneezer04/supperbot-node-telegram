@@ -79,8 +79,12 @@ const notifyOpenjioSuccess = async function (query) {
     ik.addRow({text: 'remove item', callback_data: '{"cmd": "removeitem"}'});
     ik.addRow({text: 'view my orders', callback_data: '{"cmd": "viewmyorders"}'});
     ik.addRow({text: 'close jio', callback_data: '{"cmd": "closejio"}'});
-    await messenger.send(data['chat_id'], text, ik.build());
-    //TODO: store message ID for live menu update
+    let msg = await messenger.send(data['chat_id'], text, ik.build());
+    let params = {
+        chat_id: data['chat_id'],
+        message_id: msg.message_id
+    }
+    await queries.updateOpenJioWithMsgID(params)
 
     // edit the direct message to user
     let text2 = 'Jio created successfully!';

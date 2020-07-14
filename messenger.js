@@ -27,7 +27,8 @@ module.exports.send = async function (chat_id, text, reply_markup = {}, startme_
         if(reply_markup == null){//hack, because default param value doesn't seem to be working
             reply_markup = {};
         }
-        await bot.sendMessage(chat_id, text, reply_markup);
+        var msg = await bot.sendMessage(chat_id, text, reply_markup);
+        return msg;
     } catch (e) {
         //check for startme error
         //blocked: ETELEGRAM: 403 Forbidden: bot was blocked by the user

@@ -29,6 +29,16 @@ module.exports.openJio = async function (params, callback) {
     await db.query(statement, args, callback);
 }
 
+module.exports.updateOpenJioWithMsgID = async function (params, callback) {
+    const statement = `
+		update 	jiodata.jios
+		set		message_id = $1
+		where	chat_id = $2;`;
+    const args = [params.message_id, params.chat_id];
+
+    await db.query(statement, args, callback);
+}
+
 module.exports.addItem = async function (params, callback) {
     const statement = `
 		insert into
@@ -289,15 +299,24 @@ module.exports.removeItem = async function (params, callback) {
 module.exports.storeData = async function (key, data) {
     //because callback has 64 byte limit
     //keyed by messageID
+    const statement = `
+		insert into
+			miscellaneous.cache	(key, data)
+			values	($1, $2);`;
     const strData = JSON.stringify(data);
-    //TODO: store in db
+    const args = [key, strData];
+    await db.query(statement, args);
     //TODO: remove data that is more than 24 hrs old (need not be done here in the code)
 }
 
-module.exports.getData = async function (key, data) {
-    // const strData =
-    //TODO: get data string from db
-    // return JSON.parse(strData)
+module.exports.getData = async function (key) {
+    const statement = `
+		select data
+		from miscellaneous.cache
+		where key = $1;`;
+    const args = [key];
+    const res = await db.query(statement, args);
+    return JSON.parse(res.rows[0].data);
 }
 
 module.exports.repeatCount = async function(str){
@@ -310,6 +329,28 @@ module.exports.repeatCount = async function(str){
     //   if date < 24 hrs old, reset count to 1
     //   otherwise update count
     // return count
+    let statement = `
+		select count
+		from miscellaneous.helper
+		where string = $1;`;
+    let args = [str];
+    let count;
+    const res = await db.query(statement, args);
+    if (res.rowCount > 0) {
+        count = res.rows[0].count + 1;
+        statement = `
+            update miscellaneous.helper
+            set count =  count + 1
+            where string = $1;`;
+    } else {
+        count = 1;
+        statement = `
+            insert into miscellaneous.helper 
+            (string, count)
+            values ($1, 1)`;
+    }
+    await db.query(statement, args);
+    return count;
 }
 
 //TODO: add "message id" column to jios table, stores which message to update for live order
@@ -317,7 +358,13 @@ module.exports.repeatCount = async function(str){
 module.exports.updateOrder = async function(order_id, order){
     // TODO:
     //   use order_id to get chat_id, then get the relevant message to update
-
+    const statement = `
+		select jiodata.jios.message_id as message_id
+		from jiodata.jios
+		inner join jiodata.orders on jiodata.jios.chat_id = jiodata.orders.chat_id
+		where order_id = $1;`;
+    const args = [order_id];
+    const message_id = await db.query(statement, args);
     // await messenger.edit(
     //     chat_id,
     //     message_id,
