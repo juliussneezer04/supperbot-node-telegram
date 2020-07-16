@@ -330,28 +330,33 @@ module.exports.repeatCount = async function(str){
     //   if date < 24 hrs old, reset count to 1
     //   otherwise update count
     // return count
-    // TODO: test this
+    // Tested and WORKING
     let statement = `
 		select count
 		from miscellaneous.helper
 		where string = $1;`;
     let args = [str];
-    let count;
-    const res = await db.query(statement, args);
+    let res = await db.query(statement, args);
     if (res.rowCount > 0) {
-        count = res.rows[0].count + 1;
         statement = `
-            update miscellaneous.helper
-            set count =  count + 1
-            where string = $1;`;
+            UPDATE miscellaneous.helper
+            SET count =
+                CASE 
+                    WHEN time > now() - interval '24 hours' THEN count + 1
+                    ELSE 1
+                END
+            , time = now()
+            where string = $1
+            RETURNING *;`;
     } else {
-        count = 1;
         statement = `
             insert into miscellaneous.helper 
             (string, count)
-            values ($1, 1)`;
+            values ($1, 1)
+            RETURNING *;`;
     }
-    await db.query(statement, args);
+    res = await db.query(statement, args);
+    const count = res.rows[0].count
     return count;
 }
 
@@ -405,13 +410,25 @@ module.exports.getOrderMessage = async function (chat_id) {
 }
 
 module.exports.storeJioMessageData = async function (chat_id, text, ik){
-    const ikJSON = JSON.stringify(ik);
+    const ik_string = JSON.stringify(ik);
+    const statement = `
+            update jiodata.jios 
+            set text = $1, inline_keyboard = $2
+            where chat_id = $3`;
+    const args = [text, ik_string, chat_id];
+    await db.query(statement, args);
     //store in jio table
 }
 
 const getJioMessageData = async function (chat_id){
+    const statement = `
+            select text, inline_keyboard
+            from jiodata.jios 
+            where chat_id = $1`;
+    const args = [chat_id];
+    const res = await db.query(statement, args);
     const data = {};
-    // data.text =
-    // data.ikJSON = JSON.parse( )
+    data.text = res.rows[0].text;
+    data.ikJSON = JSON.parse(res.rows[0].inline_keyboard);
     return data;
 }
