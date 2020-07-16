@@ -359,12 +359,14 @@ module.exports.updateOrder = async function(order_id, order){
     // TODO:
     //   use order_id to get chat_id, then get the relevant message to update
     const statement = `
-		select jiodata.jios.message_id as message_id
+		select jiodata.jios.message_id as message_id, jiodata.jios.chat_id as chat_id
 		from jiodata.jios
 		inner join jiodata.orders on jiodata.jios.chat_id = jiodata.orders.chat_id
 		where order_id = $1;`;
     const args = [order_id];
-    const message_id = await db.query(statement, args);
+    const res = await db.query(statement, args);
+    const messsage_id = res.rows[0].message_id;
+    const chat_id = res.rows[0].chat_id;
     // await messenger.edit(
     //     chat_id,
     //     message_id,
