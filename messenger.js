@@ -27,22 +27,34 @@ module.exports.send = async function (chat_id, text, reply_markup = {}, startme_
         if(reply_markup == null){//hack, because default param value doesn't seem to be working
             reply_markup = {};
         }
-        var msg = await bot.sendMessage(chat_id, text, reply_markup);
-        return msg;
+        return await bot.sendMessage(chat_id, text, reply_markup);
     } catch (e) {
-        //check for startme error
+        //TODO: check for startme error
         //blocked: ETELEGRAM: 403 Forbidden: bot was blocked by the user
-        sendStartMe(chat_id, startme_chat);
         console.log(e);
+        sendStartMe(chat_id, startme_chat);
     }
 }
 
 module.exports.edit = async function (chat_id, message_id, inline_message_id, text, reply_markup) {
+    //will remove inline keyboard if reply_markup is null
     try {
         // await bot.editMessageReplyMarkup(reply_markup,
         //     {chat_id: chat_id, message_id: message_id});
         await bot.editMessageText(text,
             {chat_id: chat_id, message_id: message_id, reply_markup: reply_markup});
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+module.exports.editText = async function (chat_id, message_id, inline_message_id, text) {
+    //will not edit inline keyboard
+    try {
+        // await bot.editMessageReplyMarkup(reply_markup,
+        //     {chat_id: chat_id, message_id: message_id});
+        await bot.editMessageText(text,
+            {chat_id: chat_id, message_id: message_id});
     } catch (e) {
         console.log(e);
     }

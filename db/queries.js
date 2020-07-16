@@ -1,6 +1,7 @@
 const db = require('./db');
 const menus = require('../config').menus; //TODO: make this a database entry
 const messenger = require('../messenger');
+const sprintf = require("sprintf-js").sprintf;
 
 const hasJio = async function (chat_id) {
     const statement = `select * from jiodata.jios where chat_id = $1`;
@@ -329,6 +330,7 @@ module.exports.repeatCount = async function(str){
     //   if date < 24 hrs old, reset count to 1
     //   otherwise update count
     // return count
+    // TODO: test this
     let statement = `
 		select count
 		from miscellaneous.helper
@@ -353,11 +355,7 @@ module.exports.repeatCount = async function(str){
     return count;
 }
 
-//TODO: add "message id" column to jios table, stores which message to update for live order
-
-module.exports.updateOrder = async function(order_id, order){
-    // TODO:
-    //   use order_id to get chat_id, then get the relevant message to update
+module.exports.updateOrder = async function(order_id){
     const statement = `
 		select jiodata.jios.message_id as message_id, jiodata.jios.chat_id as chat_id
 		from jiodata.jios
@@ -365,13 +363,55 @@ module.exports.updateOrder = async function(order_id, order){
 		where order_id = $1;`;
     const args = [order_id];
     const res = await db.query(statement, args);
-    const messsage_id = res.rows[0].message_id;
+    const message_id = res.rows[0].message_id;
     const chat_id = res.rows[0].chat_id;
-    // await messenger.edit(
-    //     chat_id,
-    //     message_id,
-    //     null,
-    //     order,
-    //     {});
 
+    const text = await getOrderMessage(chat_id);
+    await messenger.editText(
+        chat_id,
+        message_id,
+        null,
+        text); //need to get the original text
+
+}
+
+module.exports.getOrderMessage = async function (chat_id) {
+    try {
+        const menu = await module.exports.getMenu({
+            chat_id: chat_id,
+        });
+        const orders = await module.exports.getChatOrders({
+            menu: menu,
+            chat_id: chat_id,
+        });
+
+        if (orders.length === 0) {
+            return "There are no items ordered so far";
+        }
+
+        let result = 'The items ordered so far are: \n';
+        for (let i = 0; i < orders.length; i++) {
+            const order = orders[i];
+            let remarks = order.remarks == null ? '' : sprintf(' (%s)', order.remarks);
+            let modifiers = order.mods == null ? '' : sprintf(' (%s)', order.mods);
+            result += sprintf('%s - %s%s%s x%s ($%.2f)\n',
+                order.user, order.item, modifiers, remarks, order.count, order.price / 100.0);
+        }
+        return result;
+    } catch(e){
+        console.log(e);
+        return "sorry, an error occurred";
+    }
+}
+
+module.exports.storeJioMessageData = async function (chat_id, text, ik){
+    const ikJSON = JSON.stringify(ik);
+    //store in jio table
+}
+
+const getJioMessageData = async function (chat_id){
+    const data = {};
+    // data.text =
+    // data.ikJSON = JSON.parse( )
+    return data;
 }
