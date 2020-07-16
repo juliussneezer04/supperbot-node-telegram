@@ -159,8 +159,7 @@ const notifyAdditemSuccess = async function (query, itemName, order_id) {
         null,
         text,
         {});
-    // TODO: update live message, use order_id to get chat_id
-    //   queries.updateOrder(order_id, vieworder.getOrder())
+    queries.updateOrder(order_id)
 }
 
 const notifyAdditemFailure = async function (err, query) {

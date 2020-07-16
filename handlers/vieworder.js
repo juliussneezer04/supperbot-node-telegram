@@ -10,29 +10,28 @@ module.exports.init = async function (msg) {
         } else if (!await queries.checkHasJio(msg.chat.id)){
             return;
         }
-        // retrieve menu number
-        let menu = await queries.getMenu({
-            chat_id: msg.chat.id,
-        });
-
-        // get order counts
-        let orders = await queries.getChatOrders({
-            menu: menu,
-            chat_id: msg.chat.id,
-        });
 
         // notify chat
-        const text = createOrderMessage(orders);
+        const text = await queries.getOrderMessage(msg.chat.id);
         await messenger.send(msg.chat.id, text, null);
     } catch (err) {
         console.log(err);
     }
 }
 
-const createOrderMessage = function (orders) {
+const createOrderMessage = async function (chat_id) { //moved to queries
+    const menu = await queries.getMenu({
+        chat_id: chat_id,
+    });
+    const orders = await queries.getChatOrders({
+        menu: menu,
+        chat_id: chat_id,
+    });
+
     if(orders.length === 0){
         return "There are no items ordered so far";
     }
+
     let result = 'The items ordered so far are: \n';
     for (let i = 0; i < orders.length; i++) {
         const order = orders[i];
@@ -43,5 +42,3 @@ const createOrderMessage = function (orders) {
     }
     return result;
 }
-
-module.exports.getOrder = createOrderMessage;

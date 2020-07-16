@@ -71,6 +71,7 @@ const commit = async function (query) {
 
 const notifyOpenjioSuccess = async function (query) {
     let data = JSON.parse(query.data);
+
     // send success message to group
     let text = util.format(CREATION_SUCCESS_TEMPLATE, query.from.first_name,
         menus[data['m']]);
@@ -80,6 +81,8 @@ const notifyOpenjioSuccess = async function (query) {
     ik.addRow({text: 'view my orders', callback_data: '{"cmd": "viewmyorders"}'});
     ik.addRow({text: 'close jio', callback_data: '{"cmd": "closejio"}'});
     let msg = await messenger.send(data['chat_id'], text, ik.build());
+
+    //save message id for live update
     let params = {
         chat_id: data['chat_id'],
         message_id: msg.message_id

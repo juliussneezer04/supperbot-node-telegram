@@ -38,11 +38,24 @@ module.exports.send = async function (chat_id, text, reply_markup = {}, startme_
 }
 
 module.exports.edit = async function (chat_id, message_id, inline_message_id, text, reply_markup) {
+    //will remove inline keyboard if reply_markup is null
     try {
         // await bot.editMessageReplyMarkup(reply_markup,
         //     {chat_id: chat_id, message_id: message_id});
         await bot.editMessageText(text,
             {chat_id: chat_id, message_id: message_id, reply_markup: reply_markup});
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+module.exports.editText = async function (chat_id, message_id, inline_message_id, text) {
+    //will not edit inline keyboard
+    try {
+        // await bot.editMessageReplyMarkup(reply_markup,
+        //     {chat_id: chat_id, message_id: message_id});
+        await bot.editMessageText(text,
+            {chat_id: chat_id, message_id: message_id});
     } catch (e) {
         console.log(e);
     }
