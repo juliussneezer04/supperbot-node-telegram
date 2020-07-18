@@ -13,6 +13,11 @@ const CREATION_SUCCESS_TEMPLATE = '%s created a jio for %s. Click on "add item",
 // const CREATION_SUCCESS_TIME_TEMPLATE = ', with duration %s minutes.';
 const CREATION_FAILURE_TEMPLATE = 'Sorry, there was an unknown error in opening the jio'
 
+let bot;
+
+module.exports.initbot = function(b) {
+    bot = b;
+}
 
 module.exports.init = async function (msg) {
     //can receive the open jio command in a group, but the bot messages the user directly to ask for restaurant/duration
@@ -74,15 +79,15 @@ const notifyOpenjioSuccess = async function (query) {
 
     // send success message to group
     let text = util.format(CREATION_SUCCESS_TEMPLATE, query.from.first_name,
-        menus[data['m']]);
+        menus[data['m']]) + "\n\n";
     const ik = new InlineKeyboard();
     ik.addRow({text: 'add item', callback_data: '{"cmd": "additem"}'});
     ik.addRow({text: 'remove item', callback_data: '{"cmd": "removeitem"}'});
     ik.addRow({text: 'view my orders', callback_data: '{"cmd": "viewmyorders"}'});
     ik.addRow({text: 'close jio', callback_data: '{"cmd": "closejio"}'});
     const ikb = ik.build()
-    queries.storeJioMessageData(data['chat_id'], text, ikb)
-    let msg = await messenger.send(data['chat_id'], text + "\n\nThere are no items in the order currently", ikb);
+    await queries.storeJioMessageData(data['chat_id'], text, ikb)
+    let msg = await messenger.send(data['chat_id'], text + "There are no items in the order currently", ikb);
 
     //save message id for live update
     let params = {
@@ -90,17 +95,35 @@ const notifyOpenjioSuccess = async function (query) {
         message_id: msg.message_id
     }
     await queries.updateOpenJioWithMsgID(params)
-    await queries.storeJioMessageData(query.message.chat.id, text, ik.build());
 
     // edit the direct message to user
-    let text2 = 'Jio created successfully!';
-    //TODO: ask user to reply with jio description
+    let text2 = 'Jio created successfully! Reply to this message to add a description to your jio.';
     messenger.edit(
         query.message.chat.id,
         query.message.message_id,
         null,
         text2,
         null);
+    const replyListenerId = await bot.onReplyToMessage(query.message.chat.id, query.message.message_id, async (replymsg) => {
+        try {
+        const description = replymsg.text + "\n\n";
+        const newMessageData = "Description from creator: " + description + (await queries.getJioMessageData(msg.chat.id)).text;
+        await queries.storeJioMessageData(data['chat_id'], newMessageData, ikb)
+
+            await messenger.edit(
+            data['chat_id'],
+            msg.message_id,
+            null,
+            newMessageData + await queries.getOrderMessage(data['chat_id']),
+            ikb.reply_markup
+        );
+        } catch (err) {
+            console.log(err);
+        } finally {
+            bot.removeReplyListener(replyListenerId);
+        }
+    });
+
 }
 
 const notifyOpenjioFailure = async function (err, query) {

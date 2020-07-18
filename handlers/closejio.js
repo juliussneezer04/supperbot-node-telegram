@@ -2,13 +2,23 @@ const queries = require('../db/queries');
 const menus = require('../config').menus;
 const sprintf = require("sprintf-js").sprintf;
 const messenger = require('../messenger');
+let bot;
+
+module.exports.initbot = function(b) {
+    bot = b;
+}
 
 module.exports.init = async function (msg) {
-    //TODO: only allow group admin or jio starter to close
     try {
+        const messageSender = await bot.getChatMember(msg.chat.id, msg.from.id);
         if (msg.chat.id === msg.from.id) {
-            messenger.send(msg.chat.id, 'Please send your commands in the group!');
+            await messenger.send(msg.chat.id, 'Please send your commands in the group!');
+            return;
         } else if (!await queries.checkHasJio(msg.chat.id)) {
+            return;
+        } else if (msg.from.id !== await queries.getJioCreatorId(msg.chat.id) && messageSender.status !== "administrator" && messageSender.status !== "creator") {
+            //only allow group admin or group creator or jio starter to close
+            await messenger.send(msg.chat.id, 'Only the jio creator or group admins can close the jio!');
             return;
         }
         const menu = await queries.getMenu({
@@ -51,7 +61,7 @@ module.exports.init = async function (msg) {
 }
 
 const createOverviewMessage = function (menuName, closerName, compiledOrders, userOrders, deliveryFee) {
-    let result = 'This jio for ' + menuName + ' was successfully closed by ' + closerName + '.\n'
+    let result = 'This jio for ' + menuName + ' was successfully closed by ' + closerName + '.\n\n'
     //TODO: add jio closer name
     if (compiledOrders.length === 0) {
         return result + 'There are no items in this jio.';

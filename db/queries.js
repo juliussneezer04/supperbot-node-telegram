@@ -297,6 +297,15 @@ module.exports.removeItem = async function (params, callback) {
     await db.query(statement, args, callback);
 }
 
+module.exports.getChatIdFromOrderId = async function (order_id) {
+    const statement = `
+		select chat_id from jiodata.orders
+		where	order_id = $1;`;
+    const args = [order_id];
+    const res = await db.query(statement, args);
+    return res.rows[0].chat_id;
+}
+
 module.exports.storeData = async function (key, data) {
     //because callback has 64 byte limit
     //keyed by messageID
@@ -367,7 +376,24 @@ module.exports.updateOrder = async function(order_id){
     const res = await db.query(statement, args);
     const message_id = res.rows[0].message_id;
     const chat_id = res.rows[0].chat_id;
-    const jio_data = await getJioMessageData(chat_id);
+    const jio_data = await module.exports.getJioMessageData(chat_id);
+    const order_text = await module.exports.getOrderMessage(chat_id);
+    await messenger.edit(
+        chat_id,
+        message_id,
+        null,
+        jio_data.text + order_text,
+        jio_data.ik.reply_markup); //need to get the original text
+}
+
+module.exports.refreshLiveCountMessage = async function(chat_id){
+    const statement = `
+		select message_id from jiodata.jios
+		where chat_id = $1;`;
+    const args = [chat_id];
+    const res = await db.query(statement, args);
+    const message_id = res.rows[0].message_id;
+    const jio_data = await module.exports.getJioMessageData(chat_id);
     const order_text = await module.exports.getOrderMessage(chat_id);
     await messenger.edit(
         chat_id,
@@ -432,12 +458,12 @@ module.exports.storeJioMessageData = async function (chat_id, text, ik){
             update jiodata.jios 
             set text = $1, inline_keyboard = $2
             where chat_id = $3`;
-    const args = [text + "\n\n", ik_string, chat_id];
+    const args = [text, ik_string, chat_id];
     await db.query(statement, args);
     //store in jio table
 }
 
-const getJioMessageData = async function (chat_id){
+module.exports.getJioMessageData = async function (chat_id){
     const statement = `
             select text, inline_keyboard
             from jiodata.jios 
@@ -458,6 +484,16 @@ module.exports.getJioCreatorName = async function (chat_id){
     const args = [chat_id];
     const res = await db.query(statement, args);
     return res.rows[0].creator_name;
+}
+
+module.exports.getJioCreatorId = async function (chat_id){
+    const statement = `
+            select creator_id
+            from jiodata.jios 
+            where chat_id = $1`;
+    const args = [chat_id];
+    const res = await db.query(statement, args);
+    return res.rows[0].creator_id;
 }
 
 module.exports.getJioMessageID = async function (chat_id){

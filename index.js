@@ -20,12 +20,11 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 messenger.init(bot);
+closejio.initbot(bot);
+additem.initbot(bot);
+openjio.initbot(bot);
 
 bot.on('message', (msg) => {
-    if (msg.reply_to_message) {
-        additem.reply(msg, bot);
-        return;
-    }
     let command;
     if (msg.text != null && msg.text.includes('@')) {
         let tokens = msg.text.split('@');

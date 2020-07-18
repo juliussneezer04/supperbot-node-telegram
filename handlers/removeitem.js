@@ -38,12 +38,13 @@ module.exports.init = async function (msg) {
 module.exports.callback = async function (query) {
     try {
         // try removing item
+        const chat_id = await queries.getChatIdFromOrderId(JSON.parse(query.data).p);
         await queries.removeItem({
             user_id: query.from.id,
             order_id: JSON.parse(query.data).p,
         });
-
-        notifyRemoveitemSuccess(query);
+        await notifyRemoveitemSuccess(query);
+        await queries.refreshLiveCountMessage(chat_id);
     } catch (err) {
         notifyRemoveitemFailure(err, query);
     }
@@ -65,9 +66,9 @@ const notifyNoItemsToRemove = function (msg) {
     messenger.send(msg.from.id, text, null, msg.chat.id);
 };
 
-const notifyRemoveitemSuccess = function (query) {
+const notifyRemoveitemSuccess = async function (query) {
     const text = 'Removed item!';
-    messenger.edit(query.message.chat.id, query.message.message_id, null, text, null);
+    await messenger.edit(query.message.chat.id, query.message.message_id, null, text, null);
 };
 
 const notifyRemoveitemFailure = function (err, query) {

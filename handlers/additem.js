@@ -5,6 +5,11 @@ const {InlineKeyboard} = require('node-telegram-keyboard-wrapper');
 const sprintf = require("sprintf-js").sprintf;
 const COMMAND_ID = commands.indexOf('additem');
 const MOD_COMMAND_ID = commands.indexOf('addmod');
+let bot;
+
+module.exports.initbot = function(b) {
+    bot = b;
+}
 
 //implement new menu data structure here
 module.exports.init = async function (msg) {
@@ -38,21 +43,6 @@ module.exports.callback = async function (query) {
         } else {
             await sendChildren(query);
         }
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-module.exports.reply = async function (msg) {
-    try {
-        if (await queries.hasOrder(msg.reply_to_message.message_id)) {
-            await queries.addRemark({
-                remarks: msg.text,
-                message_id: msg.reply_to_message.message_id,
-            });
-            messenger.send(msg.chat.id, 'Remark added successfully!');
-        }
-        //TODO: send success message
     } catch (err) {
         console.log(err);
     }
@@ -159,7 +149,23 @@ const notifyAdditemSuccess = async function (query, itemName, order_id) {
         null,
         text,
         {});
-    queries.updateOrder(order_id)
+    const replyListenerId = await bot.onReplyToMessage(query.message.chat.id, query.message.message_id, async (replymsg) => {
+        try {
+            if (await queries.hasOrder(replymsg.reply_to_message.message_id)) {
+                await queries.addRemark({
+                    remarks: replymsg.text,
+                    message_id: replymsg.reply_to_message.message_id,
+                });
+                messenger.send(replymsg.chat.id, 'Remark added successfully!');
+            }
+            //TODO: send success message
+        } catch (err) {
+            console.log(err);
+        } finally {
+            bot.removeReplyListener(replyListenerId);
+        }
+    });
+    await queries.updateOrder(order_id)
 }
 
 const notifyAdditemFailure = async function (err, query) {
