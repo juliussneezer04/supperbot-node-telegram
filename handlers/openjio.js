@@ -9,8 +9,8 @@ const messenger = require('../messenger');
 
 const OPEN_JIO_COMMAND_ID = commands.indexOf('openjio');
 const CANCEL_COMMAND_ID = commands.indexOf('cancel');
-const CREATION_SUCCESS_TEMPLATE = '%s created a jio for %s. Click on /additem to add your orders to the jio.'
-const CREATION_SUCCESS_TIME_TEMPLATE = ', with duration %s minutes.';
+const CREATION_SUCCESS_TEMPLATE = '%s created a jio for %s. Click on "add item", and I will message you directly to take your order. You may want to pin this message so users can find it easily.'
+// const CREATION_SUCCESS_TIME_TEMPLATE = ', with duration %s minutes.';
 const CREATION_FAILURE_TEMPLATE = 'Sorry, there was an unknown error in opening the jio'
 
 
@@ -80,7 +80,9 @@ const notifyOpenjioSuccess = async function (query) {
     ik.addRow({text: 'remove item', callback_data: '{"cmd": "removeitem"}'});
     ik.addRow({text: 'view my orders', callback_data: '{"cmd": "viewmyorders"}'});
     ik.addRow({text: 'close jio', callback_data: '{"cmd": "closejio"}'});
-    let msg = await messenger.send(data['chat_id'], text, ik.build());
+    const ikb = ik.build()
+    queries.storeJioMessageData(data['chat_id'], text, ikb)
+    let msg = await messenger.send(data['chat_id'], text + "\n\nThere are no items in the order currently", ikb);
 
     //save message id for live update
     let params = {
@@ -92,6 +94,7 @@ const notifyOpenjioSuccess = async function (query) {
 
     // edit the direct message to user
     let text2 = 'Jio created successfully!';
+    //TODO: ask user to reply with jio description
     messenger.edit(
         query.message.chat.id,
         query.message.message_id,

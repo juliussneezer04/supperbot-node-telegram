@@ -47,15 +47,3 @@ module.exports.edit = async function (chat_id, message_id, inline_message_id, te
         console.log(e);
     }
 }
-
-module.exports.editText = async function (chat_id, message_id, inline_message_id, text) {
-    //will not edit inline keyboard
-    try {
-        // await bot.editMessageReplyMarkup(reply_markup,
-        //     {chat_id: chat_id, message_id: message_id});
-        await bot.editMessageText(text,
-            {chat_id: chat_id, message_id: message_id});
-    } catch (e) {
-        console.log(e);
-    }
-}

@@ -1,4 +1,5 @@
 const queries = require('../db/queries');
+const menus = require('../config').menus;
 const sprintf = require("sprintf-js").sprintf;
 const messenger = require('../messenger');
 
@@ -7,7 +8,7 @@ module.exports.init = async function (msg) {
     try {
         if (msg.chat.id === msg.from.id) {
             messenger.send(msg.chat.id, 'Please send your commands in the group!');
-        } else if (!await queries.checkHasJio(msg.chat.id)){
+        } else if (!await queries.checkHasJio(msg.chat.id)) {
             return;
         }
         const menu = await queries.getMenu({
@@ -29,10 +30,13 @@ module.exports.init = async function (msg) {
             menu: menu,
             chat_id: msg.chat.id,
         });
-
+        await queries.updateClosedJio(msg.chat.id);
         // notify the chat
-        const text = createOverviewMessage(compiledOrders, userOrders, deliveryFee);
-        await messenger.send(msg.chat.id, text, {});
+        const menuName = menus[menu];
+        const closerName = msg.from.first_name;
+        const text = createOverviewMessage(menuName, closerName, compiledOrders, userOrders, deliveryFee);
+        const message_id = await queries.getJioMessageID(msg.chat.id);
+        await messenger.send(msg.chat.id, text, {reply_to_message_id: message_id});
 
         // destroy jio
         await queries.destroyJio({
@@ -46,9 +50,10 @@ module.exports.init = async function (msg) {
     }
 }
 
-const createOverviewMessage = function (compiledOrders, userOrders, deliveryFee) {
-    let result = 'Jio closed!\n'
-    if(compiledOrders.length === 0){
+const createOverviewMessage = function (menuName, closerName, compiledOrders, userOrders, deliveryFee) {
+    let result = 'This jio for ' + menuName + ' was successfully closed by ' + closerName + '.\n'
+    //TODO: add jio closer name
+    if (compiledOrders.length === 0) {
         return result + 'There are no items in this jio.';
     }
     result += 'The compiled list of ordered items is: \n';
@@ -87,7 +92,7 @@ const createOverviewMessage = function (compiledOrders, userOrders, deliveryFee)
 }
 
 const notifyUserOrders = function (msg, userOrders, deliveryFee) {
-    try{
+    try {
         let totalPrice = 0;
         let users = {};
 
@@ -107,7 +112,7 @@ const notifyUserOrders = function (msg, userOrders, deliveryFee) {
         for (const [user_id, info] of Object.entries(users)) {
             notifyUser(user_id, info.items, info.total, deliveryFee * info.total / totalPrice);
         }
-    } catch (e){
+    } catch (e) {
         console.log(e);
     }
 }

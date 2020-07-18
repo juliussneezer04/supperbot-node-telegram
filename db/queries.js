@@ -321,7 +321,6 @@ module.exports.getData = async function (key) {
 }
 
 module.exports.repeatCount = async function(str){
-    //TODO
     // helper for birthday easter egg
     // takes in string
     // returns int, representing the number of times this string has been seen
@@ -330,7 +329,6 @@ module.exports.repeatCount = async function(str){
     //   if date < 24 hrs old, reset count to 1
     //   otherwise update count
     // return count
-    // Tested and WORKING
     let statement = `
 		select count
 		from miscellaneous.helper
@@ -356,8 +354,7 @@ module.exports.repeatCount = async function(str){
             RETURNING *;`;
     }
     res = await db.query(statement, args);
-    const count = res.rows[0].count
-    return count;
+    return res.rows[0].count;
 }
 
 module.exports.updateOrder = async function(order_id){
@@ -370,14 +367,34 @@ module.exports.updateOrder = async function(order_id){
     const res = await db.query(statement, args);
     const message_id = res.rows[0].message_id;
     const chat_id = res.rows[0].chat_id;
-
-    const text = await getOrderMessage(chat_id);
-    await messenger.editText(
+    const jio_data = await getJioMessageData(chat_id);
+    const order_text = await module.exports.getOrderMessage(chat_id);
+    await messenger.edit(
         chat_id,
         message_id,
         null,
-        text); //need to get the original text
+        jio_data.text + order_text,
+        jio_data.ik.reply_markup); //need to get the original text
+}
 
+module.exports.updateClosedJio = async function(chat_id){
+    const statement = `
+            select creator_name, message_id, menu
+            from jiodata.jios 
+            where chat_id = $1`;
+    const args = [chat_id];
+    const res = await db.query(statement, args);
+    const creator_name = res.rows[0].creator_name;
+    const message_id = res.rows[0].message_id;
+    const menu_name = menus[res.rows[0].menu];
+    const order_text = await module.exports.getOrderMessage(chat_id);
+    const text = 'This jio for ' + menu_name + ' has been closed. It was opened by ' + creator_name + '\n\n';
+    await messenger.edit(
+        chat_id,
+        message_id,
+        null,
+        text + order_text,
+        null); //need to get the original text
 }
 
 module.exports.getOrderMessage = async function (chat_id) {
@@ -391,10 +408,10 @@ module.exports.getOrderMessage = async function (chat_id) {
         });
 
         if (orders.length === 0) {
-            return "There are no items ordered so far";
+            return "There are no items in the order currently";
         }
 
-        let result = 'The items ordered so far are: \n';
+        let result = 'The items in the order are: \n';
         for (let i = 0; i < orders.length; i++) {
             const order = orders[i];
             let remarks = order.remarks == null ? '' : sprintf(' (%s)', order.remarks);
@@ -415,7 +432,7 @@ module.exports.storeJioMessageData = async function (chat_id, text, ik){
             update jiodata.jios 
             set text = $1, inline_keyboard = $2
             where chat_id = $3`;
-    const args = [text, ik_string, chat_id];
+    const args = [text + "\n\n", ik_string, chat_id];
     await db.query(statement, args);
     //store in jio table
 }
@@ -429,6 +446,26 @@ const getJioMessageData = async function (chat_id){
     const res = await db.query(statement, args);
     const data = {};
     data.text = res.rows[0].text;
-    data.ikJSON = JSON.parse(res.rows[0].inline_keyboard);
+    data.ik = JSON.parse(res.rows[0].inline_keyboard);
     return data;
+}
+
+module.exports.getJioCreatorName = async function (chat_id){
+    const statement = `
+            select creator_name
+            from jiodata.jios 
+            where chat_id = $1`;
+    const args = [chat_id];
+    const res = await db.query(statement, args);
+    return res.rows[0].creator_name;
+}
+
+module.exports.getJioMessageID = async function (chat_id){
+    const statement = `
+            select message_id
+            from jiodata.jios 
+            where chat_id = $1`;
+    const args = [chat_id];
+    const res = await db.query(statement, args);
+    return res.rows[0].message_id;
 }
