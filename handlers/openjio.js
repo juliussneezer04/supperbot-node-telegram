@@ -106,8 +106,8 @@ const notifyOpenjioSuccess = async function (query) {
         null);
     const replyListenerId = await bot.onReplyToMessage(query.message.chat.id, query.message.message_id, async (replymsg) => {
         try {
-        const description = replymsg.text + "\n\n";
-        const newMessageData = "Description from creator: " + description + (await queries.getJioMessageData(msg.chat.id)).text;
+        const description = replymsg.from.first_name + " says: " + replymsg.text;
+        const newMessageData = (await queries.getJioMessageData(msg.chat.id)).text + description + "\n\n";
         await queries.storeJioMessageData(data['chat_id'], newMessageData, ikb)
 
             await messenger.edit(
@@ -121,6 +121,8 @@ const notifyOpenjioSuccess = async function (query) {
             console.log(err);
         } finally {
             bot.removeReplyListener(replyListenerId);
+            //TODO: instead of doing this, we should store the replyListenerId, then remove it on closejio
+            // this allows jio creator to update the description multiple times, and disallows users from editing another jio
         }
     });
 
