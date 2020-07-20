@@ -32,3 +32,8 @@ module.exports.commands = [
   'removeitem',
   'addmod',
 ]
+
+module.exports.help = "If you are unable to access the jio message, you can use /closejio to manually close the jio";
+
+module.exports.about = "Developed by nicktohzyu and iamjamestan, building on the original supperbot by Lester. " +
+    "Submit inquiries or bug reports at  ";

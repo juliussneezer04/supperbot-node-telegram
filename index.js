@@ -59,9 +59,12 @@ bot.on('message', (msg) => {
         case '/viewmyorders':
             viewmyorders.init(msg);
             break;
-        // case '/about':
-        //     about.init(msg);
-        //     break;
+        case '/about':
+            messenger.send(msg.chat.id, config.about);
+            break;
+        case '/help':
+            messenger.send(msg.chat.id, config.help);
+            break;
         default:
             birthday(msg);
             break;
