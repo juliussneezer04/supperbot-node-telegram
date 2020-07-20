@@ -5,6 +5,7 @@ const removeitem = require("./handlers/removeitem");
 const closejio = require('./handlers/closejio');
 const vieworder = require("./handlers/vieworder");
 const viewmyorders = require("./handlers/viewmyorders");
+const birthday = require("./handlers/birthday").birthday;
 
 const commands = require('./config').commands;
 const config = require('./config');
@@ -26,7 +27,11 @@ openjio.initbot(bot);
 
 bot.on('message', (msg) => {
     let command;
-    if (msg.text != null && msg.text.includes('@')) {
+    if (msg.text == null) {
+        console.log("error: message text from " + msg.from.id + "is null");
+        return;
+    }
+    if (msg.text.includes('@')) {
         let tokens = msg.text.split('@');
         if (tokens[1] !== config.bot_name) {
             return;
@@ -58,7 +63,8 @@ bot.on('message', (msg) => {
         //     about.init(msg);
         //     break;
         default:
-            break;//TODO: invalid command message
+            birthday(msg);
+            break;
     }
     // send a message to the chat acknowledging receipt of their message
     // bot.sendMessage(chatId, 'Received your message');
@@ -69,7 +75,7 @@ bot.on('callback_query', (query) => {
     let data = JSON.parse(query.data);
     if (data.hasOwnProperty("cmd")) {
         query.chat = query.message.chat; //TODO: clean this hack
-        switch(data.cmd) {
+        switch (data.cmd) {
             case 'additem':
                 additem.init(query)
                 break;
