@@ -6,7 +6,7 @@ const closejio = require('./handlers/closejio');
 const vieworder = require("./handlers/vieworder");
 const viewmyorders = require("./handlers/viewmyorders");
 const birthday = require("./handlers/birthday").birthday;
-
+const queries = require('./db/queries');
 const commands = require('./config').commands;
 const config = require('./config');
 const messenger = require('./messenger');
@@ -24,6 +24,7 @@ messenger.init(bot);
 closejio.initbot(bot);
 additem.initbot(bot);
 openjio.initbot(bot);
+queries.initbot(bot);
 
 bot.on('message', (msg) => {
     let command;

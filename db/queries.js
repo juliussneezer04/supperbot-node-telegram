@@ -2,6 +2,11 @@ const db = require('./db');
 const menus = require('../config').menus; //TODO: make this a database entry
 const messenger = require('../messenger');
 const sprintf = require("sprintf-js").sprintf;
+let bot;
+
+module.exports.initbot = function(b) {
+    bot = b;
+}
 
 const hasJio = async function (chat_id) {
     const statement = `select * from jiodata.jios where chat_id = $1`;
@@ -463,15 +468,24 @@ module.exports.storeJioMessageData = async function (chat_id, text, ik){
     //store in jio table
 }
 
+module.exports.storeJioDescription = async function (chat_id, description){
+    const statement = `
+            update jiodata.jios 
+            set description = $1
+            where chat_id = $2`;
+    const args = [description, chat_id];
+    await db.query(statement, args);
+}
+
 module.exports.getJioMessageData = async function (chat_id){
     const statement = `
-            select text, inline_keyboard
+            select text, description, inline_keyboard
             from jiodata.jios 
             where chat_id = $1`;
     const args = [chat_id];
     const res = await db.query(statement, args);
     const data = {};
-    data.text = res.rows[0].text;
+    data.text = res.rows[0].text + res.rows[0].description;
     data.ik = JSON.parse(res.rows[0].inline_keyboard);
     return data;
 }
@@ -504,4 +518,23 @@ module.exports.getJioMessageID = async function (chat_id){
     const args = [chat_id];
     const res = await db.query(statement, args);
     return res.rows[0].message_id;
+}
+
+module.exports.storeListenerId = async function (listener_id, chat_id){
+    const statement = `
+            update jiodata.jios 
+            set listener_ids = array_append(listener_ids, $1)
+            where chat_id = $2`;
+    const args = [listener_id, chat_id];
+    await db.query(statement, args);
+}
+
+module.exports.destroyListenerIds = async function (chat_id){
+    const statement = `
+            select listener_ids from jiodata.jios 
+            where chat_id = $1`;
+    const args = [chat_id];
+    let res = await db.query(statement, args);
+    const listenerIds =  res.rows[0];
+    listenerIds.foreach(id => bot.removeReplyListener(id))
 }

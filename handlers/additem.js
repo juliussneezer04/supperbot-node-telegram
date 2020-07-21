@@ -158,13 +158,11 @@ const notifyAdditemSuccess = async function (query, itemName, order_id) {
                 });
                 messenger.send(replymsg.chat.id, 'Remark added successfully!');
             }
-            //TODO: send success message
         } catch (err) {
             console.log(err);
-        } finally {
-            bot.removeReplyListener(replyListenerId);
         }
     });
+    queries.storeListenerId(replyListenerId, await queries.getChatIdFromOrderId(order_id))
     await queries.updateOrder(order_id)
 }
 

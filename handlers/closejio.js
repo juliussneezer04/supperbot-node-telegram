@@ -47,7 +47,7 @@ module.exports.init = async function (msg) {
         const text = createOverviewMessage(menuName, closerName, compiledOrders, userOrders, deliveryFee);
         const message_id = await queries.getJioMessageID(msg.chat.id);
         await messenger.send(msg.chat.id, text, {reply_to_message_id: message_id});
-
+        await queries.destroyListenerIds(msg.chat.id)
         // destroy jio
         await queries.destroyJio({
             chat_id: msg.chat.id,
