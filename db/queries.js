@@ -485,7 +485,7 @@ module.exports.getJioMessageData = async function (chat_id){
     const args = [chat_id];
     const res = await db.query(statement, args);
     const data = {};
-    data.text = res.rows[0].text + res.rows[0].description;
+    data.text = res.rows[0].text + ((res.rows[0].description === null) ? "" : res.rows[0].description);
     data.ik = JSON.parse(res.rows[0].inline_keyboard);
     return data;
 }
@@ -528,13 +528,12 @@ module.exports.storeListenerId = async function (listener_id, chat_id){
     const args = [listener_id, chat_id];
     await db.query(statement, args);
 }
-
 module.exports.destroyListenerIds = async function (chat_id){
     const statement = `
             select listener_ids from jiodata.jios 
             where chat_id = $1`;
     const args = [chat_id];
     let res = await db.query(statement, args);
-    const listenerIds =  res.rows[0];
-    listenerIds.foreach(id => bot.removeReplyListener(id))
+    const listenerIds =  res.rows[0].listener_ids;
+    listenerIds.forEach(id => bot.removeReplyListener(id))
 }

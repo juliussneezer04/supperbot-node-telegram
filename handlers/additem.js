@@ -157,6 +157,7 @@ const notifyAdditemSuccess = async function (query, itemName, order_id) {
                     message_id: replymsg.reply_to_message.message_id,
                 });
                 messenger.send(replymsg.chat.id, 'Remark added successfully!');
+                queries.refreshLiveCountMessage(await queries.getChatIdFromOrderId(order_id))
             }
         } catch (err) {
             console.log(err);
