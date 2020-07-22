@@ -324,6 +324,16 @@ module.exports.storeData = async function (key, data) {
     //TODO: remove data that is more than 24 hrs old (need not be done here in the code)
 }
 
+module.exports.updateData = async function (key, data) {
+    const strData = JSON.stringify(data);
+    const statement = `
+		update miscellaneous.cache
+		set data = $1
+		where key = $2;`;
+    const args = [key, strData];
+    await db.query(statement, args);
+}
+
 module.exports.getData = async function (key) {
     const statement = `
 		select data
@@ -331,7 +341,7 @@ module.exports.getData = async function (key) {
 		where key = $1;`;
     const args = [key];
     const res = await db.query(statement, args);
-    return JSON.parse(res.rows[0].data);
+    return (res.rowCount > 0) ? JSON.parse(res.rows[0].data) : null;
 }
 
 module.exports.repeatCount = async function(str){
