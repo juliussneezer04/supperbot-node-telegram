@@ -547,3 +547,11 @@ module.exports.destroyListenerIds = async function (chat_id){
     const listenerIds =  res.rows[0].listener_ids;
     listenerIds.forEach(id => bot.removeReplyListener(id))
 }
+
+module.exports.clearOldEntries = async function (schema_name, table_name){
+    const statement = `
+            delete from ${schema_name}.${table_name}
+            where now() - time > interval '48 hours'`;
+    const args = [];
+    await db.query(statement, args);
+}
