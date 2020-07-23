@@ -23,6 +23,7 @@ module.exports.db_config = {
 
 module.exports.menus = [
   'Al Amaans',
+  'Koi'
 ];
 
 module.exports.commands = [
