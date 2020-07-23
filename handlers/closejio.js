@@ -1,10 +1,10 @@
 const queries = require('../db/queries');
-const menus = require('../config').menus;
+const {menus, superusers} = require('../config');
 const sprintf = require("sprintf-js").sprintf;
 const messenger = require('../messenger');
 let bot;
 
-module.exports.initbot = function(b) {
+module.exports.initbot = function (b) {
     bot = b;
 }
 
@@ -16,7 +16,10 @@ module.exports.init = async function (msg) {
             return;
         } else if (!await queries.checkHasJio(msg.chat.id)) {
             return;
-        } else if (msg.from.id !== await queries.getJioCreatorId(msg.chat.id) && messageSender.status !== "administrator" && messageSender.status !== "creator") {
+        } else if (msg.from.id !== await queries.getJioCreatorId(msg.chat.id) &&
+            messageSender.status !== "administrator" &&
+            messageSender.status !== "creator" &&
+            !superusers.includes(msg.from.id)) {
             //only allow group admin or group creator or jio starter to close
             await messenger.send(msg.chat.id, 'Only the jio creator or group admins can close the jio!');
             return;

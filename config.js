@@ -36,5 +36,7 @@ module.exports.commands = [
 
 module.exports.help = "If you are unable to access the jio message, you can use /closejio to manually close the jio";
 
-module.exports.about = "Developed by nicktohzyu and iamjamestan, building on the original supperbot by Lester. " +
-    "Submit inquiries or bug reports at  ";
+module.exports.about = "Developed by @nicktohzyu and @iamjamestan, building on the original supperbot by Lester. " +
+    "Submit inquiries or bug reports at -(currently in beta, repo private)"; //insert github link
+
+module.exports.superusers = [653601805] //array of user id
