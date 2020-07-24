@@ -9,13 +9,15 @@ const messenger = require('../messenger');
 
 const OPEN_JIO_COMMAND_ID = commands.indexOf('openjio');
 const CANCEL_COMMAND_ID = commands.indexOf('cancel');
-const CREATION_SUCCESS_TEMPLATE = '%s created a jio for %s. Click on "add item", and I will message you directly to take your order. You may want to pin this message so users can find it easily.'
+const CREATION_SUCCESS_GROUP_TEMPLATE = '%s created a jio for %s. Click on "add item", and I will message you directly to take your order. You may want to pin this message so users can find it easily.'
+const CREATION_SUCCESS_DIRECT_TEMPLATE = 'Jio for %s in chat group \"%s\" created successfully! Reply to this message to add a description to your jio.';
 // const CREATION_SUCCESS_TIME_TEMPLATE = ', with duration %s minutes.';
 const CREATION_FAILURE_TEMPLATE = 'Sorry, there was an unknown error in opening the jio'
+const DESCRIPTION_RECEIVED_RESPONSE = "Received! You can reply to the message again to update your jio description!";
 
 let bot;
 
-module.exports.initbot = function(b) {
+module.exports.initbot = function (b) {
     bot = b;
 }
 
@@ -78,7 +80,7 @@ const notifyOpenjioSuccess = async function (query) {
     let data = JSON.parse(query.data);
 
     // send success message to group
-    let text = util.format(CREATION_SUCCESS_TEMPLATE, query.from.first_name,
+    let text = util.format(CREATION_SUCCESS_GROUP_TEMPLATE, query.from.first_name,
         menus[data['m']]) + "\n\n";
     const ik = new InlineKeyboard();
     ik.addRow({text: 'add item', callback_data: '{"cmd": "additem"}'});
@@ -97,34 +99,39 @@ const notifyOpenjioSuccess = async function (query) {
     await queries.updateOpenJioWithMsgID(params)
 
     // edit the direct message to user
-    let text2 = 'Jio created successfully! Reply to this message to add a description to your jio.';
+    const chat = await bot.getChat(data['chat_id']);
+    const chatName = chat.title;
+    let text2 = util.format(CREATION_SUCCESS_DIRECT_TEMPLATE,
+        menus[data['m']], chatName);
     messenger.edit(
         query.message.chat.id,
         query.message.message_id,
         null,
         text2,
         null);
+
+    //listener for reply with description
     const replyListenerId = await bot.onReplyToMessage(query.message.chat.id, query.message.message_id, async (replymsg) => {
         try {
-        const description = replymsg.from.first_name + " says: " + replymsg.text + "\n\n";
-        await queries.storeJioDescription(data['chat_id'], description);
-        const newMessageData = (await queries.getJioMessageData(msg.chat.id)).text;
-        messenger.edit(
-            data['chat_id'],
-            msg.message_id,
-            null,
-            newMessageData + await queries.getOrderMessage(data['chat_id']),
-            ikb.reply_markup
-        );
-        if (replymsg.reply_to_message.text !== "Reply to this message again to update your jio description!") {
+            //update message in group chat
+            const description = replymsg.from.first_name + " says: " + replymsg.text + "\n\n";
+            await queries.storeJioDescription(data['chat_id'], description);
+            const newMessageData = (await queries.getJioMessageData(msg.chat.id)).text;
             messenger.edit(
-                query.message.chat.id,
-                query.message.message_id,
+                data['chat_id'],
+                msg.message_id,
                 null,
-                "Reply to this message again to update your jio description!",
-                null
+                newMessageData + await queries.getOrderMessage(data['chat_id']),
+                ikb.reply_markup
             );
-        }
+
+            //update direct message to creator
+            messenger.send(
+                query.message.chat.id,
+                DESCRIPTION_RECEIVED_RESPONSE,
+                null,
+                null,
+            );
 
         } catch (err) {
             console.log(err);
