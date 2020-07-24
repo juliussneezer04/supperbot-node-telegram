@@ -7,10 +7,9 @@ const vieworder = require("./handlers/vieworder");
 const viewmyorders = require("./handlers/viewmyorders");
 const birthday = require("./handlers/birthday").birthday;
 const queries = require('./db/queries');
-const commands = require('./config').commands;
 const config = require('./config');
 const messenger = require('./messenger');
-const token = config.token;
+const {token, commands, debug} = config;
 
 let bot;
 if (process.env.NODE_ENV === 'production') {
@@ -27,6 +26,9 @@ openjio.initbot(bot);
 queries.initbot(bot);
 
 bot.on('message', (msg) => {
+    if(debug) {
+        console.log("received message with text " + msg.text + " from " + msg.from.username);
+    }
     let command;
     if (msg.text == null) {
         console.log("error: message text from " + msg.from.id + "is null");
@@ -70,8 +72,6 @@ bot.on('message', (msg) => {
             birthday(msg);
             break;
     }
-    // send a message to the chat acknowledging receipt of their message
-    // bot.sendMessage(chatId, 'Received your message');
 });
 
 bot.on('callback_query', (query) => {

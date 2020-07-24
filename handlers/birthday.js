@@ -1,9 +1,12 @@
 const messenger = require('../messenger');
 const queries = require('../db/queries');
+const {debug} = require('../config');
 
 module.exports.birthday = async function (msg) {
     const originalText = msg.text;
-    console.log("entered birthday function with text " + originalText + " from " + msg.from.username);
+    if(debug){
+        console.log("entered birthday function with text " + originalText + " from " + msg.from.username);
+    }
     const lowerText = originalText.toLowerCase();
     const stringsToMatch = ["happybirthday", "happybday"];
     let matched = false;
@@ -13,7 +16,9 @@ module.exports.birthday = async function (msg) {
             break;
         }
     }
-    console.log("matched: " + matched);
+    if(debug){
+        console.log("matched: " + matched);
+    }
     if (matched) {
         const count = await queries.repeatCount(originalText);
         if (count === 9) {
