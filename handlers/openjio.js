@@ -45,14 +45,6 @@ module.exports.init = async function (msg) {
 
 
 module.exports.callback = async function (query) {
-    return commit(query);
-}
-
-const embed = function (data, x) {
-    return cloneextend.cloneextend(data, x);
-}
-
-const commit = async function (query) {
     try {
         const data = JSON.parse(query.data);
         if (!data.duration) {
@@ -74,6 +66,10 @@ const commit = async function (query) {
         console.log(e);
         notifyOpenjioFailure(e, query);
     }
+}
+
+const embed = function (data, x) {
+    return cloneextend.cloneextend(data, x);
 }
 
 const notifyOpenjioSuccess = async function (query) {
