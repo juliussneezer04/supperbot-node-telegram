@@ -1,7 +1,11 @@
+const util = require('util');
 const queries = require('../db/queries');
-const {menus, superusers} = require('../config');
+const {menus, superusers, commands} = require('../config');
 const sprintf = require("sprintf-js").sprintf;
 const messenger = require('../messenger');
+const {InlineKeyboard} = require("node-telegram-keyboard-wrapper");
+const CLOSEJIO_CONFIRM_ID = commands.indexOf('closejioconfirm');
+const CANCEL_COMMAND_ID = commands.indexOf('cancel');
 let bot;
 
 module.exports.initbot = function (b) {
@@ -24,8 +28,31 @@ module.exports.init = async function (msg) {
             await messenger.send(msg.chat.id, 'Only the jio creator or group admins can close the jio!');
             return;
         }
+
+        //send confirmation message
+        const ik = new InlineKeyboard();
+        ik.addRow({
+            text: 'Yes, close this jio',
+            callback_data: JSON.stringify({
+                t: CLOSEJIO_CONFIRM_ID,
+                c: msg.chat.id
+            })
+        });
+        ik.addRow({text: 'Cancel', callback_data: JSON.stringify({t: CANCEL_COMMAND_ID})});
+        const text = 'Are you sure you want to close the jio in chat group \"' + msg.chat.title + '\"?';
+        messenger.send(msg.from.id, text, ik.build(), msg.chat.id);
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+module.exports.callback = async function (query) {
+    try {
+        const data = JSON.parse(query.data);
+        const chat_id = data.c;
         const menu = await queries.getMenu({
-            chat_id: msg.chat.id,
+            chat_id: chat_id,
         });
 
         const deliveryFee = await queries.getFee({
@@ -35,29 +62,41 @@ module.exports.init = async function (msg) {
         // get all jio orders
         const compiledOrders = await queries.getOrderOverview({
             menu: menu,
-            chat_id: msg.chat.id,
+            chat_id: chat_id,
         });
 
         // get individual user orders
         const userOrders = await queries.getChatOrders({
             menu: menu,
-            chat_id: msg.chat.id,
+            chat_id: chat_id,
         });
-        await queries.updateClosedJio(msg.chat.id);
+        await queries.updateClosedJio(chat_id);
         // notify the chat
         const menuName = menus[menu];
-        const closerName = msg.from.first_name;
+        const closerName = query.from.first_name;
         const text = createOverviewMessage(menuName, closerName, compiledOrders, userOrders, deliveryFee);
-        const message_id = await queries.getJioMessageID(msg.chat.id);
-        await messenger.send(msg.chat.id, text, {reply_to_message_id: message_id});
-        await queries.destroyListenerIds(msg.chat.id)
+        const message_id = await queries.getJioMessageID(chat_id);
+        await messenger.send(chat_id, text, {reply_to_message_id: message_id});
+        await queries.destroyListenerIds(chat_id)
         // destroy jio
         await queries.destroyJio({
-            chat_id: msg.chat.id,
+            chat_id: chat_id,
         }); //should we await here?
 
+        // edit the direct message to user
+        const JIO_CLOSE_DIRECT_TEMPLATE = "You have successfully closed the jio for %s in chat group \"%s\"."
+        const chat = await bot.getChat(chat_id);
+        const chatName = chat.title;
+        const text2 = util.format(JIO_CLOSE_DIRECT_TEMPLATE, menuName, chatName);
+        messenger.edit(
+            query.message.chat.id,
+            query.message.message_id,
+            null,
+            text2,
+            null);
+
         // notify users
-        notifyUserOrders(msg, userOrders, deliveryFee);
+        notifyUserOrders(query, userOrders, deliveryFee);
     } catch (err) {
         console.log(err);
     }

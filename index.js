@@ -112,6 +112,9 @@ bot.on('callback_query', (query) => {
             case 'addmod':
                 additem.callback_mod(query);
                 break;
+            case 'closejioconfirm':
+                closejio.callback(query);
+                break;
             default:
                 break;
         }
