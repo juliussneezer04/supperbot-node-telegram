@@ -34,7 +34,8 @@ module.exports.commands = [
   'addmod',
 ]
 
-module.exports.help = "If you are unable to access the jio message, you can use /closejio to manually close the jio";
+module.exports.help = "We currently only allow one concurrent jio per chat.\n\n" +
+    "If you are unable to access the jio message, you can use /closejio to manually close the jio";
 
 module.exports.about = "Developed by @nicktohzyu and @iamjamestan, building on the original supperbot by Lester. " +
     "Submit inquiries or bug reports at -(currently in beta, repo private)"; //insert github link
