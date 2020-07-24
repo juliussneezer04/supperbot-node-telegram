@@ -2,7 +2,7 @@ const bot_name = require('./config').bot_name;
 const {InlineKeyboard} = require('node-telegram-keyboard-wrapper');
 let bot;
 
-module.exports.init = function (b) {
+module.exports.initBot = function (b) {
     bot = b;
 }
 

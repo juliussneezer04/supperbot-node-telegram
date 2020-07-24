@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === 'production') {
     bot = new TelegramBot(token, {polling: true});
 }
 
-messenger.init(bot);
+messenger.initBot(bot);
 closejio.initbot(bot);
 additem.initbot(bot);
 openjio.initbot(bot);
