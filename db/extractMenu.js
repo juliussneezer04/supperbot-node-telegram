@@ -56,10 +56,13 @@ async function run() {
             return obj;
         }
     }
+
     root = await populateChildren(root);
 
     const y = await YAML.stringify(root);
-    fs.writeFile("menu.yml", y, () => {});
+    fs.writeFile("menu.yml", y, () => {
+    });
     return;
 }
+
 run();

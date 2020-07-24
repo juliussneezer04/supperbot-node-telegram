@@ -12,26 +12,26 @@ module.exports.bot_name = process.env.BOT_NAME
 // console.log("bot_name: ", module.exports.bot_name);
 
 module.exports.db_config = {
-  user:     process.env.DB_USER, //env var: PGUSER 
-  database: process.env.DB_DATABASE, //env var: PGDATABASE 
-  password: process.env.DB_PASSWORD, //env var: PGPASSWORD 
-  host:     process.env.DB_HOST, // Server hosting the postgres database 
-  port:     5432, //env var: PGPORT 
-  max:      10, // max number of clients in the pool 
-  idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed 
+    user: process.env.DB_USER, //env var: PGUSER
+    database: process.env.DB_DATABASE, //env var: PGDATABASE
+    password: process.env.DB_PASSWORD, //env var: PGPASSWORD
+    host: process.env.DB_HOST, // Server hosting the postgres database
+    port: 5432, //env var: PGPORT
+    max: 10, // max number of clients in the pool
+    idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
 };
 
 module.exports.menus = [
-  'Al Amaans',
-  'Koi'
+    'Al Amaans',
+    'Koi'
 ];
 
 module.exports.commands = [
-  'cancel',
-  'openjio',
-  'additem',
-  'removeitem',
-  'addmod',
+    'cancel',
+    'openjio',
+    'additem',
+    'removeitem',
+    'addmod',
 ]
 
 module.exports.help = "We currently only allow one concurrent jio per chat.\n\n" +

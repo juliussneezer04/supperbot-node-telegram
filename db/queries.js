@@ -4,7 +4,7 @@ const messenger = require('../messenger');
 const sprintf = require("sprintf-js").sprintf;
 let bot;
 
-module.exports.initbot = function(b) {
+module.exports.initbot = function (b) {
     bot = b;
 }
 
@@ -344,7 +344,7 @@ module.exports.getData = async function (key) {
     return (res.rowCount > 0) ? JSON.parse(res.rows[0].data) : null;
 }
 
-module.exports.repeatCount = async function(str){
+module.exports.repeatCount = async function (str) {
     // helper for birthday easter egg
     // takes in string
     // returns int, representing the number of times this string has been seen
@@ -381,7 +381,7 @@ module.exports.repeatCount = async function(str){
     return res.rows[0].count;
 }
 
-module.exports.updateOrder = async function(order_id){
+module.exports.updateOrder = async function (order_id) {
     const statement = `
 		select jiodata.jios.message_id as message_id, jiodata.jios.chat_id as chat_id
 		from jiodata.jios
@@ -401,7 +401,7 @@ module.exports.updateOrder = async function(order_id){
         jio_data.ik.reply_markup); //need to get the original text
 }
 
-module.exports.refreshLiveCountMessage = async function(chat_id){
+module.exports.refreshLiveCountMessage = async function (chat_id) {
     const statement = `
 		select message_id from jiodata.jios
 		where chat_id = $1;`;
@@ -418,7 +418,7 @@ module.exports.refreshLiveCountMessage = async function(chat_id){
         jio_data.ik.reply_markup); //need to get the original text
 }
 
-module.exports.updateClosedJio = async function(chat_id){
+module.exports.updateClosedJio = async function (chat_id) {
     const statement = `
             select creator_name, message_id, menu
             from jiodata.jios 
@@ -461,13 +461,13 @@ module.exports.getOrderMessage = async function (chat_id) {
                 order.user, order.item, modifiers, remarks, order.count, order.price / 100.0);
         }
         return result;
-    } catch(e){
+    } catch (e) {
         console.log(e);
         return "sorry, an error occurred";
     }
 }
 
-module.exports.storeJioMessageData = async function (chat_id, text, ik){
+module.exports.storeJioMessageData = async function (chat_id, text, ik) {
     const ik_string = JSON.stringify(ik);
     const statement = `
             update jiodata.jios 
@@ -478,7 +478,7 @@ module.exports.storeJioMessageData = async function (chat_id, text, ik){
     //store in jio table
 }
 
-module.exports.storeJioDescription = async function (chat_id, description){
+module.exports.storeJioDescription = async function (chat_id, description) {
     const statement = `
             update jiodata.jios 
             set description = $1
@@ -487,7 +487,7 @@ module.exports.storeJioDescription = async function (chat_id, description){
     await db.query(statement, args);
 }
 
-module.exports.getJioMessageData = async function (chat_id){
+module.exports.getJioMessageData = async function (chat_id) {
     const statement = `
             select text, description, inline_keyboard
             from jiodata.jios 
@@ -500,7 +500,7 @@ module.exports.getJioMessageData = async function (chat_id){
     return data;
 }
 
-module.exports.getJioCreatorName = async function (chat_id){
+module.exports.getJioCreatorName = async function (chat_id) {
     const statement = `
             select creator_name
             from jiodata.jios 
@@ -510,7 +510,7 @@ module.exports.getJioCreatorName = async function (chat_id){
     return res.rows[0].creator_name;
 }
 
-module.exports.getJioCreatorId = async function (chat_id){
+module.exports.getJioCreatorId = async function (chat_id) {
     const statement = `
             select creator_id
             from jiodata.jios 
@@ -520,7 +520,7 @@ module.exports.getJioCreatorId = async function (chat_id){
     return res.rows[0].creator_id;
 }
 
-module.exports.getJioMessageID = async function (chat_id){
+module.exports.getJioMessageID = async function (chat_id) {
     const statement = `
             select message_id
             from jiodata.jios 
@@ -530,7 +530,7 @@ module.exports.getJioMessageID = async function (chat_id){
     return res.rows[0].message_id;
 }
 
-module.exports.storeListenerId = async function (listener_id, chat_id){
+module.exports.storeListenerId = async function (listener_id, chat_id) {
     const statement = `
             update jiodata.jios 
             set listener_ids = array_append(listener_ids, $1)
@@ -538,17 +538,17 @@ module.exports.storeListenerId = async function (listener_id, chat_id){
     const args = [listener_id, chat_id];
     await db.query(statement, args);
 }
-module.exports.destroyListenerIds = async function (chat_id){
+module.exports.destroyListenerIds = async function (chat_id) {
     const statement = `
             select listener_ids from jiodata.jios 
             where chat_id = $1`;
     const args = [chat_id];
     let res = await db.query(statement, args);
-    const listenerIds =  res.rows[0].listener_ids;
+    const listenerIds = res.rows[0].listener_ids;
     listenerIds.forEach(id => bot.removeReplyListener(id))
 }
 
-module.exports.clearOldEntries = async function (schema_name, table_name){
+module.exports.clearOldEntries = async function (schema_name, table_name) {
     const statement = `
             delete from ${schema_name}.${table_name}
             where now() - time > interval '48 hours'`;

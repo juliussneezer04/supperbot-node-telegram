@@ -7,7 +7,7 @@ const COMMAND_ID = commands.indexOf('additem');
 const MOD_COMMAND_ID = commands.indexOf('addmod');
 let bot;
 
-module.exports.initbot = function(b) {
+module.exports.initbot = function (b) {
     bot = b;
 }
 

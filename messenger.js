@@ -38,7 +38,7 @@ const sendStartMe = async function (chat_id, startme_chat) {
 
 module.exports.send = async function (chat_id, text, reply_markup = {}, startme_chat) {
     try {
-        if(reply_markup == null){//hack, because default param value doesn't seem to be working
+        if (reply_markup == null) {//hack, because default param value doesn't seem to be working
             reply_markup = {};
         }
         return await bot.sendMessage(chat_id, text, reply_markup);
