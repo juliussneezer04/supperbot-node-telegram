@@ -26,8 +26,14 @@ openjio.initbot(bot);
 queries.initbot(bot);
 
 bot.on('message', (msg) => {
-    if(debug) {
-        console.log("received message with text " + msg.text + " from " + msg.from.username);
+    if (debug) {
+        let message = "received message with text \"" + msg.text + "\" from \"" + msg.from.username + "\""
+        if (msg.chat.hasOwnProperty("title")) {
+            message += " in chat \"" + msg.chat.title  + "\"";
+        } else {
+            message += " via direct message"
+        }
+        console.log(message);
     }
     let command;
     if (msg.text == null) {
