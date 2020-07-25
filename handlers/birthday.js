@@ -8,10 +8,10 @@ module.exports.birthday = async function (msg) {
         console.log("entered birthday function with text " + originalText + " from " + msg.from.username);
     }
     const lowerText = originalText.toLowerCase();
-    const stringsToMatch = ["happybirthday", "happybday"];
+    const stringsToMatch = ["/happybirthday", "/happybday"];
     let matched = false;
     for (const str of stringsToMatch) {
-        if (lowerText.indexOf(str) === 1) {
+        if (lowerText.indexOf(str) === 0) {
             matched = true;
             break;
         }
