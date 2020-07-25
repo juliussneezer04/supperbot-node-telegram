@@ -1,4 +1,5 @@
 const TelegramBot = require('node-telegram-bot-api');
+const schedule = require('node-schedule');
 const openjio = require('./handlers/openjio');
 const additem = require('./handlers/additem');
 const removeitem = require("./handlers/removeitem");
@@ -135,5 +136,8 @@ function cancelCallback(query) {
         'Your request has been cancelled!',
         null);
 }
-
+schedule.scheduleJob('0 6 * * *', () => {
+    queries.clearOldEntries('miscellaneous', 'helper');
+    queries.clearOldEntries('miscellaneous', 'cache');
+});
 console.log("bot running");
