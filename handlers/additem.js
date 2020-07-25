@@ -50,12 +50,13 @@ module.exports.callback = async function (query) {
 module.exports.callback_mod = async function (query) {
     try {
         const data = JSON.parse(query.data);
-        await queries.addModifier({
-            menu: data.m,
-            order_id: data.o,
-            mod_id: data.i,
-        });
-
+        if (data.hasOwnProperty('i')) {
+            await queries.addModifier({
+                menu: data.m,
+                order_id: data.o,
+                mod_id: data.i,
+            });
+        }
         await sendModifierSelector(query, data.o);
     } catch (err) {
         console.log(err);
@@ -239,6 +240,15 @@ const pushMods = function (menu, kbdata, mods, level, order_id, item_id) {
             m: menu,
             l: level,
             i: mod.mod_id,
+            p: item_id
+        }]);
+    }
+    if (level !== 0) {
+        kbdata.push(['Back', {
+            t: MOD_COMMAND_ID,
+            o: order_id,
+            m: menu,
+            l: level - 2,
             p: item_id
         }]);
     }

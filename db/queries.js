@@ -60,6 +60,22 @@ module.exports.addItem = async function (params, callback) {
 module.exports.addModifier = async function (params, callback) {
     const menuname = 'menudata.' + menus[params.menu].split(' ').join('_');
     const modmenuname = menuname + '_mod';
+    const statement1 = `
+        select level from ${modmenuname}
+        where mod_id = $1;`;
+    const modLevel = (await db.query(statement1, [params.mod_id])).rows[0].level;
+
+    const statement2 = `
+        select id from jiodata.modifiers
+        where order_id = $1 and level = $2;`;
+    const res = await db.query(statement2, [params.order_id, modLevel]);
+
+    if (res.rowCount > 0) {
+        const id = res.rows[0].id;
+        const deleteStatement = `delete from jiodata.modifiers where id = $1;`;
+        await db.query(deleteStatement, [id]);
+    }
+
     const statement = `
 		insert into
 			jiodata.modifiers 	(order_id, name, price, level)
