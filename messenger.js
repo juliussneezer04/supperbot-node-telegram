@@ -1,35 +1,35 @@
 const bot_name = require('./config').bot_name;
 const {InlineKeyboard} = require('node-telegram-keyboard-wrapper');
-let bot;
+const queries = require('./db/queries');
 
+let bot;
 module.exports.initBot = function (b) {
     bot = b;
+}
+
+const sendStartMeHelper = async function (startme_chat){
+    return await bot.sendMessage(
+        startme_chat,
+        'Hi there, please start a chat with me first!',//TODO: address user by first_name
+        new InlineKeyboard().addRow({
+            text: 'Start chat!',
+            url: 'https://telegram.me/' + bot_name,
+        }).build());
 }
 
 const sendStartMe = async function (chat_id, startme_chat) {
     //no await, because if it does not work we do not send any more messages
     // send 'Start chat!' inline message
     try {
-        const msgData = await queries.getData(chat_id);
+        const msgData = await queries.getData(startme_chat);
         if (msgData !== null) { // startme chat has been sent before, then delete previous
-            await bot.deleteMessage(chat_id, msgData.message_id);
-            const message_id = await bot.sendMessage(
-                startme_chat,
-                'Hi there, please start a chat with me first!',//TODO: address user by first_name
-                new InlineKeyboard().addRow({
-                    text: 'Start chat!',
-                    url: 'https://telegram.me/' + bot_name,
-                }).build());
-            await queries.updateData(chat_id, {message_id: message_id});
+            await bot.deleteMessage(startme_chat, msgData.message_id);
+            const msg = await sendStartMeHelper(startme_chat)
+            await queries.updateData(startme_chat, {message_id: msg.message_id});
         } else { // startme chat has not been sent before
-            const message_id = await bot.sendMessage(
-                startme_chat,
-                'Hi there, please start a chat with me first!',//TODO: address user by first_name
-                new InlineKeyboard().addRow({
-                    text: 'Start chat!',
-                    url: 'https://telegram.me/' + bot_name,
-                }).build());
-            await queries.storeData(chat_id, {message_id: message_id})
+            const msg = await sendStartMeHelper(startme_chat)
+            //TODO: wrap into a specific method with identifier or new table instead of using chat_id as key in generic cache
+            await queries.storeData(startme_chat, {message_id: msg.message_id});
         }
     } catch (e) {
         console.log(e);

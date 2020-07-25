@@ -344,8 +344,8 @@ module.exports.updateData = async function (key, data) {
     const strData = JSON.stringify(data);
     const statement = `
 		update miscellaneous.cache
-		set data = $1
-		where key = $2;`;
+		set data = $2
+		where key = $1;`;
     const args = [key, strData];
     await db.query(statement, args);
 }
@@ -554,6 +554,7 @@ module.exports.storeListenerId = async function (listener_id, chat_id) {
     const args = [listener_id, chat_id];
     await db.query(statement, args);
 }
+
 module.exports.destroyListenerIds = async function (chat_id) {
     const statement = `
             select listener_ids from jiodata.jios 
