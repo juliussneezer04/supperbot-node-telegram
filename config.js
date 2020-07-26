@@ -44,4 +44,7 @@ module.exports.help = "We currently only allow one concurrent jio per chat.\n\n"
 module.exports.about = "Developed by @nicktohzyu and @iamjamestan, building on the original supperbot by Lester. " +
     "Submit inquiries or bug reports at -(currently in beta, repo private)"; //insert github link
 
+module.exports.start = "Welcome! You can now add items to jios.\n\n" +
+    "Open a jio in a group chat with /openjio, use /help for troubleshooting, and read about me in /about."
+
 module.exports.superusers = [653601805] //array of user id

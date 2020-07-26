@@ -75,6 +75,9 @@ bot.on('message', (msg) => {
         case '/help':
             messenger.send(msg.chat.id, config.help);
             break;
+        case '/start':
+            messenger.send(msg.chat.id, config.start);
+            break;
         default:
             birthday(msg);
             break;
