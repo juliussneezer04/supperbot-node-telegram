@@ -332,8 +332,8 @@ module.exports.storeData = async function (key, data) {
     //keyed by messageID
     const statement = `
 		insert into
-			miscellaneous.cache	(key, data)
-			values	($1, $2);`;
+			miscellaneous.cache	(key, data, time)
+			values	($1, $2, now());`;
     const strData = JSON.stringify(data);
     const args = [key, strData];
     await db.query(statement, args);
@@ -344,7 +344,7 @@ module.exports.updateData = async function (key, data) {
     const strData = JSON.stringify(data);
     const statement = `
 		update miscellaneous.cache
-		set data = $2
+		set data = $2, time = now()
 		where key = $1;`;
     const args = [key, strData];
     await db.query(statement, args);
