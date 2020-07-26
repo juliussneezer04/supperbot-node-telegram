@@ -389,8 +389,8 @@ module.exports.repeatCount = async function (str) {
     } else {
         statement = `
             insert into miscellaneous.helper 
-            (string, count)
-            values ($1, 1)
+            (string, count, time)
+            values ($1, 1, now())
             RETURNING *;`;
     }
     res = await db.query(statement, args);
