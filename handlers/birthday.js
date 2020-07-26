@@ -20,7 +20,7 @@ module.exports.birthday = async function (msg) {
         console.log("matched: " + matched);
     }
     if (matched) {
-        const count = await queries.repeatCount(originalText);
+        const count = await queries.repeatCount(msg.chat.id+originalText);
         if (count === 9) {
             messenger.send(msg.chat.id, originalText)
         }
