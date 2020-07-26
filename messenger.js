@@ -1,4 +1,4 @@
-const bot_name = require('./config').bot_name;
+const {bot_name, debug} = require('./config');
 const {InlineKeyboard} = require('node-telegram-keyboard-wrapper');
 const queries = require('./db/queries');
 
@@ -21,6 +21,9 @@ const sendStartMe = async function (chat_id, startme_chat) {
     //no await, because if it does not work we do not send any more messages
     // send 'Start chat!' inline message
     try {
+        if(debug){
+            console.log("sending startme to " +startme_chat + " for " + chat_id);
+        }
         const msgData = await queries.getData(startme_chat);
         if (msgData !== null) { // startme chat has been sent before, then delete previous
             await bot.deleteMessage(startme_chat, msgData.message_id);
@@ -43,10 +46,13 @@ module.exports.send = async function (chat_id, text, reply_markup = {}, startme_
         }
         return await bot.sendMessage(chat_id, text, reply_markup);
     } catch (e) {
-        //TODO: check for startme error
-        //blocked: ETELEGRAM: 403 Forbidden: bot was blocked by the user
-        console.log(e);
-        sendStartMe(chat_id, startme_chat);
+        if(e.response.statusCode === 403){
+            //blocked: ETELEGRAM: 403 Forbidden: bot was blocked by the user
+            //not started: bot can't initiate conversation with a user
+            sendStartMe(chat_id, startme_chat);
+        } else {
+            console.log(e);
+        }
     }
 }
 
