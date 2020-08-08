@@ -139,8 +139,8 @@ function cancelCallback(query) {
         'Your request has been cancelled!',
         null);
 }
-schedule.scheduleJob('0 6 * * *', () => {
-    queries.clearOldEntries('miscellaneous', 'helper');
-    queries.clearOldEntries('miscellaneous', 'cache');
-});
+// schedule.scheduleJob('0 6 * * *', () => {
+//     queries.clearOldEntries('miscellaneous', 'helper');
+//     queries.clearOldEntries('miscellaneous', 'cache');
+// });
 console.log("bot running");

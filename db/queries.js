@@ -1,5 +1,5 @@
 const db = require('./db');
-const menus = require('../config').menus; //TODO: make this a database entry
+const {menus, debug} = require('../config'); //TODO: make this a database entry
 const messenger = require('../messenger');
 const sprintf = require("sprintf-js").sprintf;
 let bot;
@@ -566,6 +566,10 @@ module.exports.destroyListenerIds = async function (chat_id) {
 }
 
 module.exports.clearOldEntries = async function (schema_name, table_name) {
+    if(debug){
+        console.log(`cleaning ${schema_name}.${table_name}`);
+    }
+    return; //temp for testing call
     const statement = `
             delete from ${schema_name}.${table_name}
             where now() - time > interval '48 hours'`;
