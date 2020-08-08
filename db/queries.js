@@ -569,10 +569,13 @@ module.exports.clearOldEntries = async function (schema_name, table_name) {
     if(debug){
         console.log(`cleaning ${schema_name}.${table_name}`);
     }
-    return; //temp for testing call
-    const statement = `
+    try{
+        const statement = `
             delete from ${schema_name}.${table_name}
             where now() - time > interval '48 hours'`;
-    const args = [];
-    await db.query(statement, args);
+        const args = [];
+        await db.query(statement, args);
+    } catch (e) {
+        console.log(e);
+    }
 }
