@@ -42,7 +42,7 @@ module.exports.help = "We currently only allow one concurrent jio per chat.\n\n"
     "Some options become invalidated after 48 hours.";
 
 module.exports.about = "Developed by @nicktohzyu and @iamjamestan, building on the original supperbot by Lester. " +
-    "Submit inquiries or bug reports at -(currently in beta, repo private)"; //insert github link
+    "Submit inquiries or bug reports at https://github.com/nicktohzyu/supperbot-node-telegram/issues"; //insert github link
 
 module.exports.start = "Welcome! You can now add items to jios.\n\n" +
     "Open a jio in a group chat with /openjio, use /help for troubleshooting, and read about me in /about."
