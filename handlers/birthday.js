@@ -5,7 +5,7 @@ const {debug} = require('../config');
 module.exports.birthday = async function (msg) {
     const originalText = msg.text;
     if(debug){
-        console.log("entered birthday function with text " + originalText + " from " + msg.from.username);
+        console.log("entered birthday function with text \"" + originalText + "\" from " + msg.from.username);
     }
     const lowerText = originalText.toLowerCase();
     const stringsToMatch = ["/happybirthday", "/happybday"];
