@@ -5,6 +5,7 @@ module.exports.api_url = process.env.API_URL + module.exports.token + '/'
 // module.exports.secret_url = process.env.SERVER_URL+process.env.BOT_TOKEN
 module.exports.bot_name = process.env.BOT_NAME
 module.exports.debug = JSON.parse(process.env.DEBUG)
+module.exports.stringsToMatch = JSON.parse(process.env.BIRTHDAY_STRINGS)
 
 //testing for heroku env variables
 // console.log("token: ", module.exports.token);
