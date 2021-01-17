@@ -6,7 +6,6 @@ const messenger = require('../messenger');
 const {InlineKeyboard} = require("node-telegram-keyboard-wrapper");
 const CLOSEJIO_CONFIRM_ID = commands.indexOf('closejioconfirm');
 const CANCEL_COMMAND_ID = commands.indexOf('cancel');
-const config = require('./config');
 let bot;
 
 module.exports.initbot = function (b) {
@@ -105,7 +104,7 @@ module.exports.callback = async function (query) {
 
 const createOverviewMessage = function (menuName, closerName, compiledOrders, userOrders, deliveryFee) {
     let result = 'This jio for ' + menuName + ' was successfully closed by ' + closerName;
-    if (menuName === config.menus[0]) {
+    if (menuName === menus[0]) {
         result += '.You can place your order with Al Amaans by calling 67740637'
     }
     result += '.\n\n';
