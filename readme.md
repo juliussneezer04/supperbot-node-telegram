@@ -4,7 +4,7 @@ The birthday easter egg is a feature where, if a telegram command containing a s
 
 ## privacy mode disabled is required for birthday easter egg
 
-Supperbot only captures messages starting with a /
+Supperbot only captures messages starting with a `/`
 
 ### How telegram handles bots with privacy mode enabled
 
