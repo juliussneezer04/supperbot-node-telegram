@@ -1,3 +1,9 @@
+# commands
+openjio - Open a supper jio
+closejio - Close the jio
+about - Find out more
+help - Detailed instructions and troubleshooting
+
 # birthday easter egg
 
 The birthday easter egg is a feature where, if a telegram command containing a specific phrase (eg "happybd", "happybirthday", "shanhousebesthouse") is repeated 10 times, the bot will repeat it once. This count is reset after 24 hours of no mentions.
