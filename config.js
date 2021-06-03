@@ -25,7 +25,8 @@ module.exports.db_config = {
 
 module.exports.menus = [
     'Al Amaans',
-    'Koi'
+    'Koi',
+    'Xing Long Fish Soup',
 ];
 
 module.exports.commands = [
