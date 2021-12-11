@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "nyc mocha --recursive",
     "start": "node index.js"
   },
   "author": "",
@@ -23,5 +23,9 @@
     "sprintf-js": "^1.1.2",
     "util": "^0.12.3",
     "yaml": "^1.10.0"
+  },
+  "devDependencies": {
+    "nyc": "^15.1.0",
+    "should": "^13.2.3"
   }
 }
