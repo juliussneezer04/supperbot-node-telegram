@@ -60,3 +60,4 @@ typings/
 oldcode
 
 .idea
+helpers/test/out_newline.txt
