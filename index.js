@@ -1,4 +1,5 @@
 const TelegramBot = require('node-telegram-bot-api');
+const schedule = require('node-schedule');
 const openjio = require('./handlers/openjio');
 const additem = require('./handlers/additem');
 const removeitem = require("./handlers/removeitem");
@@ -29,7 +30,7 @@ bot.on('message', (msg) => {
     if (debug) {
         let message = "received message with text \"" + msg.text + "\" from \"" + msg.from.username + "\""
         if (msg.chat.hasOwnProperty("title")) {
-            message += " in chat \"" + msg.chat.title + "\"";
+            message += " in chat \"" + msg.chat.title  + "\"";
         } else {
             message += " via direct message"
         }
@@ -138,5 +139,8 @@ function cancelCallback(query) {
         'Your request has been cancelled!',
         null);
 }
-
+schedule.scheduleJob('0 6 * * *', () => {
+    queries.clearOldEntries('miscellaneous', 'helper');
+    queries.clearOldEntries('miscellaneous', 'cache');
+});
 console.log("bot running");
