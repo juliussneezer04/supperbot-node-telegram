@@ -3,7 +3,7 @@ const readTextFile = require('../readTextFile').readTextFile;
 const assert = require('assert');
 const should = require('should');
 
-const TELEGRAM_CHAR_LIMIT = 4000;
+const TELEGRAM_CHAR_LIMIT = 4096;
 
 /**
  * Testing suite for chunkify.js.
