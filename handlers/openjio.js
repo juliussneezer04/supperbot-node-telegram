@@ -1,5 +1,4 @@
 const util = require('util');
-const schedule = require('node-schedule');
 const cloneextend = require('cloneextend');
 const sprintf = require("sprintf-js").sprintf;
 const queries = require('../db/queries');
@@ -137,7 +136,6 @@ const notifyOpenjioSuccess = async function (query) {
     queries.storeListenerId(replyListenerId, msg.chat.id)
     const date = new Date();
     date.setDate(date.getDate() + 1);
-    schedule.scheduleJob(date, () => queries.destroyJio({chat_id: msg.chat.id}))
 }
 
 const notifyOpenjioFailure = async function (err, query) {
