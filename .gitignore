@@ -61,3 +61,4 @@ oldcode
 
 .idea
 helpers/test/out_newline.txt
+test/out_newline_101chars.txt
