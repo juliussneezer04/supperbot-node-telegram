@@ -3,6 +3,8 @@ import random
 import string
 
 """
+(Not in use now, see helpers/randomTextGenerator.js)
+
 INSTRUCTIONS FOR USE:
 1. Open terminal/powershell/CLI to this directory ('helpers/test')
 2. Run randomTextGeneratorScript.py
