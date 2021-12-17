@@ -26,7 +26,8 @@ This guide is meant for the WebStorm IDE by JetBrains. For other IDEs please ref
 
 (Alternatively, refer to [Mocha - the fun, simple, flexible JavaScript test framework (mochajs.org)](https://mochajs.org/#installation))
 
-1. Run `npm i --g --save-dev mocha i --save-dev nyc` in your terminal to install Mocha.
+1. Run `npm i --g --save-dev mocha` and then `npm i --save-dev nyc` in your terminal to install Mocha
+and NYC Mocha (Tool used with Mocha to show Test COde Coverage).
 2. Navigate to `Run > Edit Configurations` from the menu bar to open the `Run/Debug Configurations` window.
 3. Click on the `+` icon on the top left and select Mocha. (Don't see Mocha as an Option? You'll need to add the Node.js Plug-in to WebStorm first)
 4. Name the configuration any relevant name (e.g. `HelpersTestingSuite`).
@@ -36,7 +37,7 @@ This guide is meant for the WebStorm IDE by JetBrains. For other IDEs please ref
 8. For the Test directory, choose the folder containing test suites (e.g. `test/helpersTest`), and select the `All in directory` option above it.
 9. Click ok to complete Configuration setup.
 10. Test cases written in the Mocha framework within the test directory can now be run by running the configuration!
-    (Alternatively use `npm test` command in terminal)
+11. Run `npm test` command in terminal, if it shows `Error: No test cases`, you're all set.
 
 Note: Documentation for testing library can be found here:
 
