@@ -49,6 +49,10 @@ bot.on('message', (msg) => {
     } else {
         command = msg.text;
     }
+    queries.updateUsername({
+        user_id: msg.from.id,
+        user_name: msg.from.username,
+    });
     switch (command) {
         case '/openjio':
             openjio.init(msg);
@@ -84,7 +88,10 @@ bot.on('message', (msg) => {
 });
 
 bot.on('callback_query', (query) => {
-
+    queries.updateUsername({
+        user_id: query.from.id,
+        user_name: query.from.username,
+    });
     let data = JSON.parse(query.data);
     if (data.hasOwnProperty("cmd")) {
         query.chat = query.message.chat; //TODO: clean this hack

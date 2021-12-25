@@ -198,6 +198,39 @@ module.exports.getItemName = async function (params, callback) {
     return res.rows[0].name;
 }
 
+module.exports.getUsernameFromID = async function (params, callback) {
+    try {
+        const statement = `
+		select 	user_name
+		from 	miscellaneous.usernames
+		where 	user_id = $1;`;
+        const args = [params.user_id];
+        const res = await db.query(statement, args, callback);
+        return res.rows[0].user_name;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+module.exports.updateUsername = async function (params, callback) {
+    try {
+        const statement = `
+		insert into 
+		miscellaneous.usernames (user_name, user_id)
+		values ($1, $2)
+        on conflict (user_id) do update
+		set user_name = $1;`;
+        //checks if username is empty
+        if (params.user_name === undefined) {
+            params.user_name = "";
+        }
+        const args = [params.user_name, params.user_id];
+        await db.query(statement, args, callback);
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 module.exports.getUserOrders = async function (params, callback) {
     const menuname = menus[params.menu];
     const menutable = 'menudata.' + menuname.split(' ').join('_');
