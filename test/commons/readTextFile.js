@@ -11,7 +11,7 @@ function isFilePresent(path) {
 
 function readTextFile(file)
 {
-    assert(isFilePresent(file), "Test Text File not present");
+    assert(isFilePresent(file), "Test text file not present");
     return fs.readFileSync(file).toString("utf-8");
 }
 

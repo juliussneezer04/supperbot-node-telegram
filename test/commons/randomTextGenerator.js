@@ -1,3 +1,4 @@
+const fs = require('fs')
 /**
  * Picks characters randomly to form a String of specified length.
  * Taken from https://stackoverflow.com/a/1349426
@@ -5,6 +6,8 @@
  * @param length Length of String to be generated.
  * @returns {string} String of length that chooses randomly from given characters.
  */
+
+
 function randomTextGenerator(length) {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\n\r ';
@@ -15,4 +18,14 @@ function randomTextGenerator(length) {
     return result;
 }
 
+function randomTextFileGenerator(length){
+    const result = randomTextGenerator(length);
+    try {
+        fs.writeFileSync('../test/testInput.txt', result);
+    } catch (err) {
+        console.error(err);
+    }
+}
+
 exports.randomTextGenerator = randomTextGenerator;
+exports.randomTextFileGenerator = randomTextFileGenerator;
