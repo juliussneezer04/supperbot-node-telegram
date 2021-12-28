@@ -201,9 +201,10 @@ module.exports.getItemName = async function (params, callback) {
 module.exports.getUsernameFromID = async function (params, callback) {
     try {
         const statement = `
-		select 	user_name
-		from 	miscellaneous.usernames
-		where 	user_id = $1;`;
+            select 	user_name
+            from 	miscellaneous.usernames
+            where 	user_id = $1;`;
+
         const args = [params.user_id];
         const res = await db.query(statement, args, callback);
         return res.rows[0].user_name;
@@ -215,11 +216,11 @@ module.exports.getUsernameFromID = async function (params, callback) {
 module.exports.updateUsername = async function (params, callback) {
     try {
         const statement = `
-		insert into 
-		miscellaneous.usernames (user_name, user_id)
-		values ($1, $2)
-        on conflict (user_id) do update
-		set user_name = $1;`;
+            insert into 
+            miscellaneous.usernames (user_name, user_id)
+            values ($1, $2)
+            on conflict (user_id) do update
+            set user_name = $1;`;
         //checks if username is empty
         if (params.user_name === undefined) {
             params.user_name = "";
@@ -276,9 +277,15 @@ module.exports.getUserOrderCounts = async function (params, callback) {
 
 module.exports.getChatOrders = async function (params, callback) {
     const menutable = 'menudata.' + menus[params.menu].split(' ').join('_');
+
+    // count(*): gives the quantity each unique groups of (user_id, item_id, mods, sum, remarks)
+    // COALESCE(s2.sum, 0): orders with no modifiers will have s2.sum == null, this function replaces null with 0
+    // left join appends any optional modifiers to jiodata.orders table
+    // string_agg(name, ', '): concatenate all modifiers of each order into a string with delimiter == ', '
+    // group by order_id: allows sum(price) => sum of all modifier prices belonging to each order_id
     const statement = `
-		select 	t1.item_name as item, t2.remarks, t2.count, ((t1.price + t2.sum) * t2.count)::int as price, t2.mods, t3.user_name as user, t3.user_id
-		from 	${menutable} t1 
+		select 	t1.item_name as item, t2.remarks, t2.count, ((t1.price + t2.sum) * t2.count)::int as price, t2.mods, t2.user_id
+		from 	${menutable} t1
 		join (
 			select 	s1.user_id, s1.item_id, count(*), s1.remarks, s2.mods, COALESCE(s2.sum, 0) as sum
 			from 	jiodata.orders s1
@@ -292,12 +299,7 @@ module.exports.getChatOrders = async function (params, callback) {
 			group by user_id, item_id, mods, sum, remarks
 		) t2
 		on t1.item_id = t2.item_id
-		join (
-			select 	distinct user_id, user_name
-			from 	jiodata.orders 
-		) t3
-		on 		t2.user_id = t3.user_id
-		order by t3.user_name;`;
+		order by t2.user_id;`;
 
     const args = [params.chat_id];
 
@@ -506,8 +508,11 @@ module.exports.getOrderMessage = async function (chat_id) {
             const order = orders[i];
             let remarks = order.remarks == null ? '' : sprintf(' (%s)', order.remarks);
             let modifiers = order.mods == null ? '' : sprintf(' (%s)', order.mods);
+            let user = await module.exports.getUsernameFromID({
+                user_id: order.user_id,
+            });
             result += sprintf('%s - %s%s%s x%s ($%.2f)\n',
-                order.user, order.item, modifiers, remarks, order.count, order.price / 100.0);
+                user, order.item, modifiers, remarks, order.count, order.price / 100.0);
         }
         return result;
     } catch (e) {
