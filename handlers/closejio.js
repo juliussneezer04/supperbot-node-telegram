@@ -138,7 +138,7 @@ const createOverviewMessage = async function (menuName, closerName, compiledOrde
     result += '\nEach person please pay:\n';
     for (const [, info] of Object.entries(users)) {
         let userDelivery = deliveryFee * info[1] / total;
-        result += sprintf('%s - $%.2f(+%.2f)\n', info[0], info[1] / 100.0, userDelivery / 100.0);
+        result += sprintf('@%s - $%.2f(+%.2f)\n', info[0], info[1] / 100.0, userDelivery / 100.0);
     }
 
     // add overview
