@@ -1,10 +1,14 @@
 const queries = require('../db/queries');
 const commands = require('../config').commands;
+const max_length = require('../config').max_length;
 const messenger = require('../messenger');
 const {InlineKeyboard} = require('node-telegram-keyboard-wrapper');
 const sprintf = require("sprintf-js").sprintf;
 const COMMAND_ID = commands.indexOf('additem');
 const MOD_COMMAND_ID = commands.indexOf('addmod');
+
+const REMARK_TOO_LONG_RESPONSE = 'Remark is longer than ' + max_length.order_remarks.toString() + ' characters, try again with a shorter remark!';
+
 let bot;
 
 module.exports.initbot = function (b) {
@@ -152,6 +156,11 @@ const notifyAdditemSuccess = async function (query, itemName, order_id) {
     const replyListenerId = await bot.onReplyToMessage(query.message.chat.id, query.message.message_id, async (replymsg) => {
         try {
             if (await queries.hasOrder(replymsg.reply_to_message.message_id)) {
+                //checks if remark is longer than allowed
+                if (replymsg.text.length > max_length.order_remarks) {
+                    messenger.send(replymsg.chat.id, REMARK_TOO_LONG_RESPONSE);
+                    return;
+                }
                 await queries.addRemark({
                     remarks: replymsg.text,
                     message_id: replymsg.reply_to_message.message_id,

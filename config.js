@@ -23,6 +23,11 @@ module.exports.db_config = {
     idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed,
 };
 
+module.exports.max_length = {
+    jio_description: 200, //max characters for jio description
+    order_remarks: 60, //max characters for order remarks
+};
+
 module.exports.menus = [
     'Al Amaans',
     'Koi',
