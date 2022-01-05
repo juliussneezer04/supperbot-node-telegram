@@ -1,0 +1,10 @@
+Delivery: 100
+Menu:
+  Butter Naan:
+    price: 200
+  Butter Chicken:
+    price: 600
+Instructions: "Call 87654321 to order!"
+Modifiers:
+  no ice: 30
+  regular: 0
