@@ -1,3 +1,36 @@
+# Guide for new devs
+1. Create jetbrains student account if you have not
+2. Install jetbrains toolbox
+  - It handles updating and installing the various IDEs for you
+3. Install webstorm
+4. Install git
+  - I recommend github desktop for its simple interface
+5. Install postgreSQL
+  - The password you set doesn’t have to be secure, but do not lose it
+  - The installation should also come with pgAdmin, a GUI that allows you to visually edit and see data
+6. Load database capture (menu and tables) to local postgres instance
+  - Use DB backups in the repo (both dump and sql file should work)
+  - Process to restore backup:
+    - Create new database and name it
+    - Right click on that database and click ‘restore’
+    - Select ‘DB.backup’ file 
+    - Menudata, jio data etc should be reflected in the schemas of the database
+    - You may have to use command line and manually enter your password (my pgadmin seems to incorrectly use the –no-password option
+  - Can use either command line or pgadmin
+7. Create new telegram bot handle for your personal testing purposes
+  - Go to ‘botfather’ bot on telegram
+  - Create new bot with name and handle like “nic_supperbot_dev_bot” (the name doesn’t matter)
+8. Create .env file in your repository
+  - Add the bot token
+  - Add postgres credentials (you can use postgres as the DB_USER if you hadn’t created user1)
+  - Leave SERVER_URL and DATABASE_URL blank for local hosting
+  - Set debug to true
+9. Run index.js in WebStorm
+10. Create a group with your bot to chat with it 
+  - Remember that jios must be opened in a group chat
+  - To test, simply create a group with you and your bot (or other people helping to test)
+
+
 # Commands
 openjio - Open a supper jio  
 closejio - Close the jio  
