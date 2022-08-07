@@ -1,14 +1,14 @@
-# commands
-openjio - Open a supper jio
-closejio - Close the jio
-about - Find out more
-help - Detailed instructions and troubleshooting
+# Commands
+openjio - Open a supper jio  
+closejio - Close the jio  
+about - Find out more  
+help - Detailed instructions and troubleshooting  
 
-# birthday easter egg
+# Birthday easter egg
 
 The birthday easter egg is a feature where, if a telegram command containing a specific phrase (eg "happybd", "happybirthday", "shanhousebesthouse") is repeated 10 times, the bot will repeat it once. This count is reset after 24 hours of no mentions.
 
-## privacy mode disabled is required for birthday easter egg
+## Privacy mode disabled is required for birthday easter egg
 
 Supperbot only captures messages starting with a `/`
 
@@ -46,16 +46,16 @@ https://nodejs.org/api/assert.html
 https://mochajs.org/ (only BDD-style functions)
 
 # .env
-API_URL=
-BIRTHDAY_STRINGS=
-BOT_NAME=
-BOT_TOKEN=
-DATABASE_URL=
-DB_DATABASE=
-DB_HOST=
-DB_PASSWORD=
-DB_USER=
-DEBUG=
+API_URL=  
+BIRTHDAY_STRINGS=  
+BOT_NAME=  
+BOT_TOKEN=  
+DATABASE_URL=  
+DB_DATABASE=  
+DB_HOST=  
+DB_PASSWORD=  
+DB_USER=  
+DEBUG=  
 ## for deploy
-HEROKU_URL=
-SERVER_URL=
+HEROKU_URL=  
+SERVER_URL=  
