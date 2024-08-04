@@ -1,10 +1,5 @@
 # Guide for new devs
-1. Create jetbrains student account if you have not
-2. Install jetbrains toolbox
-  - It handles updating and installing the various IDEs for you
-3. Install webstorm
-4. Install git
-  - I recommend github desktop for its simple interface
+1. Install git
 5. Install postgreSQL
   - The password you set doesn’t have to be secure, but do not lose it
   - The installation should also come with pgAdmin, a GUI that allows you to visually edit and see data
@@ -25,7 +20,7 @@
   - Add postgres credentials (you can use postgres as the DB_USER if you hadn’t created user1)
   - Leave SERVER_URL and DATABASE_URL blank for local hosting
   - Set debug to true
-9. Run index.js in WebStorm
+9. Run index.js
 10. Create a group with your bot to chat with it 
   - Remember that jios must be opened in a group chat
   - To test, simply create a group with you and your bot (or other people helping to test)
