@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/node-telegram-bot-api": "^0.64.7",
     "assert": "^2.0.0",
     "axios": "^1.7.3",
     "body-parser": "^1.19.0",
@@ -22,6 +23,8 @@
     "node-telegram-keyboard-wrapper": "^2.0.1",
     "pg": "^8.2.1",
     "sprintf-js": "^1.1.2",
+    "ts-migrate": "^0.1.35",
+    "typescript": "^5.5.4",
     "util": "^0.12.3",
     "yaml": "^1.10.0"
   },

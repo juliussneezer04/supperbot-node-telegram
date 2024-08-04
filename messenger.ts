@@ -1,13 +1,17 @@
+// @ts-expect-error TS(2580): Cannot find name 'require'. Do you need to install... Remove this comment to see the full error message
 const {bot_name, debug} = require('./config');
+// @ts-expect-error TS(2580): Cannot find name 'require'. Do you need to install... Remove this comment to see the full error message
 const {InlineKeyboard} = require('node-telegram-keyboard-wrapper');
+// @ts-expect-error TS(2580): Cannot find name 'require'. Do you need to install... Remove this comment to see the full error message
 const queries = require('./db/queries');
 
-let bot;
-module.exports.initBot = function (b) {
+let bot: any;
+// @ts-expect-error TS(2580): Cannot find name 'module'. Do you need to install ... Remove this comment to see the full error message
+module.exports.initBot = function (b: any) {
     bot = b;
 }
 
-const sendStartMeHelper = async function (startme_chat){
+const sendStartMeHelper = async function (startme_chat: any){
     return await bot.sendMessage(
         startme_chat,
         'Hi there, please start a chat with me first!',//TODO: address user by first_name
@@ -17,7 +21,7 @@ const sendStartMeHelper = async function (startme_chat){
         }).build());
 }
 
-const sendStartMe = async function (chat_id, startme_chat) {
+const sendStartMe = async function (chat_id: any, startme_chat: any) {
     //no await, because if it does not work we do not send any more messages
     // send 'Start chat!' inline message
     try {
@@ -39,13 +43,15 @@ const sendStartMe = async function (chat_id, startme_chat) {
     }
 }
 
-module.exports.send = async function (chat_id, text, reply_markup = {}, startme_chat) {
+// @ts-expect-error TS(2580): Cannot find name 'module'. Do you need to install ... Remove this comment to see the full error message
+module.exports.send = async function (chat_id: any, text: any, reply_markup = {}, startme_chat: any) {
     try {
         if (reply_markup == null) {//hack, because default param value doesn't seem to be working
             reply_markup = {};
         }
         return await bot.sendMessage(chat_id, text, reply_markup);
     } catch (e) {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         if(e.response.statusCode === 403){
             //blocked: ETELEGRAM: 403 Forbidden: bot was blocked by the user
             //not started: bot can't initiate conversation with a user
@@ -56,7 +62,8 @@ module.exports.send = async function (chat_id, text, reply_markup = {}, startme_
     }
 }
 
-module.exports.edit = async function (chat_id, message_id, inline_message_id, text, reply_markup) {
+// @ts-expect-error TS(2580): Cannot find name 'module'. Do you need to install ... Remove this comment to see the full error message
+module.exports.edit = async function (chat_id: any, message_id: any, inline_message_id: any, text: any, reply_markup: any) {
     //will remove inline keyboard if reply_markup is null
     try {
         // await bot.editMessageReplyMarkup(reply_markup,
